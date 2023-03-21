@@ -1205,7 +1205,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/applicationManagement/advancedSalesmanApplication'),
         name: 'advancedSalesmanApplication',
         meta: {
-          // perms: [],
+          perms: ['GET /admin/userup/pdlist'],
           title: '营销申请管理',
           icon: 'validCode',
           noCache: true
@@ -1216,7 +1216,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/applicationManagement/salesmanApplication'),
         name: 'salesmanApplication',
         meta: {
-          // perms: [],
+          perms: ['GET /admin/userup/pdlist'],
           title: '门店申请管理',
           icon: 'validCode',
           noCache: true
@@ -1227,7 +1227,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/applicationManagement/history'),
         name: 'applicationHistory',
         meta: {
-          // perms: [],
+          perms: ['POST /admin/userup/list'],
           title: '申请表查询',
           icon: 'skill',
           noCache: true
@@ -1238,7 +1238,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/applicationManagement/UpHistory'),
         name: 'UpHistory',
         meta: {
-          // perms: [],
+          perms: ['POST /admin/upRecord/list'],
           title: '升级记录表查询',
           icon: 'skill',
           noCache: true
@@ -1692,6 +1692,28 @@ export const asyncRouterMap = [
         meta: {
           // perms: [],
           title: '限时抢购',
+          icon: '',
+          noCache: true
+        }
+      },
+      {
+        path: 'wiseManTask',
+        component: () => import('@/views/marketing/wiseManTask'),
+        name: 'WiseManTask',
+        meta: {
+          // perms: ['POST /admin/talentTask/upload', 'GET /admin/talentTask/list', 'GET /admin/talentTask/info', 'GET /admin/talentTask/update', 'GET /admin/talentTask/delete'],
+          title: '达人任务',
+          icon: '',
+          noCache: true
+        }
+      },
+      {
+        path: 'wiseManList',
+        component: () => import('@/views/marketing/wiseManList'),
+        name: 'WiseManList',
+        meta: {
+          // perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],
+          title: '达人列表',
           icon: '',
           noCache: true
         }

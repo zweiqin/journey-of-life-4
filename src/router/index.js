@@ -1491,40 +1491,40 @@ export const asyncRouterMap = [
 					noCache: true
 				}
 			},
-			{
-				path: 'balance',
-				component: () => import('@/views/user/balance'),
-				name: 'balance',
-				meta: {
-					title: '门店余额',
-					icon: '',
-					noCache: true
-				},
-				children: [
-					{
-						path: 'recharge',
-						component: () => import('@/views/user/balance/recharge'),
-						name: 'recharge',
-						meta: {
-							perms: [ 'GET /admin/buAccount/list' ],
-							title: '余额充值',
-							icon: 'user',
-							noCache: true
-						}
-					},
-					{
-						path: 'rechargeRecord',
-						component: () => import('@/views/user/balance/rechargeRecord'),
-						name: 'rechargeRecord',
-						meta: {
-							perms: [ 'GET /admin/brandBalance/list' ],
-							title: '充值记录',
-							icon: 'validCode',
-							noCache: true
-						}
-					}
-				]
-			},
+			// {
+			// 	path: 'balance',
+			// 	component: () => import('@/views/user/balance'),
+			// 	name: 'balance',
+			// 	meta: {
+			// 		title: '门店余额',
+			// 		icon: '',
+			// 		noCache: true
+			// 	},
+			// 	children: [
+			// 		{
+			// 			path: 'recharge',
+			// 			component: () => import('@/views/user/balance/recharge'),
+			// 			name: 'recharge',
+			// 			meta: {
+			// 				perms: [ 'GET /admin/buAccount/list' ],
+			// 				title: '余额充值',
+			// 				icon: 'user',
+			// 				noCache: true
+			// 			}
+			// 		},
+			// 		{
+			// 			path: 'rechargeRecord',
+			// 			component: () => import('@/views/user/balance/rechargeRecord'),
+			// 			name: 'rechargeRecord',
+			// 			meta: {
+			// 				perms: [ 'GET /admin/brandBalance/list' ],
+			// 				title: '充值记录',
+			// 				icon: 'validCode',
+			// 				noCache: true
+			// 			}
+			// 		}
+			// 	]
+			// },
 			{
 				path: 'promotionCenter',
 				alwaysShow: true,

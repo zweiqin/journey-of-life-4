@@ -24,7 +24,7 @@
 		</div>
 
 		<div class="other-container">
-			<el-descriptions class="margin-top" title="余额信息" :column="3" :size="size" :content-style="{ 'color': 'red' }">
+			<el-descriptions class="margin-top" title="余额信息" :column="3" size="medium" :content-style="{ 'color': 'red' }">
 				<el-descriptions-item label="账户余额（充值+赠送）">{{ accountAmount.accountBalance }}</el-descriptions-item>
 				<el-descriptions-item label="充值账户余额">{{ accountAmount.companyDepositBalance }}</el-descriptions-item>
 				<el-descriptions-item label="赠送账户余额">{{ accountAmount.companyGivenBalance }}</el-descriptions-item>

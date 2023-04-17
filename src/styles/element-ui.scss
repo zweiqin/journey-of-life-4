@@ -31,7 +31,6 @@
 .fixed-width {
   .el-button--mini {
     padding: 7px 10px;
-    width: 60px;
   }
 }
 
@@ -52,6 +51,15 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  margin-top: 8vh !important;
+  // 下面为增加dialog滚动条
+  max-height: calc(100vh - 100px);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  >.el-dialog__body {
+    overflow-y: auto;
+  }
 }
 
 // refine element ui upload
@@ -76,4 +84,8 @@
 // fix date-picker ui bug in filter-item
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
+}
+
+.el-tooltip__popper {
+  max-width: 500px;
 }

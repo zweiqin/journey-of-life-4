@@ -103,12 +103,11 @@
 					<el-input v-model="storeDataForm.brandname" />
 				</el-form-item>
 				<el-form-item label="门店类型" prop="brandgenre">
-					<el-select v-model="storeDataForm.brandgenre" placeholder="请选择所属类型" autocomplete="off">
-						<el-option
-							v-for="StoreType in listStoreType" :key="StoreType.id" :label="StoreType.storeName"
-							:value="StoreType.id"
-						/>
-					</el-select>
+					<el-cascader
+						v-model="storeDataForm.brandgenre" :options="TypeOptions"
+						:props="{ lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						@change="(value) => storeDataForm.brandgenre = value[value.length - 1]"
+					/>
 				</el-form-item>
 				<el-form-item label="门店联系电话" prop="brandPhone">
 					<el-input v-model="storeDataForm.brandPhone" />
@@ -293,7 +292,7 @@
 
 <script>
 import { memberListGet, listAdd, InfoGet } from '@/api/applicationManagement/shopUpCreate'
-import { listStoreType } from '@/api/business/brand'
+import { listDtsStoreType } from '@/api/business/brand'
 import { listGet } from '@/api/configurationTable/userLevel'
 import { uploadPath } from '@/api/business/storage'
 import { regionData, CodeToText } from 'element-china-area-data'
@@ -326,7 +325,7 @@ export default {
 				password: undefined,
 				avatar: undefined,
 				brandname: undefined,
-				brandgenre: 13,
+				brandgenre: undefined,
 				brandPhone: undefined,
 				address: undefined,
 				startTime: undefined,
@@ -367,7 +366,7 @@ export default {
 			storeDialogFormVisible: false,
 			marketDialogFormVisible: false,
 			genderDic: ['未知', '男', '女'],
-			listStoreType: [],
+			TypeOptions: [],
 			selectedAreaOptions: [],
 			memberLevel: {}, // 会员等级列表
 			areaOptions: regionData,
@@ -434,10 +433,9 @@ export default {
 				})
 		},
 		getStoreTypeList() {
-			listStoreType()
+			listDtsStoreType()
 				.then((response) => {
-					this.listStoreType = response.data.data.items
-					this.storeDataForm.brandgenre = response.data.data.items[0].id
+					this.TypeOptions = response.data.data
 				})
 				.catch((error) => {
 					this.$message({
@@ -574,7 +572,7 @@ export default {
 				password: undefined,
 				avatar: undefined,
 				brandname: undefined,
-				brandgenre: 13,
+				brandgenre: undefined,
 				brandPhone: undefined,
 				address: undefined,
 				startTime: undefined,

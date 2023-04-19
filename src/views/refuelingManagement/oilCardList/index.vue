@@ -10,7 +10,7 @@
 			/>
 			<el-button
 				v-permission="[ 'GET /admin/tuanyou/queryyoukalist' ]" size="mini" class="filter-item" type="primary"
-				icon="el-icon-search" @click="handleFilter"
+				icon="el-icon-search" @click="listQuery.page = 1 && getList()"
 			>
 				查找
 			</el-button>
@@ -51,6 +51,12 @@
 					>
 						充值
 					</el-button>
+					<el-button
+						v-permission="[ 'POST /admin/tuanyou/changeoilcardamount' ]" type="primary" size="mini"
+						@click="handleRecovery(scope.row.oilcardno)"
+					>
+						回收
+					</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -61,19 +67,36 @@
 		/>
 
 		<!-- 充值对话框 -->
-		<el-dialog title="油卡充值" :visible.sync="dialogFormVisible">
+		<el-dialog title="油卡充值" :visible.sync="dialogFormVisibleRecharge">
 			<el-form
-				ref="dataForm" :rules="rules" :model="dataForm" status-icon
+				ref="dataFormRecharge" :rules="rulesRecharge" :model="dataFormRecharge" status-icon
 				label-position="left" label-width="100px"
 				style="width: 400px; margin-left:50px;"
 			>
 				<el-form-item label="充值金额" prop="amount">
-					<el-input v-model="dataForm.amount" placeholder="请输入充值金额" />
+					<el-input v-model="dataFormRecharge.amount" placeholder="请输入充值金额" />
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click="dialogFormVisible = false">取消</el-button>
+				<el-button @click="dialogFormVisibleRecharge = false">取消</el-button>
 				<el-button type="primary" @click="updateRechargeData">确定</el-button>
+			</div>
+		</el-dialog>
+
+		<!-- 回收对话框 -->
+		<el-dialog title="油卡回收" :visible.sync="dialogFormVisibleRecovery">
+			<el-form
+				ref="dataFormRecovery" :rules="rulesRecovery" :model="dataFormRecovery" status-icon
+				label-position="left" label-width="100px"
+				style="width: 400px; margin-left:50px;"
+			>
+				<el-form-item label="回收金额" prop="amount">
+					<el-input v-model="dataFormRecovery.amount" placeholder="请输入回收金额" />
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="dialogFormVisibleRecovery = false">取消</el-button>
+				<el-button type="primary" @click="updateRecoveryData">确定</el-button>
 			</div>
 		</el-dialog>
 
@@ -90,6 +113,7 @@ export default {
 	components: { Pagination },
 	data() {
 		return {
+			downloadLoading: false,
 			accountAmount: '',
 			list: null,
 			total: 0,
@@ -99,20 +123,32 @@ export default {
 				limit: 20,
 				oilcardno: undefined
 			},
-			dataForm: {
+
+			// // 默认对话框
+			// dialogStatus: '',
+			// textMap: { update: '编辑', create: '创建' },
+
+			// 充值对话框
+			dataFormRecharge: {
 				oilCardNo: undefined,
+				type: '1',
 				amount: ''
 			},
-			dialogFormVisible: false,
-			dialogStatus: '',
-			textMap: {
-				update: '编辑',
-				create: '创建'
-			},
-			rules: {
+			dialogFormVisibleRecharge: false,
+			rulesRecharge: {
 				amount: [{ required: true, message: '充值金额不能为空', trigger: 'blur' },	{ pattern: regFloat, message: '数值有误' }]
 			},
-			downloadLoading: false
+
+			// 回收对话框
+			dataFormRecovery: {
+				oilCardNo: undefined,
+				type: '-1',
+				amount: ''
+			},
+			dialogFormVisibleRecovery: false,
+			rulesRecovery: {
+				amount: [{ required: true, message: '回收金额不能为空', trigger: 'blur' },	{ pattern: regFloat, message: '数值有误' }]
+			}
 		}
 	},
 	created() {
@@ -122,7 +158,7 @@ export default {
 		})
 			.catch((response) => {
 				this.$notify.error({
-					title: '失败',
+					title: '获取余额数据失败',
 					message: response.data.errmsg
 				})
 			})
@@ -141,16 +177,6 @@ export default {
 					this.listLoading = false
 				})
 		},
-		handleFilter() {
-			this.listQuery.page = 1
-			this.getList()
-		},
-		resetForm() {
-			this.dataForm = {
-				oilCardNo: undefined,
-				amount: ''
-			}
-		},
 		// handleCreate() {
 		// 	this.resetForm()
 		// 	this.dialogStatus = 'create'
@@ -159,20 +185,28 @@ export default {
 		// 		this.$refs.dataForm.clearValidate()
 		// 	})
 		// },
+
 		handleRecharge(data) {
-			this.dataForm = Object.assign({}, { oilCardNo: data })
-			this.dialogStatus = 'update'
-			this.dialogFormVisible = true
+			this.resetFormRecharge()
+			this.dataFormRecharge = Object.assign(this.dataFormRecharge, { oilCardNo: data })
+			this.dialogFormVisibleRecharge = true
 			this.$nextTick(() => {
-				this.$refs.dataForm.clearValidate()
+				this.$refs.dataFormRecharge.clearValidate()
 			})
 		},
+		resetFormRecharge() {
+			this.dataFormRecharge = {
+				oilCardNo: undefined,
+				type: '1',
+				amount: ''
+			}
+		},
 		updateRechargeData() {
-			this.$refs.dataForm.validate((valid) => {
+			this.$refs.dataFormRecharge.validate((valid) => {
 				if (valid) {
-					changeoilcardamount(this.dataForm).then(() => {
-						this.dialogFormVisible = false
-						this.resetForm()
+					changeoilcardamount(this.dataFormRecharge).then(() => {
+						this.dialogFormVisibleRecharge = false
+						this.resetFormRecharge()
 						this.$notify.success({
 							title: '成功',
 							message: '充值成功'
@@ -188,6 +222,44 @@ export default {
 				}
 			})
 		},
+
+		handleRecovery(data) {
+			this.resetFormRecovery()
+			this.dataFormRecovery = Object.assign(this.dataFormRecovery, { oilCardNo: data })
+			this.dialogFormVisibleRecovery = true
+			this.$nextTick(() => {
+				this.$refs.dataFormRecovery.clearValidate()
+			})
+		},
+		resetFormRecovery() {
+			this.dataFormRecovery = {
+				oilCardNo: undefined,
+				type: '-1',
+				amount: ''
+			}
+		},
+		updateRecoveryData() {
+			this.$refs.dataFormRecovery.validate((valid) => {
+				if (valid) {
+					changeoilcardamount(this.dataFormRecovery).then(() => {
+						this.dialogFormVisibleRecovery = false
+						this.resetFormRecovery()
+						this.$notify.success({
+							title: '成功',
+							message: '充值成功'
+						})
+						this.getList()
+					})
+						.catch((response) => {
+							this.$notify.error({
+								title: '失败',
+								message: response.data.errmsg
+							})
+						})
+				}
+			})
+		},
+
 		handleDownload() {
 			this.downloadLoading = true
 			import('@/vendor/Export2Excel').then((excel) => {

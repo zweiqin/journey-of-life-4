@@ -81,6 +81,15 @@ export function dtsTalentQueryDetail(params) {
 	})
 }
 
+// 达人审核
+export function dtsTalentToExamine(params) {
+	return request({
+		url: '/dtsTalent/toExamine',
+		method: 'get',
+		params
+	})
+}
+
 // // 案例添加
 // export function dtsTalentDatailAdd(data) {
 // 	return request({

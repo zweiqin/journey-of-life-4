@@ -177,10 +177,14 @@
 					<el-input v-model="dataForm.name" placeholder="请输入任务名称" />
 				</el-form-item>
 				<el-form-item label="单价" prop="unitPrice">
-					<el-input v-model="dataForm.unitPrice" placeholder="请输入单价" />
+					<el-input v-model="dataForm.unitPrice" placeholder="请输入单价">
+						<template #append><span>元</span></template>
+					</el-input>
 				</el-form-item>
 				<el-form-item label="佣金比例" prop="possessGold">
-					<el-input v-model="dataForm.possessGold" placeholder="请输入佣金比例" />
+					<el-input v-model="dataForm.possessGold" type="text" placeholder="请输入佣金比例">
+						<template #append><span>：1</span></template>
+					</el-input>
 				</el-form-item>
 				<el-form-item label="类型" prop="type">
 					<el-select v-model="dataForm.type" filterable placeholder="请选择任务类型">
@@ -190,7 +194,7 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="详情" prop="detail">
-					<el-input v-model="dataForm.detail" placeholder="请输入详情" />
+					<el-input v-model="dataForm.detail" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入任务详情" />
 				</el-form-item>
 				<el-form-item label="等级" prop="grade">
 					<el-input v-model="dataForm.grade" placeholder="请输入等级" />
@@ -330,7 +334,7 @@ export default {
 				unitPrice: [ { required: true, message: '单价不能为空', trigger: 'blur' } ],
 				possessGold: [ { required: true, message: '佣金比例不能为空', trigger: 'blur' } ],
 				type: [ { required: true, message: '类型不能为空', trigger: 'blur' } ],
-				detail: [ { required: false, message: '等级不能为空', trigger: 'blur' } ],
+				detail: [{ required: false, message: '任务详情不能为空', trigger: 'blur' }, { max: 120, message: '120字以内' }],
 				grade: [ { required: true, message: '等级不能为空', trigger: 'blur' } ],
 				region: [ { required: true, message: '地区不能为空', trigger: 'blur' } ],
 				img: [ { required: true, message: '图片不能为空', trigger: 'blur' } ]

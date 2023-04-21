@@ -26,7 +26,7 @@
 				<el-button size="mini" type="primary" class="filter-item">上传达人文件</el-button>
 				</el-upload> -->
 			<el-button
-				size="mini" class="filter-item" type="primary"
+				v-permission="[ 'POST /admin/dtsTalent/submitTalent' ]" size="mini" class="filter-item" type="primary"
 				icon="el-icon-edit" @click="handleCreate"
 			>
 				添加
@@ -54,8 +54,9 @@
 					</template>
 				</el-table-column>
 				<el-table-column align="center" min-width="100px" label="地区" prop="region" />
-				<!-- <el-table-column align="center" min-width="100px" label="地区名称" prop="regionName" /> -->
-				<el-table-column align="center" min-width="120px" label="介绍" prop="introduce" />
+				<el-table-column align="center" min-width="100px" label="地区名称" prop="regionName" />
+				<el-table-column align="center" min-width="220px" label="介绍" prop="introduce" />
+				<el-table-column align="center" min-width="220px" label="关联用户ID" prop="userId" />
 				<el-table-column align="center" min-width="100px" prop="status" label="状态">
 					<template slot-scope="scope">
 						<span v-if="scope.row.status === 0">待审核</span>
@@ -64,24 +65,30 @@
 						<span v-else>--</span>
 					</template>
 				</el-table-column>
-				<el-table-column align="center" min-width="100px" label="创建时间" prop="addTime" />
-				<el-table-column align="center" min-width="100px" label="更新时间" prop="updateTime" />
-				<el-table-column align="center" label="操作" min-width="220px" fixed="right" class-name="small-padding fixed-width">
+				<el-table-column align="center" min-width="140px" label="创建时间" prop="addTime" />
+				<el-table-column align="center" min-width="140px" label="更新时间" prop="updateTime" />
+				<el-table-column align="center" label="操作" min-width="270px" fixed="right" class-name="small-padding fixed-width">
 					<template slot-scope="scope">
 						<el-button
-							v-permission="[ 'GET /admin/dtsTalent/list' ]" type="primary" size="mini"
+							v-permission="[ 'GET /admin/dtsTalent/queryDetail' ]" type="primary" size="mini"
 							@click="handleDetail(scope.row)"
 						>
 							详情
 						</el-button>
 						<el-button
-							v-permission="[ 'POST /admin/talent/update' ]" type="primary" size="mini"
+							v-permission="[ 'POST /admin/dtsTalent/updateTalent' ]" type="primary" size="mini"
 							@click="handleUpdate(scope.row)"
 						>
 							编辑
 						</el-button>
 						<el-button
-							v-permission="[ 'POST /admin/talent/update' ]" type="success" size="mini"
+							v-permission="[ 'POST /admin/dtsTalent/toExamine' ]" type="warning" size="mini"
+							@click="handleExamine(scope.row)"
+						>
+							审核
+						</el-button>
+						<el-button
+							v-permission="[ 'POST /admin/dtsTalentDatail/list' ]" type="success" size="mini"
 							@click="handleOpenService(scope.row)"
 						>
 							服务案例
@@ -123,13 +130,16 @@
 				<el-form-item label="地区" prop="region">
 					<span>{{ dialogDetail.region }}</span>
 				</el-form-item>
-				<!-- <el-form-item label="地区名称">
+				<el-form-item label="地区名称">
 					<span>{{ dialogDetail.regionName }}</span>
-					</el-form-item> -->
+				</el-form-item>
 				<el-form-item label="介绍" prop="introduce">
 					<span>{{ dialogDetail.introduce }}</span>
 				</el-form-item>
-				<el-form-item label="介绍" prop="status">
+				<el-form-item label="关联用户ID" prop="userId">
+					<span>{{ dialogDetail.userId }}</span>
+				</el-form-item>
+				<el-form-item label="审核状态" prop="status">
 					<span v-if="dialogDetail.status === 0">待审核</span>
 					<span v-else-if="dialogDetail.status === 1">审核通过</span>
 					<span v-else-if="dialogDetail.status === 2">暂停使用</span>
@@ -197,7 +207,7 @@
 		<el-dialog :title="{ update: '编辑达人信息', create: '创建达人信息' }[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
 			<el-form
 				ref="dataForm" :rules="rules" :model="dataForm" status-icon
-				label-position="left" label-width="80px"
+				label-position="right" label-width="100px"
 				style="width: 100%; padding:0 35px;"
 			>
 				<el-form-item label="达人名称" prop="name">
@@ -228,13 +238,47 @@
 					/>
 				</el-form-item>
 				<el-form-item label="介绍" prop="introduce">
-					<el-input v-model="dataForm.introduce" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" placeholder="请输入介绍" />
+					<el-input v-model="dataForm.introduce" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入介绍" />
+				</el-form-item>
+				<el-form-item label="关联用户" prop="userId">
+					<el-select v-model="dataForm.userId" class="filter-item" filterable>
+						<el-option
+							v-for="item in userFetchlist"
+							:key="item.id"
+							:label="`${item.username}（${item.mobile}）`"
+							:value="item.id"
+						/>
+					</el-select>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="dialogFormVisible = false">取消</el-button>
 				<el-button v-if="dialogStatus == 'create'" type="primary" @click="createData">确定</el-button>
 				<el-button v-if="dialogStatus == 'update'" type="primary" @click="updateData">确定</el-button>
+			</div>
+		</el-dialog>
+
+		<!-- 达人审核对话框 -->
+		<el-dialog title="达人审核" :visible.sync="dialogFormVisibleExamine" width="800px">
+			<el-form
+				ref="dataFormExamine" :rules="rulesExamine" :model="dataFormExamine" status-icon
+				label-position="left" label-width="80px"
+				style="width: 100%; padding:0 35px;"
+			>
+				<el-form-item label="审核状态" prop="status">
+					<el-select
+						v-model="dataFormExamine.status"
+						class="filter-item"
+					>
+						<el-option label="待审核" :value="0" />
+						<el-option label="通过审核" :value="1" />
+						<el-option label="冻结达人" :value="2" />
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="dialogFormVisibleExamine = false">取消</el-button>
+				<el-button type="primary" @click="confirmExamine">确定</el-button>
 			</div>
 		</el-dialog>
 
@@ -337,16 +381,16 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="企业描述" prop="enterpriseDescribe">
-					<el-input v-model="dataFormCase.enterpriseDescribe" placeholder="请输入企业描述" />
+					<el-input v-model="dataFormCase.enterpriseDescribe" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入企业描述" />
 				</el-form-item>
-				<el-form-item label="案例名称" prop="productName">
-					<el-input v-model="dataFormCase.productName" placeholder="请输入案例名称" />
+				<el-form-item label="案例名称" prop="caseName">
+					<el-input v-model="dataFormCase.caseName" placeholder="请输入案例名称" />
 				</el-form-item>
 				<el-form-item label="案例图片" prop="caseUrl">
 					<el-upload
 						:action="uploadPath"
 						:limit="5"
-						:file-list="dataFormCase.caseUrl.map(item => ({ name: common.splicingImgUrl() + item, url: common.splicingImgUrl() + item }))"
+						:file-list="caseUrlList"
 						:headers="headers"
 						:on-exceed="() => $message({ type: 'error', message: '上传文件个数超出限制!最多上传5张图片!' })"
 						:on-success="(response, file, fileList) => response.errno === 0 && dataFormCase.caseUrl.push(response.data.url)"
@@ -359,7 +403,7 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="案例描述" prop="caseDescribe">
-					<el-input v-model="dataFormCase.caseDescribe" placeholder="请输入案例描述" />
+					<el-input v-model="dataFormCase.caseDescribe" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入案例描述" />
 				</el-form-item>
 				<el-form-item label="产品名称" prop="productName">
 					<el-input v-model="dataFormCase.productName" placeholder="请输入产品名称" />
@@ -368,7 +412,7 @@
 					<el-upload
 						:action="uploadPath"
 						:limit="5"
-						:file-list="dataFormCase.productUrl.map(item => ({ name: common.splicingImgUrl() + item, url: common.splicingImgUrl() + item }))"
+						:file-list="productUrlList"
 						:headers="headers"
 						:on-exceed="() => $message({ type: 'error', message: '上传文件个数超出限制!最多上传5张图片!' })"
 						:on-success="(response, file, fileList) => response.errno === 0 && dataFormCase.productUrl.push(response.data.url)"
@@ -381,7 +425,7 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="产品描述" prop="productDescribe">
-					<el-input v-model="dataFormCase.productDescribe" placeholder="请输入产品描述" />
+					<el-input v-model="dataFormCase.productDescribe" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入产品描述" />
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -395,7 +439,8 @@
 </template>
 
 <script>
-import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUpdateTalent, dtsTalentDatailList, dtsTalentDatailAddOne, dtsTalentDatailUpdate, dtsTalentDatailDelete } from '@/api/marketing/wiseManList'
+import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUpdateTalent, dtsTalentToExamine, dtsTalentDatailList, dtsTalentDatailAddOne, dtsTalentDatailUpdate, dtsTalentDatailDelete } from '@/api/marketing/wiseManList'
+import { fetchList } from '@/api/business/user'
 import { uploadPath } from '@/api/business/storage'
 import { listSubRegion } from '@/api/business/region'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -439,6 +484,7 @@ export default {
 				limit: 20,
 				region: ''
 			},
+			userFetchlist: [],
 
 			// 达人详情对话框
 			detailDialogVisible: false,
@@ -451,6 +497,7 @@ export default {
 				region: '',
 				regionName: '',
 				introduce: '',
+				userId: '',
 				status: '',
 				addTime: '',
 				updateTime: '',
@@ -468,6 +515,7 @@ export default {
 				avatar: '',
 				region: '',
 				introduce: '',
+				userId: '',
 				dtsTalentDatail: []
 			},
 			regionArrDialog: ['', '', ''],
@@ -476,7 +524,19 @@ export default {
 				avatar: [ { required: true, message: '头像不能为空', trigger: 'blur' } ],
 				grade: [ { required: true, message: '账号等级不能为空', trigger: 'blur' } ],
 				region: [ { required: true, message: '地区不能为空', trigger: 'blur' } ],
-				introduce: [ { required: true, message: '介绍不能为空', trigger: 'blur' } ]
+				introduce: [{ required: true, message: '介绍不能为空', trigger: 'blur' }, { max: 120, message: '120字以内' }],
+				userId: [ { required: true, message: '关联用户不能为空', trigger: 'blur' } ]
+			},
+
+			// 达人审核对话框
+			dialogFormVisibleExamine: false,
+			dataFormExamine: {
+				id: '',
+				status: ''
+			},
+			rulesExamine: {
+				id: [ { required: true, message: '达人ID不能为空', trigger: 'blur' } ],
+				avatar: [ { required: true, message: '审核状态不能为空', trigger: 'blur' } ]
 			},
 
 			// 查看案例对话框
@@ -493,6 +553,8 @@ export default {
 			dialogFormVisibleService: false,
 
 			// 新增或编辑服务案例
+			caseUrlList: [],
+			productUrlList: [],
 			dataFormCase: {
 				id: '',
 				name: '',
@@ -509,15 +571,15 @@ export default {
 			dialogStatusCase: '',
 			dialogFormVisibleCase: false,
 			rulesCase: {
-				name: [ { required: true, message: '案例名称不能为空', trigger: 'blur' } ],
+				name: [ { required: true, message: '企业不能为空', trigger: 'blur' } ],
 				logoUrl: [ { required: false, message: 'logo图片不能为空', trigger: 'blur' } ],
-				enterpriseDescribe: [ { required: true, message: '企业描述不能为空', trigger: 'blur' } ],
+				enterpriseDescribe: [{ required: true, message: '企业描述不能为空', trigger: 'blur' }, { max: 120, message: '120字以内' }],
 				caseName: [ { required: true, message: '案例名称不能为空', trigger: 'blur' } ],
 				caseUrl: [ { required: false, message: '案例图片不能为空', trigger: 'blur' } ],
-				caseDescribe: [ { required: true, message: '案例描述不能为空', trigger: 'blur' } ],
+				caseDescribe: [{ required: true, message: '案例描述不能为空', trigger: 'blur' }, { max: 120, message: '120字以内' }],
 				productName: [ { required: true, message: '产品名称不能为空', trigger: 'blur' } ],
 				productUrl: [ { required: false, message: '产品图片不能为空', trigger: 'blur' } ],
-				productDescribe: [ { required: true, message: '产品描述不能为空', trigger: 'blur' } ]
+				productDescribe: [{ required: true, message: '产品描述不能为空', trigger: 'blur' }, { max: 120, message: '120字以内' }]
 			}
 
 		}
@@ -531,6 +593,11 @@ export default {
 	},
 	created() {
 		this.getList()
+		fetchList({ page: 1, limit: 99999, username: undefined, mobile: undefined, sort: 'add_time', order: 'desc' })
+			.then((response) => {
+				this.userFetchlist = response.data.data.items || []
+			})
+			.catch(() => {})
 	},
 	methods: {
 		getList() {
@@ -546,6 +613,34 @@ export default {
 					this.total = 0
 					this.listLoading = false
 				})
+		},
+		async handleDetail(row) {
+			this.dialogDetail = {
+				id: '',
+				name: '',
+				phone: '',
+				grade: '',
+				avatar: '',
+				region: '',
+				regionName: '',
+				introduce: '',
+				userId: '',
+				status: '',
+				addTime: '',
+				updateTime: '',
+				dtsTalentDatail: []
+			}
+			await dtsTalentQueryDetail({ id: row.id }).then((response) => {
+				this.dialogDetail = response.data.data
+				this.dialogDetail.dtsTalentDatail = this.dialogDetail.dtsTalentDatail.map((item) => ({
+					...item,
+					caseUrl: item.caseUrl ? item.caseUrl.substring(1, item.caseUrl.length - 1).split(',')
+						.map((section) => section.substring(1, section.length - 1)) : [],
+					productUrl: item.productUrl ? item.productUrl.substring(1, item.productUrl.length - 1).split(',')
+						.map((section) => section.substring(1, section.length - 1)) : []
+				}))
+			})
+			this.detailDialogVisible = true
 		},
 		handleCreate() {
 			this.resetForm()
@@ -565,6 +660,7 @@ export default {
 				avatar: row.avatar || '',
 				region: row.region || '',
 				introduce: row.introduce || '',
+				userId: row.userId || '',
 				dtsTalentDatail: row.dtsTalentDatail || []
 			})
 			this.dialogStatus = 'update'
@@ -572,33 +668,6 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.dataForm.clearValidate()
 			})
-		},
-		async handleDetail(row) {
-			this.dialogDetail = {
-				id: '',
-				name: '',
-				phone: '',
-				grade: '',
-				avatar: '',
-				region: '',
-				regionName: '',
-				introduce: '',
-				status: '',
-				addTime: '',
-				updateTime: '',
-				dtsTalentDatail: []
-			}
-			await dtsTalentQueryDetail({ id: row.id }).then((response) => {
-				this.dialogDetail = response.data.data
-				this.dialogDetail.dtsTalentDatail = this.dialogDetail.dtsTalentDatail.map((item) => ({
-					...item,
-					caseUrl: item.caseUrl ? item.caseUrl.substring(1, item.caseUrl.length - 1).split(',')
-						.map((section) => section.substring(1, section.length - 1)) : [],
-					productUrl: item.productUrl ? item.productUrl.substring(1, item.productUrl.length - 1).split(',')
-						.map((section) => section.substring(1, section.length - 1)) : []
-				}))
-			})
-			this.detailDialogVisible = true
 		},
 		resetForm() {
 			this.dataForm = {
@@ -609,6 +678,7 @@ export default {
 				avatar: '',
 				region: '',
 				introduce: '',
+				userId: '',
 				dtsTalentDatail: []
 			}
 		},
@@ -654,6 +724,45 @@ export default {
 			})
 		},
 
+		handleExamine(row) {
+			this.resetForm()
+			this.dataFormExamine = Object.assign(this.dataFormExamine, {
+				id: row.id || '',
+				status: row.status
+			})
+			this.dialogFormVisibleExamine = true
+			this.$nextTick(() => {
+				this.$refs.dataFormExamine.clearValidate()
+			})
+		},
+		resetFormExamine() {
+			this.dataFormExamine = {
+				id: '',
+				status: ''
+			}
+		},
+		confirmExamine() {
+			this.$refs.dataFormExamine.validate((valid) => {
+				if (valid) {
+					dtsTalentToExamine(this.dataFormExamine)
+						.then((response) => {
+							this.dialogFormVisibleExamine = false
+							this.$notify.success({
+								title: '成功',
+								message: '操作成功'
+							})
+							this.getList()
+						})
+						.catch((response) => {
+							this.$notify.error({
+								title: '操作失败',
+								message: response.data.errmsg
+							})
+						})
+				}
+			})
+		},
+
 		async handleOpenService(row) {
 			this.resetFormService()
 			this.dataFormService = Object.assign(this.dataFormService, row)
@@ -677,6 +786,8 @@ export default {
 
 		handleCreateCase() {
 			this.resetFormCase()
+			this.caseUrlList = []
+			this.productUrlList = []
 			this.dataFormCase.userId = this.dataFormService.id
 			this.dialogStatusCase = 'create'
 			this.dialogFormVisibleCase = true
@@ -686,6 +797,8 @@ export default {
 		},
 		handleUpdateCase(row) {
 			this.resetFormCase()
+			this.caseUrlList = JSON.parse(JSON.stringify(row.caseUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
+			this.productUrlList = JSON.parse(JSON.stringify(row.productUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
 			this.dataFormCase = Object.assign(this.dataFormCase, {
 				id: row.id,
 				name: row.name,

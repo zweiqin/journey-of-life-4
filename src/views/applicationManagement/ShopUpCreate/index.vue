@@ -104,9 +104,11 @@
 				</el-form-item>
 				<el-form-item label="门店类型" prop="brandgenre">
 					<el-cascader
-						v-model="storeDataForm.brandgenre" :options="TypeOptions"
-						:props="{ lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
-						@change="(value) => storeDataForm.brandgenre = value[value.length - 1]"
+						v-model="!storeDataForm.brandgenreArr ? storeDataForm.brandgenre : storeDataForm.brandgenreArr"
+						:options="TypeOptions"
+						:props="{ checkStrictly: true, lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						style="width: 250px;"
+						@change="(value) => ((storeDataForm.brandgenre = value[value.length - 1]) && (storeDataForm.brandgenreArr = value))"
 					/>
 				</el-form-item>
 				<el-form-item label="门店联系电话" prop="brandPhone">

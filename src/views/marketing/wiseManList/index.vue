@@ -324,7 +324,7 @@
 						</el-table-column>
 						<el-table-column align="center" min-width="100px" label="产品名称" prop="productName" />
 						<el-table-column align="center" min-width="120px" label="产品描述" prop="productDescribe" />
-						<el-table-column align="center" min-width="120px" property="caseUrl" label="产品图片">
+						<el-table-column align="center" min-width="120px" property="productUrl" label="产品图片">
 							<template slot-scope="scope">
 								<div v-if="scope.row.productUrl && scope.row.productUrl.length">
 									<el-image
@@ -371,7 +371,7 @@
 				<el-form-item label="企业名称" prop="name">
 					<el-input v-model="dataFormCase.name" placeholder="请输入企业名称" />
 				</el-form-item>
-				<el-form-item label="logo">
+				<el-form-item label="logo" prop="logo">
 					<el-upload
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataFormCase.logoUrl = response.data.url"
 						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"

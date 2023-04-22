@@ -47,9 +47,11 @@
 				<el-form-item label="门店类型" prop="brandgenre">
 					<div v-if="typeOptions && typeOptions.length">
 						<el-cascader
-							v-model="dataForm.brandgenre" :options="typeOptions"
-							:props="{ lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
-							@change="(value) => dataForm.brandgenre = value[value.length - 1]"
+							v-model="!dataForm.brandgenreArr ? dataForm.brandgenre : dataForm.brandgenreArr"
+							:options="typeOptions"
+							:props="{ checkStrictly: true, lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+							style="width: 250px;"
+							@change="(value) => ((dataForm.brandgenre = value[value.length - 1]) && (dataForm.brandgenreArr = value))"
 						/>
 					</div>
 

@@ -29,78 +29,79 @@
 		</div>
 
 		<!-- 查询结果 -->
-		<el-table
-			v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
-			border fit
-			highlight-current-row
-		>
+		<div v-tableHeight>
+			<el-table
+				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
+				border fit height="100%"
+				highlight-current-row
+			>
 
-			<el-table-column align="center" min-width="100px" label="门店ID" prop="id" sortable />
+				<el-table-column align="center" min-width="100px" label="门店ID" prop="id" sortable />
 
-			<el-table-column align="center" min-width="150px" label="门店名称" prop="name" />
+				<el-table-column align="center" min-width="150px" label="门店名称" prop="name" />
 
-			<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
-				<template slot-scope="scope">
-					<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="80">
-				</template>
-			</el-table-column>
+				<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
+					<template slot-scope="scope">
+						<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="80">
+					</template>
+				</el-table-column>
 
-			<el-table-column align="center" min-width="120px" label="门店电话" prop="phone" />
+				<el-table-column align="center" min-width="120px" label="门店电话" prop="phone" />
 
-			<el-table-column align="center" min-width="280px" label="门店简介" prop="desc" />
+				<el-table-column align="center" min-width="280px" label="门店简介" prop="desc" />
 
-			<el-table-column align="center" min-width="80px" label="底价" prop="floorPrice" />
+				<el-table-column align="center" min-width="80px" label="底价" prop="floorPrice" />
 
-			<el-table-column align="center" prop="brandgenre" label="门店类型">
-				<template slot-scope="scope">
-					{{ scope.row.brandgenreName }}
-				</template>
-			</el-table-column>
+				<el-table-column align="center" prop="brandgenre" label="门店类型">
+					<template slot-scope="scope">
+						{{ scope.row.brandgenreName }}
+					</template>
+				</el-table-column>
 
-			<el-table-column align="center" min-width="100px" property="licenseUrl" label="营业执照">
-				<template slot-scope="scope">
-					<img v-if="scope.row.licenseUrl" :src="common.splicingImgUrl() + scope.row.licenseUrl" width="80">
-				</template>
-			</el-table-column>
+				<el-table-column align="center" min-width="100px" property="licenseUrl" label="营业执照">
+					<template slot-scope="scope">
+						<img v-if="scope.row.licenseUrl" :src="common.splicingImgUrl() + scope.row.licenseUrl" width="80">
+					</template>
+				</el-table-column>
 
-			<el-table-column align="center" min-width="100px" property="idcardProsUrl" label="法人身份证正面">
-				<template slot-scope="scope">
-					<img v-if="scope.row.idcardProsUrl" :src="common.splicingImgUrl() + scope.row.idcardProsUrl" width="80">
-				</template>
-			</el-table-column>
+				<el-table-column align="center" min-width="100px" property="idcardProsUrl" label="法人身份证正面">
+					<template slot-scope="scope">
+						<img v-if="scope.row.idcardProsUrl" :src="common.splicingImgUrl() + scope.row.idcardProsUrl" width="80">
+					</template>
+				</el-table-column>
 
-			<el-table-column align="center" min-width="100px" property="idcardConsUrl" label="法人身份证反面">
-				<template slot-scope="scope">
-					<img v-if="scope.row.idcardConsUrl" :src="common.splicingImgUrl() + scope.row.idcardConsUrl" width="80">
-				</template>
-			</el-table-column>
+				<el-table-column align="center" min-width="100px" property="idcardConsUrl" label="法人身份证反面">
+					<template slot-scope="scope">
+						<img v-if="scope.row.idcardConsUrl" :src="common.splicingImgUrl() + scope.row.idcardConsUrl" width="80">
+					</template>
+				</el-table-column>
 
-			<!-- <el-table-column
-				align="center"
-				min-width="80px"
-				label="入驻说明"
-				prop="explain"
-				/> -->
+				<!-- <el-table-column
+					align="center"
+					min-width="80px"
+					label="入驻说明"
+					prop="explain"
+					/> -->
 
-			<el-table-column align="center" label="操作" min-width="220" class-name="small-padding fixed-width">
-				<template slot-scope="scope">
-					<el-button type="primary" size="mini" @click="shareUrlDetail(scope.row)">推广码</el-button>
-					<el-button
-						v-permission="[ 'POST /admin/brand/update' ]" type="primary" size="mini"
-						@click="handleUpdate(scope.row)"
-					>
-						编辑
-					</el-button>
-					<el-button
-						v-permission="[ 'POST /admin/brand/delete' ]" type="danger" size="mini"
-						@click="handleDelete(scope.row)"
-					>
-						删除
-					</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-
+				<el-table-column align="center" label="操作" min-width="220" class-name="small-padding fixed-width">
+					<template slot-scope="scope">
+						<el-button type="primary" size="mini" @click="shareUrlDetail(scope.row)">推广码</el-button>
+						<el-button
+							v-permission="[ 'POST /admin/brand/update' ]" type="primary" size="mini"
+							@click="handleUpdate(scope.row)"
+						>
+							编辑
+						</el-button>
+						<el-button
+							v-permission="[ 'POST /admin/brand/delete' ]" type="danger" size="mini"
+							@click="handleDelete(scope.row)"
+						>
+							删除
+						</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+		</div>
 		<Pagination
 			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
 			@pagination="getList"
@@ -156,6 +157,23 @@
 					</el-upload>
 				</el-form-item>
 
+				<el-form-item label="门店详情图片" prop="bgUrl">
+					<el-upload
+						:action="uploadPath"
+						:limit="5"
+						:file-list="bgUrlList"
+						:headers="headers"
+						:on-exceed="() => $message({ type: 'error', message: '上传文件个数超出限制!最多上传5张图片!' })"
+						:on-success="(response, file, fileList) => response.errno === 0 && dataForm.bgUrl.push(response.data.url)"
+						:on-remove="handleRemoveBgUrl"
+						multiple
+						accept=".jpg,.jpeg,.png,.gif"
+						list-type="picture-card"
+					>
+						<i class="el-icon-plus" />
+					</el-upload>
+				</el-form-item>
+
 				<el-form-item label="门店Logo" prop="logoUrl">
 					<el-upload
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLogoUrl"
@@ -172,9 +190,11 @@
 
 				<el-form-item label="门店类型" prop="brandgenre">
 					<el-cascader
-						v-model="dataForm.brandgenre" :options="TypeOptions"
-						:props="{ lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
-						@change="(value) => dataForm.brandgenre = value[value.length - 1]"
+						v-model="!dataForm.brandgenreArr ? dataForm.brandgenre : dataForm.brandgenreArr"
+						:options="typeOptions"
+						:props="{ checkStrictly: true, lazy: true, lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						style="width: 250px;"
+						@change="(value) => ((dataForm.brandgenre = value[value.length - 1]) && (dataForm.brandgenreArr = value))"
 					/>
 				</el-form-item>
 
@@ -291,7 +311,7 @@ export default {
 	components: { Pagination, TMap },
 	data() {
 		return {
-			TypeOptions: [],
+			typeOptions: [],
 			uploadPath,
 			list: undefined,
 			total: 0,
@@ -306,6 +326,8 @@ export default {
 				sort: 'add_time',
 				order: 'desc'
 			},
+
+			bgUrlList: [],
 			dataForm: {
 				id: undefined,
 				name: '',
@@ -313,6 +335,7 @@ export default {
 				desc: '',
 				floorPrice: undefined,
 				picUrl: undefined,
+				bgUrl: [],
 				categoryIds: [],
 				defaultCategoryId: undefined,
 				adminId: undefined,
@@ -428,10 +451,10 @@ export default {
 		},
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
-				this.TypeOptions = response.data.data
+				this.typeOptions = response.data.data
 			})
 				.catch(() => {
-					this.TypeOptions = []
+					this.typeOptions = []
 				})
 		},
 		getList() {
@@ -459,6 +482,7 @@ export default {
 				desc: '',
 				floorPrice: undefined,
 				picUrl: undefined,
+				bgUrl: [],
 				categoryIds: [],
 				defaultCategoryId: undefined,
 				adminId: undefined,
@@ -480,20 +504,6 @@ export default {
 				logoUrl: undefined
 			}
 		},
-		handleCreate() {
-			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
-			})
-				.catch(() => {
-				})
-			this.resetForm()
-			this.dialogStatus = 'create'
-			this.dialogFormVisible = true
-			this.$nextTick(() => {
-				this.$refs.dataForm.clearValidate()
-			})
-		},
 		uploadPicUrl(response) {
 			this.dataForm.picUrl = response.data.url
 		},
@@ -509,29 +519,19 @@ export default {
 		uploadIdcardConsUrl(response) {
 			this.dataForm.idcardConsUrl = response.data.url
 		},
-		createData() {
-			this.dataForm.prefix = this.common.splicingImgUrl()
-			this.dataForm.latitude = this.stadiumData.latitude
-			this.dataForm.longitude = this.stadiumData.longitude
-			this.dataForm.address = this.stadiumData.addr
-			this.$refs.dataForm.validate((valid) => {
-				if (valid) {
-					createBrand(this.dataForm)
-						.then((response) => {
-							this.list.unshift(response.data.data)
-							this.dialogFormVisible = false
-							this.$notify.success({
-								title: '成功',
-								message: '创建成功'
-							})
-						})
-						.catch((response) => {
-							this.$notify.error({
-								title: '失败',
-								message: response.data.errmsg
-							})
-						})
-				}
+		handleCreate() {
+			this.bgUrlList = []
+			listCatAndAdmin().then((response) => {
+				this.categoryList = response.data.data.categoryList
+				this.adminList = response.data.data.adminList
+			})
+				.catch(() => {
+				})
+			this.resetForm()
+			this.dialogStatus = 'create'
+			this.dialogFormVisible = true
+			this.$nextTick(() => {
+				this.$refs.dataForm.clearValidate()
 			})
 		},
 		handleUpdate(row) {
@@ -541,7 +541,11 @@ export default {
 			})
 				.catch(() => {
 				})
-			this.dataForm = Object.assign({}, row)
+			this.dataForm = Object.assign({}, row, {
+				bgUrl: row.bgUrl ? row.bgUrl.substring(1, row.bgUrl.length - 1).split(',')
+					.map((section) => section.substring(1, section.length - 1)) : []
+			})
+			this.bgUrlList = JSON.parse(JSON.stringify(this.dataForm.bgUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
 			this.dialogStatus = 'update'
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
@@ -558,18 +562,37 @@ export default {
 		//   var s = time.getSeconds()
 		//   return this.add0(h) + ':' + this.add0(mm) + ':' + this.add0(s)
 		// },
+		createData() {
+			this.dataForm.prefix = this.common.splicingImgUrl()
+			this.dataForm.latitude = this.stadiumData.latitude
+			this.dataForm.longitude = this.stadiumData.longitude
+			this.dataForm.address = this.stadiumData.addr
+			this.$refs.dataForm.validate((valid) => {
+				if (valid) {
+					createBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl) })
+						.then((response) => {
+							this.getList()
+							this.dialogFormVisible = false
+							this.$notify.success({
+								title: '成功',
+								message: '创建成功'
+							})
+						})
+						.catch((response) => {
+							this.$notify.error({
+								title: '失败',
+								message: response.data.errmsg
+							})
+						})
+				}
+			})
+		},
 		updateData() {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					updateBrand(this.dataForm)
+					updateBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl) })
 						.then(() => {
-							for (const v of this.list) {
-								if (v.id === this.dataForm.id) {
-									const index = this.list.indexOf(v)
-									this.list.splice(index, 1, this.dataForm)
-									break
-								}
-							}
+							this.getList()
 							this.dialogFormVisible = false
 							this.$notify.success({
 								title: '成功',
@@ -592,8 +615,7 @@ export default {
 						title: '成功',
 						message: '删除成功'
 					})
-					const index = this.list.indexOf(row)
-					this.list.splice(index, 1)
+					this.getList()
 				})
 				.catch((response) => {
 					this.$notify.error({
@@ -612,6 +634,24 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.dataForm.clearValidate()
 			})
+		},
+
+		handleRemoveBgUrl(file, fileList) {
+			for (let i = 0; i < this.dataForm.bgUrl.length; i++) {
+				// 这里存在两种情况
+				// 1. 如果所删除图片是刚刚上传的图片，那么图片地址是file.response.data.url
+				//    此时的file.url虽然存在，但是是本机地址，而不是远程地址。
+				// 2. 如果所删除图片是后台返回的已有图片，那么图片地址是file.url
+				let url
+				if (file.response === undefined) {
+					url = file.url
+				} else {
+					url = file.response.data.url
+				}
+				if (this.dataForm.bgUrl[i] === url) {
+					this.dataForm.bgUrl.splice(i, 1)
+				}
+			}
 		},
 		handleDownload() {
 			this.downloadLoading = true

@@ -95,7 +95,7 @@ export default {
 			// this.visible = false
 			this.$emit('cancel')
 			console.log(this.addrContent)
-			this.$emit('mapConfirm', {
+			this.$emit('map-confirm', {
 				addr: this.addrContent.address,
 				lat: this.addrContent.position.lat,
 				lng: this.addrContent.position.lng

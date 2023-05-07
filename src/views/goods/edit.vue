@@ -52,7 +52,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="goods.picUrl" :src="common.splicingImgUrl() + goods.picUrl" class="avatar">
+						<el-image
+							v-if="goods.picUrl"
+							class="avatar" :src="goods.picUrl.startsWith('https://') ? goods.picUrl : common.splicingImgUrl() + goods.picUrl" style="" fit="cover"
+							:preview-src-list="[ goods.picUrl.startsWith('https://') ? goods.picUrl : common.splicingImgUrl() + goods.picUrl ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -89,7 +93,10 @@
 					/>
 				</el-form-item>
 
-				<el-form-item v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'" label="所属品牌商">
+				<el-form-item
+					v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'"
+					label="所属品牌商"
+				>
 					<el-select v-model="goods.brandId">
 						<el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
@@ -120,7 +127,11 @@
 				</el-table-column>
 				<el-table-column property="picUrl" label="规格图片">
 					<template slot-scope="scope">
-						<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="40">
+						<el-image
+							v-if="scope.row.picUrl" :src="scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 				<el-table-column align="center" label="操作" width="250" class-name="small-padding fixed-width">
@@ -147,7 +158,11 @@
 							:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadSpecPicUrl"
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="specForm.picUrl" :src="common.splicingImgUrl() + specForm.picUrl" class="avatar">
+							<el-image
+								v-if="specForm.picUrl"
+								class="avatar" :src="specForm.picUrl.startsWith('https://') ? specForm.picUrl : common.splicingImgUrl() + specForm.picUrl" style="" fit="cover"
+								:preview-src-list="[ specForm.picUrl.startsWith('https://') ? specForm.picUrl : common.splicingImgUrl() + specForm.picUrl ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -173,7 +188,11 @@
 				<el-table-column property="number" width="100" label="货品数量" />
 				<el-table-column property="url" width="100" label="货品图片">
 					<template slot-scope="scope">
-						<img v-if="scope.row.url" :src="common.splicingImgUrl() + scope.row.url" width="40">
+						<el-image
+							v-if="scope.row.url" :src="scope.row.url.startsWith('https://') ? scope.row.url : common.splicingImgUrl() + scope.row.url" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.url.startsWith('https://') ? scope.row.url : common.splicingImgUrl() + scope.row.url ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 				<el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
@@ -206,6 +225,11 @@
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
 							<img v-if="productForm.url" :src="common.splicingImgUrl() + productForm.url" class="avatar">
+							<el-image
+								v-if="productForm.url"
+								class="avatar" :src="productForm.url.startsWith('https://') ? productForm.url : common.splicingImgUrl() + productForm.url" style="" fit="cover"
+								:preview-src-list="[ productForm.url.startsWith('https://') ? productForm.url : common.splicingImgUrl() + productForm.url ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -419,7 +443,7 @@ export default {
 			categoryList: [],
 			brandList: [],
 			categoryIds: [],
-			goods: { gallery: [], supportVoucher: undefined },
+			goods: { gallery: [], supportVoucher: undefined, categoryId: '' },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			specifications: [ { specification: '规格', value: '标准', picUrl: '' } ],
@@ -488,7 +512,7 @@ export default {
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
 					this.galleryFileList.push({
-						url: this.common.splicingImgUrl() + this.goods.gallery[i]
+						url: this.goods.gallery[i].startsWith('https:\/\/') ? this.goods.gallery[i] : this.common.splicingImgUrl() + this.goods.gallery[i]
 					})
 				}
 				const keywords = response.data.data.goods.keywords

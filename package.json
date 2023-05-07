@@ -21,6 +21,7 @@
 		]
 	},
 	"dependencies": {
+		"@amap/amap-jsapi-loader": "^1.0.1",
 		"@riophae/vue-treeselect": "^0.4.0",
 		"@tinymce/tinymce-vue": "1.1.0",
 		"axios": "0.18.0",

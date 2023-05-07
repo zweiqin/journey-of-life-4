@@ -42,7 +42,11 @@
 
 				<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
 					<template slot-scope="scope">
-						<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="80">
+						<el-image
+							v-if="scope.row.picUrl" :src="scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 
@@ -60,19 +64,31 @@
 
 				<el-table-column align="center" min-width="100px" property="licenseUrl" label="营业执照">
 					<template slot-scope="scope">
-						<img v-if="scope.row.licenseUrl" :src="common.splicingImgUrl() + scope.row.licenseUrl" width="80">
+						<el-image
+							v-if="scope.row.licenseUrl" :src="scope.row.licenseUrl.startsWith('https://') ? scope.row.licenseUrl : common.splicingImgUrl() + scope.row.licenseUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.licenseUrl.startsWith('https://') ? scope.row.licenseUrl : common.splicingImgUrl() + scope.row.licenseUrl ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 
 				<el-table-column align="center" min-width="100px" property="idcardProsUrl" label="法人身份证正面">
 					<template slot-scope="scope">
-						<img v-if="scope.row.idcardProsUrl" :src="common.splicingImgUrl() + scope.row.idcardProsUrl" width="80">
+						<el-image
+							v-if="scope.row.idcardProsUrl" :src="scope.row.idcardProsUrl.startsWith('https://') ? scope.row.idcardProsUrl : common.splicingImgUrl() + scope.row.idcardProsUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.idcardProsUrl.startsWith('https://') ? scope.row.idcardProsUrl : common.splicingImgUrl() + scope.row.idcardProsUrl ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 
 				<el-table-column align="center" min-width="100px" property="idcardConsUrl" label="法人身份证反面">
 					<template slot-scope="scope">
-						<img v-if="scope.row.idcardConsUrl" :src="common.splicingImgUrl() + scope.row.idcardConsUrl" width="80">
+						<el-image
+							v-if="scope.row.idcardConsUrl" :src="scope.row.idcardConsUrl.startsWith('https://') ? scope.row.idcardConsUrl : common.splicingImgUrl() + scope.row.idcardConsUrl" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ scope.row.idcardConsUrl.startsWith('https://') ? scope.row.idcardConsUrl : common.splicingImgUrl() + scope.row.idcardConsUrl ]"
+						/>
+						<span v-else>--</span>
 					</template>
 				</el-table-column>
 
@@ -111,13 +127,17 @@
 		<el-dialog :title="textMap[dialogStatus]" :visible.sync="shareUrlDialogVisible" :append-to-body="true" width="700">
 			<el-form :data="dataForm" label-position="left">
 				<el-form-item label="推广二维码">
-					<img :src="common.splicingImgUrl() + dataForm.shareUrl" width="300">
+					<el-image
+						v-if="dataForm.shareUrl" :src="dataForm.shareUrl.startsWith('https://') ? dataForm.shareUrl : common.splicingImgUrl() + dataForm.shareUrl" style="width:300px; height:300px" fit="cover"
+						:preview-src-list="[ dataForm.shareUrl.startsWith('https://') ? dataForm.shareUrl : common.splicingImgUrl() + dataForm.shareUrl ]"
+					/>
+					<span v-else>--</span>
 				</el-form-item>
 			</el-form>
 		</el-dialog>
 
 		<!-- 添加或修改对话框 -->
-		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
 			<TMap :visible="showMap" @cancel="showMap = false" @map-confirm="confirmLocation" />
 			<el-form
 				ref="dataForm" :rules="rules" :model="dataForm" status-icon
@@ -125,26 +145,26 @@
 				style="width: 400px; margin-left:50px;"
 			>
 				<el-form-item label="门店名称" prop="name">
-					<el-input v-model="dataForm.name" />
+					<el-input v-model="dataForm.name" placeholder="请输入门店名称" />
 				</el-form-item>
 				<el-form-item label="主营类目">
 					<el-cascader
 						v-model="dataForm.categoryIds" :options="categoryList" expand-trigger="hover"
-						@change="handleCategoryChange"
+						placeholder="请选择主营类目" @change="handleCategoryChange"
 					/>
 				</el-form-item>
 				<el-form-item label="管理员">
-					<el-select v-model="dataForm.adminId">
+					<el-select v-model="dataForm.adminId" placeholder="请选择管理员">
 						<el-option v-for="item in adminList" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
 				</el-form-item>
 
 				<el-form-item label="门店固定电话" prop="phone">
-					<el-input v-model="dataForm.phone" />
+					<el-input v-model="dataForm.phone" placeholder="请输入门店固定电话" />
 				</el-form-item>
 
 				<el-form-item label="门店简介" prop="simpleDesc">
-					<el-input v-model="dataForm.desc" />
+					<el-input v-model="dataForm.desc" placeholder="请输入门店简介" />
 				</el-form-item>
 
 				<el-form-item label="门店图片" prop="picUrl">
@@ -152,7 +172,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.splicingImgUrl() + dataForm.picUrl" class="avatar">
+						<el-image
+							v-if="dataForm.picUrl" :src="dataForm.picUrl.startsWith('https://') ? dataForm.picUrl : common.splicingImgUrl() + dataForm.picUrl" style="width:146px; height:146px" fit="contain"
+							:preview-src-list="[ dataForm.picUrl.startsWith('https://') ? dataForm.picUrl : common.splicingImgUrl() + dataForm.picUrl ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -185,7 +208,7 @@
 				</el-form-item>
 
 				<el-form-item label="底价" prop="floorPrice">
-					<el-input v-model="dataForm.floorPrice" />
+					<el-input v-model="dataForm.floorPrice" placeholder="请输入底价" />
 				</el-form-item>
 
 				<el-form-item label="门店类型" prop="brandgenre">
@@ -284,7 +307,7 @@
 				</el-form-item>
 
 				<el-form-item label="入驻说明" prop="explain">
-					<el-input v-model="dataForm.explain" />
+					<el-input v-model="dataForm.explain" placeholder="请输入入驻说明" />
 				</el-form-item>
 
 			</el-form>
@@ -299,7 +322,7 @@
 </template>
 
 <script>
-import TMap from '@/components/TMap'
+import TMap from '@/components/TMap/index.vue'
 import { listBrand, createBrand, updateBrand, deleteBrand, listCatAndAdmin, listDtsStoreType } from '@/api/business/brand'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
@@ -584,6 +607,11 @@ export default {
 								message: response.data.errmsg
 							})
 						})
+				} else {
+					this.$notify.error({
+						title: '失败',
+						message: '缺少必填信息'
+					})
 				}
 			})
 		},
@@ -605,6 +633,11 @@ export default {
 								message: response.data.errmsg
 							})
 						})
+				} else {
+					this.$notify.error({
+						title: '失败',
+						message: '缺少必填信息'
+					})
 				}
 			})
 		},

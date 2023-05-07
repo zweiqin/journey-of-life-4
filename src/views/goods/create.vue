@@ -623,7 +623,7 @@ export default {
 			keywords: [],
 			categoryList: [],
 			brandList: [],
-			goods: { picUrl: '', gallery: [], supportVoucher: undefined, brandId: '', timeType: 1 },
+			goods: { picUrl: '', gallery: [], supportVoucher: undefined, brandId: '', timeType: 1, categoryId: '' },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			multipleSpec: false,
@@ -703,6 +703,7 @@ export default {
 			}
 		},
 		handleCategoryChange(value) {
+			console.log(value)
 			this.goods.categoryId = value[value.length - 1]
 			this.goods.goodsType = value[0]
 			console.log(this.goods)

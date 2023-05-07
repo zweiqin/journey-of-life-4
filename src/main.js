@@ -32,6 +32,11 @@ import common from '@/assets/js/common.js'
 Vue.prototype.common = common
 import './directive/tableHeight'
 
+// 高德安全密钥
+window._AMapSecurityConfig = {
+	securityJsCode: 'ad9587997f413d1089653ea4560a91d0'
+}
+
 // Vue.use(Element, {
 //   size: Cookies.get('size') || 'medium', // set element-ui default size
 //   i18n: (key, value) => i18n.t(key, value)

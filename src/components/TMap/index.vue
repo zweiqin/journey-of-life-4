@@ -1,261 +1,225 @@
 <template>
-	<div>
+	<div class="map">
+
 		<el-dialog
-			:before-close="cancel" :closable="false" :mask-closable="false" :visible="visible"
-			:close-on-click-modal="false" :append-to-body="true" title="填写门店地址" width="30%"
+			:before-close="() => $emit('cancel')" :closable="false" :mask-closable="false" :visible="visible"
+			:close-on-click-modal="false" :append-to-body="true" title="填写门店地址" width="828px"
 		>
-			<span>
-				<el-autocomplete
-					v-model="addressKeyword" :fetch-suggestions="querySearch" placeholder="请输入门店地址" clearable
-					style="margin-bottom:20px;width:100%;" @input="mapInput" @select="handleSelect"
-				>
-					<el-button slot="append" icon="el-icon-search" @click="getAddressKeyword" />
-				</el-autocomplete>
-				<div ref="tno" style="width:100%;height:400px;" />
-			</span>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="cancel">取 消</el-button>
-				<el-button type="primary" @click="confirm">
-					确 定
-				</el-button>
-			</span>
+			<el-card header="选择地址">
+				<div class="address">{{ addrContent.address }}</div>
+				<div id="map-container"></div>
+
+				<div class="search-con">
+					<el-input
+						id="input-map"
+						v-model="mapSearch"
+						placeholder="输入关键字搜索"
+					/>
+					<ul>
+						<li
+							v-for="(tip, index) in tips"
+							:key="index"
+							@click="selectAddr(tip.location)"
+						>
+							<p>{{ tip.name }}</p>
+							<p>{{ tip.district + tip.address }}</p>
+						</li>
+					</ul>
+				</div>
+			</el-card>
+			<div slot="footer">
+				<!-- <el-button @click="visible = false">取消</el-button> -->
+				<el-button @click="$emit('cancel')">取消</el-button>
+				<el-button type="primary" :loading="loading" @click="ok">确定</el-button>
+			</div>
 		</el-dialog>
+
 	</div>
 </template>
 
 <script>
-// import maps from 'qqmap'
-import { jsonp } from 'vue-jsonp'
-var markerLayer
+import AMapLoader from '@amap/amap-jsapi-loader'
+// import { getRegion } from "@/api/common.js";
+
 export default {
 	name: 'TMap',
-	components: {},
-	// eslint-disable-next-line vue/require-default-prop
 	props: { visible: Boolean },
 	data() {
 		return {
-			markersArray: [],
-			restaurants: [],
-			map: null,
-			getAddress: null,
-			getAddCode: null,
-			addressKeyword: '',
-			shopInfo: {
-				lng: '',
-				lat: '',
-				addr: ''
+			// visible: false, // modal显隐
+			mapSearch: '', // 地图搜索
+			map: null, // 初始化地图
+			autoComplete: null, // 初始化搜索方法
+			geocoder: null, // 初始化地理、坐标转化
+			positionPicker: null, // 地图拖拽选点
+			tips: [], // 搜索关键字列表
+			addrContent: {}, // 回显地址信息
+			loading: false // 加载状态
+		}
+	},
+	watch: {
+		mapSearch(val) {
+			this.searchOfMap(val)
+		},
+		visible(val) {
+			if (val) {
+				this.init()
+			} else {
+				this.map.destroy()
 			}
 		}
 	},
-
-	watch: {},
-	created() {
-
-	},
-	mounted() {
-
-	},
-	updated() {
-		// 利用map是否为空判断是否初始化地图，如果没初始化重新初始化
-		if (this.map === null) {
-			this.init()
-		}
-	},
+	// mounted() {
+	// 	this.init()
+	// },
+	// updated() {
+	// 	console.log(this.visible)
+	// 	// 利用map是否为空判断是否初始化地图，如果没初始化重新初始化
+	// 	if (this.map === null) {
+	// 		this.init()
+	// 	}
+	// },
 	methods: {
-		// 初始化地图
-		init() {
-			console.log(window, 'window')
-			const lat = sessionStorage.getItem('lat') ? parseInt(JSON.parse(sessionStorage.getItem('lat')).latitude) : null
-			const lng = sessionStorage.getItem('lng') ? parseInt(JSON.parse(sessionStorage.getItem('lng')).longitude) : null
-			console.log(lat, lng, 'lat')
-			var that = this
-			// 定义地图中心点坐标
-			var center = new window.TMap.LatLng(27.979716, 109.59023)
-			// console.log(that.$refs)
-			// 定义map变量，调用 TMap.Map() 构造函数创建地图
-			that.map = new window.TMap.Map(that.$refs.tno, {
-				center, // 设置地图中心点坐标
-				zoom: 13, // 设置地图缩放级别
-				pitch: 0, // 设置俯仰角
-				rotation: 0 // 设置地图旋转角度
-			})
-			// 获取点击后的地址
-			that.map.on('click', function (event) {
-				// 获取点击后的地图坐标并设置Marker
-				that.shopInfo.lng = event.latLng.lng
-				that.shopInfo.lat = event.latLng.lat
-				console.log(event, 'event')
-				if (markerLayer) {
-					markerLayer.setGeometries([])
-				}
-				markerLayer = new window.TMap.MultiMarker({
-					map: that.map,
-					styles: {
-						// 点标记样式
-						marker: new window.TMap.MarkerStyle({
-							width: 20, // 样式宽
-							height: 30, // 样式高
-							anchor: { x: 10, y: 30 }, // 描点位置
-							src: 'https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png' // 标记路径
-						})
-					}
-				})
-				// markerLayer.add({ position: event.latLng })
-				if (that.shopInfo !== null) {
-					markerLayer.add({
-						id: that.shopInfo ? that.shopInfo.lat : null,
-						position: new window.TMap.LatLng(that.shopInfo.lat, that.shopInfo.lng)
-					})
-				}
-			})
-			console.log(lat)
-			if (lat !== null && lng !== null) {
-				console.log(111)
-				if (markerLayer) {
-					markerLayer.setGeometries([])
-				}
-				markerLayer = new window.TMap.MultiMarker({
-					map: that.map,
-					styles: {
-						// 点标记样式
-						marker: new window.TMap.MarkerStyle({
-							width: 20, // 样式宽
-							height: 30, // 样式高
-							anchor: { x: 10, y: 30 }, // 描点位置
-							src: 'https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png' // 标记路径
-						})
-					}
-				})
-				markerLayer.updateGeometries({
-					id: lat,
-					position: new window.TMap.LatLng(lat, lng)
-				})
-				that.map.setCenter(new window.TMap.LatLng(lat, lng))
-			}
-		},
-		querySearch(queryString, cb) {
-			var restaurants = this.restaurants
-			var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-			// 调用 callback 返回建议列表的数据
-			cb(results)
-		},
-		createFilter(queryString) {
-			return (restaurant) => restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-		},
-		handleSelect(item) {
-			var that = this
-			console.log(item, 'item')
-			jsonp('https://apis.map.qq.com/ws/geocoder/v1/?address=', {
-				output: 'jsonp',
-				address: item.address || that.addressKeyword,
-				region: '中国',
-				key: 'ORFBZ-XMLKJ-MEIFG-FG6DG-47HK6-5IFDT'
-			})
-				.then(function (response) {
-					console.log(response, 'response')
-					if (response.message === '查询无结果') {
-						that.$message.warning('查询无结果')
-						return false
-					}
-					that.shopInfo.lng = response.result.location.lng
-					that.shopInfo.lat = response.result.location.lat
-					that.shopInfo.addr = item.address
-					if (markerLayer) {
-						markerLayer.setGeometries([])
-					}
-					// that.init(that.shopInfo.lat, that.shopInfo.lng)
-					markerLayer = new window.TMap.MultiMarker({
-						map: that.map,
-						styles: {
-							// 点标记样式
-							marker: new window.TMap.MarkerStyle({
-								width: 20, // 样式宽
-								height: 30, // 样式高
-								anchor: { x: 10, y: 30 }, // 描点位置
-								src: 'https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png' // 标记路径
-							})
-						}
-					})
-					that.map.setCenter(new window.TMap.LatLng(that.shopInfo.lat, that.shopInfo.lng))
-					if (that.shopInfo.lat !== null) {
-						markerLayer.updateGeometries({
-							id: that.shopInfo.lat,
-							position: new window.TMap.LatLng(that.shopInfo.lat, that.shopInfo.lng)
-						})
-					}
-				})
-				.catch(function (error) {
-					console.log(error)
-				})
-			// 获得地址
-			this.$bus.$emit('AddressInfo', item.address)
-		},
-		mapInput(e) {
-			const that = this
-			jsonp('https://apis.map.qq.com/ws/place/v1/suggestion', {
-				output: 'jsonp',
-				keyword: e,
-				region: '中国',
-				key: 'XIRBZ-TWKWD-AAX4Q-HEKFK-JGPIO-YNBTJ'
-			})
-				.then(function (response) {
-					const arr = response.data
-					arr.forEach((item) => {
-						item.value = item.title
-					})
-					that.restaurants = arr
-					console.log(that.restaurants, 'that.restaurants')
-				})
-				.catch(function (error) {
-					console.log(error)
-				})
-		},
-		getAddressKeyword() {
-			this.handleSelect(this.addressKeyword)
-			// 通过getLocation();方法获取位置信息值
-			// this.getAddress.getLocation(this.addressKeyword)
-			// console.log(this.getAddress.getLocation(this.addressKeyword))
-		},
-
-		/** *
-		 * 确认
-		 */
-
-		confirm() {
-			console.log(this.shopInfo, 'this.shopInfo')
-			this.$emit('map-confirm', this.shopInfo)
-		},
-
-		/** *
-		 * 取消
-		 */
-
-		cancel() {
+		ok() {
+			// 确定选择
+			this.loading = true
+			// const params = {
+			// 	cityCode: this.addrContent.regeocode.addressComponent.citycode,
+			// 	townName: this.addrContent.regeocode.addressComponent.township
+			// }
+			// getRegion(params).then((res) => {
+			// 	if (res.success) {
+			// 		this.addrContent.addr = res.result.name.replace(/,/g, ' ')
+			// 		this.addrContent.addrId = res.result.id
+			this.loading = false
+			// this.visible = false
 			this.$emit('cancel')
+			console.log(this.addrContent)
+			this.$emit('mapConfirm', {
+				addr: this.addrContent.address,
+				lat: this.addrContent.position.lat,
+				lng: this.addrContent.position.lng
+			})
+			// 	}
+			// })
+		},
+		// 初始化地图组件
+		init() {
+			console.log('init')
+			AMapLoader.load({
+				key: '3b84da70f85b1024deb934d8835b03ad', // 申请好的Web端开发者Key，首次调用 load 时必填
+				version: '', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+				plugins: [
+					'AMap.ToolBar',
+					'AMap.Autocomplete',
+					'AMap.PlaceSearch',
+					'AMap.Geolocation',
+					'AMap.Geocoder'
+				], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+				AMapUI: {
+					// 是否加载 AMapUI，缺省不加载
+					version: '1.1', // AMapUI 缺省 1.1
+					plugins: [ 'misc/PositionPicker' ] // 需要加载的 AMapUI ui插件
+				}
+			}).then((AMap) => {
+				const that = this
+				this.map = new AMap.Map('map-container', {
+					zoom: 12
+				})
+				that.map.addControl(new AMap.ToolBar())
+				that.map.addControl(new AMap.Autocomplete())
+				that.map.addControl(new AMap.PlaceSearch())
+				that.map.addControl(new AMap.Geocoder())
+
+				// 实例化Autocomplete
+				const autoOptions = {
+					city: '全国'
+				}
+				that.autoComplete = new AMap.Autocomplete(autoOptions) // 搜索
+				that.geocoder = new AMap.Geocoder(autoOptions)
+
+				that.positionPicker = new AMapUI.PositionPicker({
+					// 拖拽选点
+					mode: 'dragMap',
+					map: that.map
+				})
+				that.positionPicker.start()
+
+				/**
+           *
+           * 所有回显数据，都在positionResult里面
+           * 需要字段可以查找
+           *
+           */
+
+				that.positionPicker.on('success', function (positionResult) {
+					that.addrContent = positionResult
+				})
+			})
+				.catch((e) => {})
+		},
+		searchOfMap(val) {
+			// 地图搜索
+			const that = this
+			this.autoComplete.search(val, function (status, result) {
+				// 搜索成功时，result即是对应的匹配数据
+				if (status == 'complete' && result.info == 'OK') {
+					that.tips = result.tips
+				} else {
+					that.tips = []
+				}
+			})
+		},
+		selectAddr(location) {
+			// 选择坐标
+			if (!location) {
+				// this.$Message.warning('请选择正确点位')
+				this.$notify.error({
+					title: '失败',
+					message: '请选择正确点位'
+				})
+				return false
+			}
+			const lnglat = [location.lng, location.lat]
+			this.positionPicker.start(lnglat)
 		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-.serachinput {
-	width: 300px;
-	box-sizing: border-box;
-	padding: 9px;
-	border: 1px solid #dddee1;
-	line-height: 20px;
-	font-size: 16px;
-	height: 38px;
-	color: #333;
-	position: relative;
-	border-radius: 4px;
-	-webkit-box-shadow: #666 0px 0px 10px;
-	-moz-box-shadow: #666 0px 0px 10px;
-	box-shadow: #666 0px 0px 10px;
+#map-container {
+  width: 500px;
+  height: 400px;
 }
 
-::v-deep .el-dialog__header {
-	border-bottom: 0 !important;
+.search-con {
+  position: absolute;
+  right: 20px;
+  // top: 64px;
+  top: 134px;
+  width: 260px;
+  ul {
+    width: 260px;
+    height: 400px;
+    overflow: scroll;
+    li {
+      padding: 5px;
+      p:nth-child(2) {
+        color: #999;
+        font-size: 12px;
+      }
+      &:hover {
+        background-color: #eee;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.address {
+  margin-bottom: 10px;
+  // color: $theme_color;
+  font-weight: bold;
 }
 </style>
-

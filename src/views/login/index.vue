@@ -16,9 +16,9 @@
 		</div>
 		<div class="login-container">
 			<div class="login-header">
-				<h2 class="login-title">欢迎登录团蜂社区服务中心系统</h2>
+				<h2 class="login-title">欢迎登录巨蜂管理系统</h2>
 				<hr />
-				<h4>Welcome To The Bee Community Service Center System</h4>
+				<h4>WELCOME TO THE JUFENG management system</h4>
 			</div>
 			<div class="login-card">
 				<!-- <div class="login-changein">

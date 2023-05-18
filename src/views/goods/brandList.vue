@@ -41,7 +41,7 @@
 
 			<el-table-column align="center" min-width="270px" label="介绍" prop="desc" />
 
-			<el-table-column align="center" min-width="60px" label="底价" prop="floorPrice" />
+			<el-table-column align="center" min-width="60px" label="最低消费价格" prop="floorPrice" />
 
 			<el-table-column align="center" prop="brandgenre" label="门店类型">
 				<template slot-scope="scope">

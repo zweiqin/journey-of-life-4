@@ -40,7 +40,7 @@
 					</el-upload>
 				</el-form-item>
 
-				<el-form-item label="底价" prop="floorPrice">
+				<el-form-item label="最低消费价格" prop="floorPrice">
 					<el-input v-model="dataForm.floorPrice" />
 				</el-form-item>
 

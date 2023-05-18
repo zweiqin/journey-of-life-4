@@ -54,7 +54,7 @@
 
 				<el-table-column align="center" min-width="280px" label="门店简介" prop="desc" />
 
-				<el-table-column align="center" min-width="80px" label="底价" prop="floorPrice" />
+				<el-table-column align="center" min-width="80px" label="最低消费价格" prop="floorPrice" />
 
 				<el-table-column align="center" prop="brandgenre" label="门店类型">
 					<template slot-scope="scope">
@@ -207,8 +207,8 @@
 					</el-upload>
 				</el-form-item>
 
-				<el-form-item label="底价" prop="floorPrice">
-					<el-input v-model="dataForm.floorPrice" placeholder="请输入底价" />
+				<el-form-item label="最低消费价格" prop="floorPrice">
+					<el-input v-model="dataForm.floorPrice" placeholder="请输入最低消费价格" />
 				</el-form-item>
 
 				<el-form-item label="门店类型" prop="brandgenre">
@@ -681,7 +681,7 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-				if (this.dataForm.bgUrl[i] === url) {
+				if (this.common.splicingImgUrl() + this.dataForm.bgUrl[i] === url) {
 					this.dataForm.bgUrl.splice(i, 1)
 				}
 			}

@@ -284,6 +284,10 @@ export default {
 								this.$router.push({ path: this.redirect || '/' })
 							})
 							.catch((response) => {
+								this.$notify.error({
+									title: '失败',
+									message: response.data.errmsg
+								})
 								this.loading = false
 								this.getCode()
 							})
@@ -300,6 +304,10 @@ export default {
 								this.$router.push({ path: this.redirect || '/' })
 							})
 							.catch((response) => {
+								this.$notify.error({
+									title: '失败',
+									message: response.data.errmsg
+								})
 								this.loading = false
 							})
 					}

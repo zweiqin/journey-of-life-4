@@ -86,7 +86,7 @@
 				</div>
 
 				<el-form-item label="门店类型层级" prop="level">
-					<el-select v-model="dataForm.level" clearable placeholder="请选择门店类型层级" @change="(e) => ((dataForm.tempL1 = '') || (dataForm.tempL2 = '') || (typeLevel2Change = []))">
+					<el-select v-model="dataForm.level" :disabled="disabledLevel" clearable placeholder="请选择门店类型层级" @change="(e) => ((dataForm.tempL1 = '') || (dataForm.tempL2 = '') || (typeLevel2Change = []))">
 						<el-option label="一级" value="1" />
 						<el-option label="二级" value="2" />
 						<el-option label="三级" value="3" />
@@ -176,6 +176,7 @@ export default {
 					picUrl: ''
 				}
 			},
+			disabledLevel: false,
 			dialogFormVisible: false,
 			dialogStatus: '',
 			textMap: {
@@ -272,6 +273,7 @@ export default {
 		//   this.dataForm.avatar = response.data.url
 		// },
 		handleCreate() {
+			this.disabledLevel = false
 			this.resetForm()
 			this.dialogStatus = 'create'
 			this.dialogFormVisible = true
@@ -280,6 +282,7 @@ export default {
 			})
 		},
 		handleUpdate(row) {
+			this.disabledLevel = false
 			this.resetForm()
 			idGet({ id: row.id })
 				.then((response) => {
@@ -297,6 +300,7 @@ export default {
 						this.dataForm.original = storeTypeItem.nodes.map((i) => i.storeName).join('/')
 						if (storeTypeItem.nodes.length === 1) {
 							this.dataForm.level = '1'
+							this.disabledLevel = true
 						} else if (storeTypeItem.nodes.length === 2) {
 							this.dataForm.level = '2'
 							this.dataForm.tempL1 = storeTypeItem.nodes[0].id
@@ -307,6 +311,7 @@ export default {
 							this.dataForm.tempL2 = storeTypeItem.nodes[1].id
 						}
 					}
+					console.log(storeTypeItem)
 				})
 				.catch((response) => {
 					this.$notify.error({
@@ -324,7 +329,11 @@ export default {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
 					if (this.dataForm.level === '1') {
-						this.dataForm.id = this.typeLevel1[0].id
+						// this.dataForm.id = this.typeLevel1[0].id
+						return this.$notify.error({
+							title: '失败',
+							message: '禁止创建一级层级'
+						})
 					} else if (this.dataForm.level === '2') {
 						if (!this.dataForm.tempL1) {
 							return this.$notify.error({
@@ -368,7 +377,11 @@ export default {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
 					if (this.dataForm.level === '1') {
-						this.dataForm.id = this.typeLevel1[0].id
+						// this.dataForm.id = this.typeLevel1[0].id
+						return this.$notify.error({
+							title: '失败',
+							message: '禁止编辑一级层级'
+						})
 					} else if (this.dataForm.level === '2') {
 						if (!this.dataForm.tempL1) {
 							return this.$notify.error({

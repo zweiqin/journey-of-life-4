@@ -1,64 +1,36 @@
+<!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
 	<div class="login">
 		<div class="introduce-container">
-			<div style="font-size: 18px">巨蜂生活 万店互联</div>
+			<div style="font-size: 0.9375vw">巨蜂生活 万店互联</div>
 			<div
 				style="
-          margin-top: 20px;
-          margin-bottom: 15px;
-          font-size: 40px;
+          margin-top: 1.0417vw;
+          margin-bottom: 0.7813vw;
+          font-size: 2.0833vw;
           font-weight: 700;
         "
 			>
 				新经济 新商业 为商户创效益
 			</div>
-			<div style="font-size: 15px">JUFENG</div>
+			<div style="font-size: 0.7813vw">JUFENG</div>
 		</div>
 		<div class="login-container">
 			<div class="login-header">
-				<h2 class="login-title">欢迎登录巨蜂管理系统</h2>
+				<h2 class="login-title" style="font-size: 1.25vw">
+					欢迎登录巨蜂管理系统
+				</h2>
 				<hr />
-				<h4>WELCOME TO THE JUFENG management system</h4>
+				<h4 style="font-size: 0.8333vw">
+					WELCOME TO THE JUFENG management system
+				</h4>
 			</div>
 			<div class="login-card">
-				<!-- <div class="login-changein">
-					<div class="code-img" @click="switchLogin">
-					<svg-icon v-if="activeName === 'third'" icon-class="computer" class="code-icon code-icon-computer" />
-					<svg-icon v-else icon-class="qr-code" class="code-icon code-icon-qr" />
-					</div>
-					<div class="login-tip">
-					<div class="poptip">
-					<div class="poptip-arrow"><span></span></div>
-					<div class="poptip-content">{{ activeName === 'third' ? '切换为账号密码登录' : '扫码登录更便捷' }}</div>
-					</div>
-					</div>
-					</div> -->
 				<el-card
 					shadow="never"
 					:body-style="{ padding: '0px' }"
 					style="border: 0; background-color: transparent"
 				>
-					<div v-if="activeName === 'third'">
-						<div class="login-box">
-							<div class="login-content">
-								<div class="master-login-title">手机扫码，安全登录</div>
-								<div class="qrcode-login">
-									<div class="qrcode-img">
-										<img
-											style="height: 250px; width: 250px"
-											src="https://i0.hdslb.com/bfs/archive/aff45710ff2ac08360c5881e013b9bde3284b71f.jpg"
-										/>
-									</div>
-									<div class="qrcode-desc">
-										<p>
-											打开<span class="light-link"> 微信APP </span>扫一扫登录
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<!-- <el-tabs v-else v-model="activeName" @tab-click="handleClick"> -->
 					<!-- <el-tab-pane label="密码登录" name="first"> -->
 					<div class="login-box login-tab-box">
@@ -72,11 +44,20 @@
 								>
 									<div
 										slot="prefix"
-										style="width: 100%; height: 100%; background-color: #fdb500"
+										style="
+                      width: 100%;
+                      height: 100%;
+                      background-color: #fdb500;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
 									>
-										<svg-icon
-											icon-class="user"
-											class="el-input__icon input-icon"
+										<img
+											style="width: 0.7292vw; height: 0.7292vw"
+											src="@/assets/image/humer.png"
+											alt=""
+											srcset=""
 										/>
 									</div>
 								</el-input>
@@ -92,11 +73,20 @@
 								>
 									<div
 										slot="prefix"
-										style="width: 100%; height: 100%; background-color: #fdb500"
+										style="
+                      width: 100%;
+                      height: 100%;
+                      background-color: #fdb500;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
 									>
-										<svg-icon
-											icon-class="password"
-											class="el-input__icon input-icon"
+										<img
+											style="width: 0.7292vw; height: 0.7292vw"
+											src="@/assets/image/password.png"
+											alt=""
+											srcset=""
 										/>
 									</div>
 								</el-input>
@@ -111,10 +101,17 @@
 								>
 									<div
 										slot="prefix"
-										style="width: 100%; height: 100%; background-color: #fdb500"
+										style="
+                      width: 100%;
+                      height: 100%;
+                      background-color: #fdb500;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
 									>
 										<img
-											style="width: 14px; height: 14px"
+											style="width: 0.7292vw; height: 0.7292vw"
 											src="@/assets/image/yanzheng.png"
 											alt=""
 											srcset=""
@@ -141,7 +138,7 @@
 									:loading="loading"
 									size="medium"
 									type="primary"
-									style="width: 100%; height: 50px"
+									style="width: 100%; height: 2.6042vw"
 									@click.native.prevent="handleLogin"
 								>
 									<span v-if="!loading">登 录</span>
@@ -340,9 +337,11 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
 .login {
+  width: 100vw;
   position: relative;
   height: 100%;
   background-image: url('~@/assets/image/login-background2.jpg');
+  background-size: 100vw 100vh;
   // background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -356,13 +355,15 @@ export default {
   }
 
   .login-container {
+    /* width: 26.0417vw;
+    height: 20.8333vw; */
     position: absolute;
-    right: 8%;
+    right: 20%;
     top: 50%;
     transform: translateY(-50%);
-    padding: 30px 60px;
-    background: #ffffffc0;
-    border-radius: 15px;
+    padding: 1.5625vw 3.125vw;
+    background: #ffffffa8;
+    border-radius: 0.7813vw;
     box-shadow: 0px 0px 15px 3px #ffffff;
 
     .login-header {
@@ -381,13 +382,13 @@ export default {
       }
 
       hr {
-        margin: 4px 0;
+        margin: 0.2083vw 0;
         border-color: rgba(0, 0, 0, 0.85);
       }
 
       h4 {
         // width: 100%;
-        height: 1.5em;
+        height: 1.875vw;
         text-align: justify;
       }
 
@@ -405,100 +406,17 @@ export default {
         background-color: transparent;
       }
 
-      // .login-changein {
-      // 	position: absolute;
-      // 	right: 2px;
-      // 	top: 2px;
-      // 	z-index: 2;
-      // 	width: 50%;
-      // 	height: 44px;
-      // 	margin: 0 auto;
-
-      // 	.code-img {
-      // 		position: absolute;
-      // 		top: 2px;
-      // 		right: 2px;
-
-      // 		// z-index: 1;
-      // 		.code-icon {
-      // 			color: #111;
-      // 			cursor: pointer;
-      // 		}
-
-      // 		.code-icon-computer {
-      // 			font-size: 50px;
-      // 		}
-
-      // 		.code-icon-qr {
-      // 			font-size: 60px;
-      // 		}
-      // 	}
-
-      // 	.login-tip {
-      // 		position: absolute;
-      // 		top: 10px;
-      // 		right: 61px;
-
-      // 		.poptip {
-      // 			position: relative;
-      // 			// z-index: 3;
-      // 			border-radius: 6px;
-      // 			background-color: rgba(61, 127, 255, .1);
-      // 			border: none;
-      // 			height: 30px;
-      // 			line-height: 30px;
-      // 			padding: 0 10px;
-
-      // 			.poptip-arrow {
-      // 				position: absolute;
-      // 				// z-index: 2;
-      // 				top: 9px;
-      // 				right: 0;
-
-      // 				// em {
-      // 				// 	position: absolute;
-      // 				// 	top: 0;
-      // 				// 	left: 1px;
-      // 				// 	width: 0;
-      // 				// 	height: 0;
-      // 				// 	border: none;
-      // 				// }
-
-      // 				span {
-      // 					position: absolute;
-      // 					top: 0;
-      // 					left: 0;
-      // 					width: 0;
-      // 					height: 0;
-      // 					border-style: solid;
-      // 					border-color: #fff0;
-      // 					border-width: 6px 0 6px 6px;
-      // 					border-left-color: rgba(61, 127, 255, .1);
-      // 					overflow: hidden;
-      // 				}
-
-      // 			}
-
-      // 			.poptip-content {
-      // 				font-size: 14px;
-      // 				font-weight: 400;
-      // 				color: rgba(61, 127, 255, 1);
-      // 			}
-      // 		}
-      // 	}
-      // }
-
       .login-box {
         // width: 500px;
-        height: 350px;
-        padding: 25px 25px 5px 25px;
-        border-radius: 6px;
+        height: 18.2292vw;
+        padding: 1.3021vw 1.3021vw 5px 25px;
+        border-radius: 0.3125vw;
 
         .login-content {
           .master-login-title {
-            padding-top: 10px;
+            padding-top: 0.5208vw;
             font-weight: lighter;
-            font-size: 20px;
+            font-size: 1.0417vw;
             text-align: center;
             font-family: PingFangSC-Regular;
             color: #111;
@@ -507,7 +425,7 @@ export default {
           .qrcode-login {
             .qrcode-img {
               width: 100%;
-              height: 260px;
+              height: 13.5417vw;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -520,7 +438,7 @@ export default {
 
               p {
                 text-align: center;
-                font-size: 20px;
+                font-size: 1.0417vw;
                 color: #111;
                 font-family: PingFangSC-Regular;
               }
@@ -530,40 +448,40 @@ export default {
       }
 
       .login-tab-box {
-        height: 312px;
-        padding: 30px 5px 0;
+        height: 16.25vw;
+        padding: 1.5625vw 0.2604vw 0;
 
         .el-input {
-          height: 38px;
-          box-shadow: 0px 0px 10px 0px rgba(153, 153, 153, 0.8);
+          height: 1.9792vw;
+          box-shadow: 0px 0px 0.5208vw 0px rgba(153, 153, 153, 0.8);
 
           input {
-            height: 38px;
-            padding-left: 50px;
+            height: 1.9792vw;
+            padding-left: 2.6042vw;
           }
 
           .el-input__prefix {
             left: 0;
-            width: 38px;
+            width: 1.9792vw;
           }
         }
 
         .input-icon {
           color: white;
-          height: 39px;
-          width: 14px;
-          margin-left: 2px;
+          height: 2.0313vw;
+          width: 0.7292vw;
+          margin-left: 0.1042vw;
         }
 
         .login-tip {
-          font-size: 13px;
+          font-size: 0.6771vw;
           text-align: center;
           color: #bfbfbf;
         }
 
         .login-code {
           width: 33%;
-          height: 38px;
+          height: 1.9792vw;
           float: right;
 
           img {
@@ -576,29 +494,44 @@ export default {
           background-color: #fdb500;
           /* border-color: #073E8E; */
           border: none;
-          box-shadow: 0px 0px 10px 0px rgba(153, 153, 153, 0.8);
+          box-shadow: 0px 0px 0.5208vw 0px rgba(153, 153, 153, 0.8);
         }
 
         .el-button--primary:active {
-          background-color: #dc9e00;
+          background-color: #e6a503;
           color: #ffffff;
           outline: none;
         }
       }
     }
   }
-
-  // .el-login-footer {
-  // 	height: 40px;
-  // 	line-height: 40px;
-  // 	position: fixed;
-  // 	bottom: 0;
-  // 	width: 100%;
-  // 	text-align: center;
-  // 	color: #fff;
-  // 	font-family: Arial;
-  // 	font-size: 12px;
-  // 	letter-spacing: 1px;
-  // }
+  .el-input__inner {
+    line-height: 1.4583vw !important;
+  }
+  .el-form-item {
+    margin-bottom: 0.9375vw !important;
+  }
+  .el-form-item__content {
+    line-height: 2.0833vw;
+    position: relative;
+    font-size: 0.7292vw;
+  }
+  .el-checkbox__label {
+    display: inline-block;
+    padding-left: 0.5208vw;
+    line-height: 0.9896vw;
+    font-size: 0.7292vw;
+  }
+  .el-checkbox__inner {
+    font-size: 0.625vw;
+    width: 0.7292vw;
+    height: 0.7292vw;
+  }
+  .el-button--medium {
+    font-size: 0.7292vw;
+  }
+  .el-input--mini {
+    font-size: 0.625vw !important;
+  }
 }
 </style>

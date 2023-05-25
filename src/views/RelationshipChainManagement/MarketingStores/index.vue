@@ -70,17 +70,10 @@
 
 							<el-table-column :min-width="400 * $root.dw + 'px'" align="center" property="avatar" label="门店封面">
 								<template slot-scope="scope">
-									<el-dialog :visible.sync="detailDialogVisible" title="图片预览">
+									<div style="width:100%;height:100%;">
 										<el-image
-											v-if="scope.row.lookingPicture" :src="common.splicingImgUrl() + scope.row.lookingPicture" style="width:80px; height:80px" fit="cover"
-											:preview-src-list="[ common.splicingImgUrl() + scope.row.lookingPicture ]"
-										/>
-										<span v-else>--</span>
-									</el-dialog>
-									<div style="width:100%,height:100%" @click="showPicture(scope.row.avatar)">
-										<el-image
-											v-if="scope.row.avatar" :src="common.splicingImgUrl() + scope.row.avatar" style="width:40px; height:40px" fit="cover"
-											:preview-src-list="[ common.splicingImgUrl() + scope.row.avatar ]"
+											v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
+											:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 										/>
 										<span v-else>--</span>
 									</div>
@@ -110,17 +103,10 @@
 
 				<el-table-column align="center" property="avatar" label="营销头像">
 					<template slot-scope="scope">
-						<el-dialog :visible.sync="detailDialogVisible" title="图片预览">
+						<div style="width:100%;height:100%;">
 							<el-image
-								v-if="scope.row.lookingPicture" :src="common.splicingImgUrl() + scope.row.lookingPicture" style="width:80px; height:80px" fit="cover"
-								:preview-src-list="[ common.splicingImgUrl() + scope.row.lookingPicture ]"
-							/>
-							<span v-else>--</span>
-						</el-dialog>
-						<div style="width:100%,height:100%" @click="showPicture(scope.row.avatar)">
-							<el-image
-								v-if="scope.row.avatar" :src="common.splicingImgUrl() + scope.row.avatar" style="width:40px; height:40px" fit="cover"
-								:preview-src-list="[ common.splicingImgUrl() + scope.row.avatar ]"
+								v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
+								:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 							/>
 							<span v-else>--</span>
 						</div>
@@ -195,17 +181,10 @@
 
 						<el-table-column :min-width="200 * $root.dw + 'px'" align="center" property="avatar" label="用户头像">
 							<template slot-scope="scope">
-								<el-dialog :visible.sync="detailDialogVisible" :append-to-body="true" title="图片预览" modal-append-to-body>
+								<div style="width:100%;height:100%">
 									<el-image
-										v-if="scope.row.lookingPicture" :src="common.splicingImgUrl() + scope.row.lookingPicture" style="width:80px; height:80px" fit="cover"
-										:preview-src-list="[ common.splicingImgUrl() + scope.row.lookingPicture ]"
-									/>
-									<span v-else>--</span>
-								</el-dialog>
-								<div style="width:100%;height:100%" @click="showPicture(scope.row.avatar)">
-									<el-image
-										v-if="scope.row.avatar" :src="common.splicingImgUrl() + scope.row.avatar" style="width:80px; height:80px" fit="cover"
-										:preview-src-list="[ common.splicingImgUrl() + scope.row.avatar ]"
+										v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:80px; height:80px" fit="cover"
+										:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 									/>
 									<span v-else>--</span>
 								</div>
@@ -265,17 +244,10 @@
 
 						<el-table-column :min-width="200 * $root.dw + 'px'" align="center" property="avatar" label="用户头像">
 							<template slot-scope="scope">
-								<el-dialog :visible.sync="detailDialogVisible" :append-to-body="true" title="图片预览" modal-append-to-body>
+								<div style="width:100%;height:100%">
 									<el-image
-										v-if="scope.row.lookingPicture" :src="common.splicingImgUrl() + scope.row.lookingPicture" style="width:80px; height:80px" fit="cover"
-										:preview-src-list="[ common.splicingImgUrl() + scope.row.lookingPicture ]"
-									/>
-									<span v-else>--</span>
-								</el-dialog>
-								<div style="width:100%;height:100%" @click="showPicture(scope.row.avatar)">
-									<el-image
-										v-if="scope.row.avatar" :src="common.splicingImgUrl() + scope.row.avatar" style="width:80px; height:80px" fit="cover"
-										:preview-src-list="[ common.splicingImgUrl() + scope.row.avatar ]"
+										v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:80px; height:80px" fit="cover"
+										:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 									/>
 									<span v-else>--</span>
 								</div>
@@ -391,8 +363,6 @@ export default {
 			},
 			// 图片展示
 			lookingPicture: '',
-			// 图片预览弹窗
-			detailDialogVisible: false,
 			// 导出功能
 			// downloadLoading: false,
 			// 表单校验
@@ -526,12 +496,6 @@ export default {
 			this.dataForm.administratorUsername = row.username
 			this.dataForm.salesmanName = row.name
 			this.bindingDataForm.administratorId = row.salesmanid
-		},
-
-		// 展示图片
-		showPicture(url) {
-			this.lookingPicture = url
-			this.detailDialogVisible = true
 		},
 
 		// 解除绑定关系

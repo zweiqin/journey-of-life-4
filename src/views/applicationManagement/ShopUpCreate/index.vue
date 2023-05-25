@@ -95,7 +95,7 @@
 						:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadAvatarUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.avatar" :src="common.splicingImgUrl() + storeDataForm.avatar" class="avatar">
+						<img v-if="storeDataForm.avatar" :src="common.seamingImgUrl(storeDataForm.avatar)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -128,7 +128,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.picUrl" :src="common.splicingImgUrl() + storeDataForm.picUrl" class="avatar">
+						<img v-if="storeDataForm.picUrl" :src="common.seamingImgUrl(storeDataForm.picUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -140,7 +140,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLicenseUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.licenseUrl" :src="common.splicingImgUrl() + storeDataForm.licenseUrl" class="avatar">
+						<img v-if="storeDataForm.licenseUrl" :src="common.seamingImgUrl(storeDataForm.licenseUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -151,7 +151,7 @@
 						:on-success="uploadBrandIdcardProsUrl" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<img
-							v-if="storeDataForm.brandIdcardProsUrl" :src="common.splicingImgUrl() + storeDataForm.brandIdcardProsUrl"
+							v-if="storeDataForm.brandIdcardProsUrl" :src="common.seamingImgUrl(storeDataForm.brandIdcardProsUrl)"
 							class="avatar"
 						>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -164,7 +164,7 @@
 						:on-success="uploadBrandIdcardConsUrl" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<img
-							v-if="storeDataForm.brandIdcardConsUrl" :src="common.splicingImgUrl() + storeDataForm.brandIdcardConsUrl"
+							v-if="storeDataForm.brandIdcardConsUrl" :src="common.seamingImgUrl(storeDataForm.brandIdcardConsUrl)"
 							class="avatar"
 						>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -258,7 +258,7 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<img
-							v-if="marketDataForm.idcardProsUrl" :src="common.splicingImgUrl() + marketDataForm.idcardProsUrl"
+							v-if="marketDataForm.idcardProsUrl" :src="common.seamingImgUrl(marketDataForm.idcardProsUrl)"
 							class="avatar"
 						>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -271,7 +271,7 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<img
-							v-if="marketDataForm.idcardConsUrl" :src="common.splicingImgUrl() + marketDataForm.idcardConsUrl"
+							v-if="marketDataForm.idcardConsUrl" :src="common.seamingImgUrl(marketDataForm.idcardConsUrl)"
 							class="avatar"
 						>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />

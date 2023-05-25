@@ -118,7 +118,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataForm.storeType.picUrl = response.data.url"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.storeType.picUrl" :src="common.splicingImgUrl() + dataForm.storeType.picUrl" width="145">
+						<img v-if="dataForm.storeType.picUrl" :src="common.seamingImgUrl(dataForm.storeType.picUrl)" width="145">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>

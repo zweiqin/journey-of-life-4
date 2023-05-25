@@ -46,7 +46,7 @@
 
 			<el-table-column align="center" property="picUrl" label="图片">
 				<template slot-scope="scope">
-					<img :src="common.splicingImgUrl() + scope.row.picUrl" width="100">
+					<img :src="common.seamingImgUrl(scope.row.picUrl)" width="100">
 				</template>
 			</el-table-column>
 
@@ -110,7 +110,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.splicingImgUrl() + dataForm.picUrl" class="avatar">
+						<img v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>

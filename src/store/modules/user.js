@@ -79,14 +79,23 @@ const user = {
 		GetUserInfo({ commit, state }) {
 			return new Promise((resolve, reject) => {
 				getUserInfo(state.token).then((response) => {
+				// const response = { data: { data: {
+				// 	'roles': [
+				// 		'超级管理员'
+				// 	],
+				// 	'name': 'Tuanfeng',
+				// 	'perms': [
+				// 		'*'
+				// 	],
+				// 	'avatar': 'http://bus.deyisoft.cn:11111/dts-admin-api/admin/storage/fetch/28frxec24ilpqbgq4fgy.png',
+				// 	'userId': null
+				// } } }
 					const data = response.data.data
-
 					if (data.perms && data.perms.length > 0) { // 验证返回的perms是否是一个非空数组
 						commit('SET_PERMS', data.perms)
 					} else {
 						reject('getInfo: perms must be a non-null array !')
 					}
-
 					commit('SET_ROLES', data.roles)
 					commit('SET_NAME', data.name)
 					commit('SET_AVATAR', data.avatar)

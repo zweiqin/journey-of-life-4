@@ -49,8 +49,8 @@
 				<el-table-column align="center" property="appIconUrl" label="H5类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.splicingImgUrl() + scope.row.appIconUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.appIconUrl ]"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.appIconUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.appIconUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -59,8 +59,8 @@
 				<el-table-column align="center" property="iconUrl" label="类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.splicingImgUrl() + scope.row.iconUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.iconUrl ]"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.iconUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -69,8 +69,8 @@
 				<el-table-column align="center" property="picUrl" label="类目图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" style="width:80px; height:80px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.picUrl ]"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:80px; height:80px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -155,7 +155,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAppIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.appIconUrl" :src="common.splicingImgUrl() + dataForm.appIconUrl" class="avatar">
+						<img v-if="dataForm.appIconUrl" :src="common.seamingImgUrl(dataForm.appIconUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -164,7 +164,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.iconUrl" :src="common.splicingImgUrl() + dataForm.iconUrl" class="avatar">
+						<img v-if="dataForm.iconUrl" :src="common.seamingImgUrl(dataForm.iconUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -173,7 +173,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.splicingImgUrl() + dataForm.picUrl" class="avatar">
+						<img v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>

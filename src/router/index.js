@@ -383,7 +383,7 @@ export const asyncRouterMap = [
 					},
 					{
 						path: 'salesmanManagement',
-						component: () => import('@/views/marketing/salesmanManagement'),
+						component: () => import('@/views/RelationshipChainManagement/salesmanManagement'),
 						name: 'salesmanManagement',
 						meta: { title: '所属门店',
 							icon: 'tree-table',
@@ -392,7 +392,7 @@ export const asyncRouterMap = [
 					},
 					{
 						path: 'MemberManagement',
-						component: () => import('@/views/StoreManagement/MemberManagement'),
+						component: () => import('@/views/RelationshipChainManagement/MemberManagement'),
 
 						name: 'MemberManagement',
 						meta: { title: '所属会员',
@@ -437,7 +437,7 @@ export const asyncRouterMap = [
 					icon: '',
 					noCache: true
 				},
-				hidden: true
+				hidden: false
 			},
 			{
 				path: '',
@@ -498,7 +498,7 @@ export const asyncRouterMap = [
 			title: '情报数据看板',
 			icon: 'server'
 		},
-		hidden: true,
+		hidden: false,
 		children: [
 			{
 				path: '',
@@ -939,6 +939,42 @@ export const asyncRouterMap = [
 		},
 		children: [
 			{
+				path: 'iconManagement',
+				component: () => import('@/views/children'),
+				redirect: 'noredirect',
+				alwaysShow: true,
+				meta: {
+					title: '图标管理',
+					icon: '',
+					noCache: true
+				},
+				children: [
+					{
+						path: 'iconList',
+						component: () => import('@/views/iconManagement/iconList'),
+
+						name: 'IconList',
+						meta: {
+							title: '图标列表',
+							icon: '',
+							noCache: true,
+							perms: ['GET /admin/dtsGradePermission/h5IconList', 'POST /admin/dtsGradePermission/h5IconAdd', 'POST /admin/dtsGradePermission/h5IconUpdate']
+						}
+					},
+					{
+						path: 'iconAuthorization',
+						component: () => import('@/views/iconManagement/iconAuthorization'),
+						name: 'IconAuthorization',
+						meta: {
+							title: '图标授权',
+							icon: '',
+							noCache: true,
+							perms: ['GET /admin/rolePermission/selectH5RoleEmpower', 'POST /admin/rolePermission/h5RoleEmpower']
+						}
+					}
+				]
+			},
+			{
 				path: 'admin',
 				component: () => import('@/views/sys/admin'),
 				name: 'admin',
@@ -1197,6 +1233,16 @@ export const asyncRouterMap = [
 			perms: ['POST /admin/upRecord/list', 'POST /admin/userup/list', 'POST /admin/userup/manage', 'POST /admin/userup/signin', 'POST /admin/userup/userUpVip', 'POST /admin/userup/vipList', 'GET /admin/userup/pdlist']
 		},
 		children: [
+			{
+				path: 'merchantSettlement',
+				component: () => import('@/views/applicationManagement/merchantSettlement'),
+				name: 'MerchantSettlement',
+				meta: {
+					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful', 'GET /admin/dtsUpgradeRequest/listOne'],
+					title: '商家入驻',
+					noCache: true
+				}
+			},
 			{
 				path: 'ShopUpCreate',
 				component: () => import('@/views/applicationManagement/ShopUpCreate'),
@@ -1710,8 +1756,19 @@ export const asyncRouterMap = [
 				}
 			},
 			{
+				path: 'memberPackage',
+				component: () => import('@/views/marketingManagement/memberPackage'),
+				name: 'MemberPackage',
+				meta: {
+					perms: ['GET /admin/dtsPackageMember/memberList', 'POST /admin/rolePermission/add', 'POST /admin/dtsPackageMember/update', 'GET /admin/dtsPackageService/list', 'POST /admin/dtsPackageService/add', 'POST /admin/dtsPackageService/update'],
+					title: '会员套餐',
+					icon: '',
+					noCache: true
+				}
+			},
+			{
 				path: 'wiseManTask',
-				component: () => import('@/views/marketing/wiseManTask'),
+				component: () => import('@/views/marketingManagement/wiseManTask'),
 				name: 'WiseManTask',
 				meta: {
 					// perms: ['POST /admin/talentTask/upload', 'GET /admin/talentTask/list', 'GET /admin/talentTask/info', 'GET /admin/talentTask/update', 'GET /admin/talentTask/delete'],
@@ -1722,7 +1779,7 @@ export const asyncRouterMap = [
 			},
 			{
 				path: 'wiseManList',
-				component: () => import('@/views/marketing/wiseManList'),
+				component: () => import('@/views/marketingManagement/wiseManList'),
 				name: 'WiseManList',
 				meta: {
 					// perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],

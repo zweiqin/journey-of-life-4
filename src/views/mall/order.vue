@@ -125,8 +125,8 @@
 						<el-table-column align="center" label="货品图片" prop="picUrl">
 							<template slot-scope="scope">
 								<el-image
-									v-if="scope.row.picUrl" :src="scope.row.picUrl" style="width:40px; height:40px" fit="cover"
-									:preview-src-list="[ scope.row.picUrl ]"
+									v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+									:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 								/>
 								<span v-else>--</span>
 							</template>

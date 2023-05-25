@@ -30,8 +30,8 @@
 			<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
 				<template slot-scope="scope">
 					<el-image
-						v-if="scope.row.picUrl" :src="scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl" style="width:40px; height:40px" fit="cover"
-						:preview-src-list="[ scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl ]"
+						v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+						:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 					/>
 					<span v-else>--</span>
 				</template>

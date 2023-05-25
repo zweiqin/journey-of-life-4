@@ -28,6 +28,8 @@ import 'default-passive-events'// 解决警告
 
 /* 引入公共js,如果是不同作者的js请分开文件分开引入！！！*/
 
+import './config/element-config.js'
+
 import common from '@/assets/js/common.js'
 Vue.prototype.common = common
 import './directive/tableHeight'

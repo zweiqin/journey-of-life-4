@@ -43,8 +43,8 @@
 				<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl ]"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -65,8 +65,8 @@
 				<el-table-column align="center" min-width="100px" property="licenseUrl" label="营业执照">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.licenseUrl" :src="scope.row.licenseUrl.startsWith('https://') ? scope.row.licenseUrl : common.splicingImgUrl() + scope.row.licenseUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.licenseUrl.startsWith('https://') ? scope.row.licenseUrl : common.splicingImgUrl() + scope.row.licenseUrl ]"
+							v-if="scope.row.licenseUrl" :src="common.seamingImgUrl(scope.row.licenseUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.licenseUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -75,8 +75,8 @@
 				<el-table-column align="center" min-width="100px" property="idcardProsUrl" label="法人身份证正面">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.idcardProsUrl" :src="scope.row.idcardProsUrl.startsWith('https://') ? scope.row.idcardProsUrl : common.splicingImgUrl() + scope.row.idcardProsUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.idcardProsUrl.startsWith('https://') ? scope.row.idcardProsUrl : common.splicingImgUrl() + scope.row.idcardProsUrl ]"
+							v-if="scope.row.idcardProsUrl" :src="common.seamingImgUrl(scope.row.idcardProsUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.idcardProsUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -85,8 +85,8 @@
 				<el-table-column align="center" min-width="100px" property="idcardConsUrl" label="法人身份证反面">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.idcardConsUrl" :src="scope.row.idcardConsUrl.startsWith('https://') ? scope.row.idcardConsUrl : common.splicingImgUrl() + scope.row.idcardConsUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.idcardConsUrl.startsWith('https://') ? scope.row.idcardConsUrl : common.splicingImgUrl() + scope.row.idcardConsUrl ]"
+							v-if="scope.row.idcardConsUrl" :src="common.seamingImgUrl(scope.row.idcardConsUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.idcardConsUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -128,8 +128,8 @@
 			<el-form :data="dataForm" label-position="left">
 				<el-form-item label="推广二维码">
 					<el-image
-						v-if="dataForm.shareUrl" :src="dataForm.shareUrl.startsWith('https://') ? dataForm.shareUrl : common.splicingImgUrl() + dataForm.shareUrl" style="width:300px; height:300px" fit="cover"
-						:preview-src-list="[ dataForm.shareUrl.startsWith('https://') ? dataForm.shareUrl : common.splicingImgUrl() + dataForm.shareUrl ]"
+						v-if="dataForm.shareUrl" :src="common.seamingImgUrl(dataForm.shareUrl)" style="width:300px; height:300px" fit="cover"
+						:preview-src-list="[ common.seamingImgUrl(dataForm.shareUrl) ]"
 					/>
 					<span v-else>--</span>
 				</el-form-item>
@@ -173,8 +173,8 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<el-image
-							v-if="dataForm.picUrl" :src="dataForm.picUrl.startsWith('https://') ? dataForm.picUrl : common.splicingImgUrl() + dataForm.picUrl" style="width:146px; height:146px" fit="contain"
-							:preview-src-list="[ dataForm.picUrl.startsWith('https://') ? dataForm.picUrl : common.splicingImgUrl() + dataForm.picUrl ]"
+							v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" style="width:146px; height:146px" fit="contain"
+							:preview-src-list="[ common.seamingImgUrl(dataForm.picUrl) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
@@ -202,7 +202,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLogoUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.logoUrl" :src="common.splicingImgUrl() + dataForm.logoUrl" class="avatar">
+						<img v-if="dataForm.logoUrl" :src="common.seamingImgUrl(dataForm.logoUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -255,7 +255,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLicenseUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.licenseUrl" :src="common.splicingImgUrl() + dataForm.licenseUrl" class="avatar">
+						<img v-if="dataForm.licenseUrl" :src="common.seamingImgUrl(dataForm.licenseUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -265,7 +265,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardProsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardProsUrl" :src="common.splicingImgUrl() + dataForm.idcardProsUrl" class="avatar">
+						<img v-if="dataForm.idcardProsUrl" :src="common.seamingImgUrl(dataForm.idcardProsUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -275,7 +275,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardConsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardConsUrl" :src="common.splicingImgUrl() + dataForm.idcardConsUrl" class="avatar">
+						<img v-if="dataForm.idcardConsUrl" :src="common.seamingImgUrl(dataForm.idcardConsUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -568,7 +568,7 @@ export default {
 				bgUrl: row.bgUrl ? row.bgUrl.substring(1, row.bgUrl.length - 1).split(',')
 					.map((section) => section.substring(1, section.length - 1)) : []
 			})
-			this.bgUrlList = JSON.parse(JSON.stringify(this.dataForm.bgUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
+			this.bgUrlList = JSON.parse(JSON.stringify(this.dataForm.bgUrl)).map((item) => ({ name: this.common.seamingImgUrl(item), url: this.common.seamingImgUrl(item) }))
 			this.dialogStatus = 'update'
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
@@ -586,7 +586,7 @@ export default {
 		//   return this.add0(h) + ':' + this.add0(mm) + ':' + this.add0(s)
 		// },
 		createData() {
-			this.dataForm.prefix = this.common.splicingImgUrl()
+			// this.dataForm.prefix = this.xxx
 			this.dataForm.latitude = this.stadiumData.latitude
 			this.dataForm.longitude = this.stadiumData.longitude
 			this.dataForm.address = this.stadiumData.addr
@@ -681,7 +681,7 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-				if (this.common.splicingImgUrl() + this.dataForm.bgUrl[i] === url) {
+				if (this.common.seamingImgUrl(this.dataForm.bgUrl[i]) === url) {
 					this.dataForm.bgUrl.splice(i, 1)
 				}
 			}

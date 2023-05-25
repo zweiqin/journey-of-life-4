@@ -100,7 +100,7 @@
 					<span>{{ agencyDetail.settlementRate }}</span>
 				</el-form-item>
 				<el-form-item label="推广二维码">
-					<el-image v-if="agencyDetail.shareUrl" :src="agencyDetail.shareUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[ agencyDetail.shareUrl ]" />
+					<el-image v-if="agencyDetail.shareUrl" :src="common.seamingImgUrl(agencyDetail.shareUrl)" style="width:80px; height:80px" fit="cover" :preview-src-list="[ common.seamingImgUrl(agencyDetail.shareUrl) ]" />
 					<span v-else>--</span>
 				</el-form-item>
 			</el-form>

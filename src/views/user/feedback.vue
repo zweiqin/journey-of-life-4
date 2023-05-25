@@ -27,8 +27,8 @@
 					<template slot-scope="scope">
 						<div v-if="scope.row.gallery && scope.row.gallery.length">
 							<el-image
-								:src="scope.row.gallery[0]" style="width:40px; height:40px" fit="cover"
-								:preview-src-list="scope.row.gallery"
+								:src="common.seamingImgUrl(scope.row.gallery[0])" style="width:40px; height:40px" fit="cover"
+								:preview-src-list="scope.row.gallery.map(i => common.seamingImgUrl(i))"
 							/>
 							<span v-if="scope.row.gallery.length > 1" style="margin-left:8px;">+{{ scope.row.gallery.length }}</span>
 						</div>

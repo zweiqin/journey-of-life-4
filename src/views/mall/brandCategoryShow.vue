@@ -3,32 +3,29 @@
 
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<el-input
+			<!-- <el-input
 				v-model="listQuery.id" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="请输入类目ID"
-			/>
-			<el-input
+				/>
+				<el-input
 				v-model="listQuery.name" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="请输入类目名称"
-			/>
-			<el-button
+				/>
+				<el-button
 				v-permission="[ 'GET /admin/category/list' ]" size="mini" class="filter-item" type="primary"
 				icon="el-icon-search" @click="handleFilter"
-			>
+				>
 				查找
-			</el-button>
+				</el-button> -->
 			<el-button
 				v-permission="[ 'POST /admin/category/create' ]" size="mini" class="filter-item" type="primary"
 				icon="el-icon-edit" @click="handleCreate"
 			>
 				添加
 			</el-button>
-			<el-button
-				size="mini" class="filter-item" type="primary" icon="el-icon-caret-left"
-				@click="handleCancel"
-			>
+			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-caret-left" @click="handleCancel">
 				返回
 			</el-button>
 		</div>
@@ -36,20 +33,21 @@
 		<!-- 查询结果 -->
 		<div v-tableHeight>
 			<el-table
-				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
-				border fit height="100%"
-				highlight-current-row
+				ref="multipleTable" v-loading="listLoading" height="100%" element-loading-text="正在查询中。。。"
+				:data="list"
+				v-bind="$tableCommonOptions" row-key="id" border :default-expand-all="false"
+				:tree-props="{ children: 'children' }"
 			>
-
-				<el-table-column align="center" label="类目ID" prop="id" sortable />
+				<el-table-column align="center" width="140" label="类目ID" prop="id" sortable />
 
 				<el-table-column align="center" label="类目名" prop="name" />
 
 				<el-table-column align="center" property="appIconUrl" label="H5类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.splicingImgUrl() + scope.row.appIconUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.appIconUrl ]"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.appIconUrl)"
+							style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.appIconUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -58,8 +56,9 @@
 				<el-table-column align="center" property="iconUrl" label="类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.splicingImgUrl() + scope.row.iconUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.iconUrl ]"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)"
+							style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.iconUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -68,8 +67,9 @@
 				<el-table-column align="center" property="picUrl" label="类目图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" style="width:80px; height:80px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.picUrl ]"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)"
+							style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -79,7 +79,7 @@
 
 				<el-table-column align="center" min-width="100" label="简介" prop="desc" />
 
-				<el-table-column align="center" label="级别" prop="level">
+				<el-table-column align="center" width="140" label="级别" prop="level">
 					<template slot-scope="scope">
 						<el-tag :type="scope.row.level === 'L1' ? 'primary' : 'info'">
 							{{ scope.row.level === 'L1' ? '一级类目'
@@ -90,7 +90,7 @@
 
 				<el-table-column align="center" label="父类目ID" prop="pid" />
 
-				<el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+				<el-table-column align="center" fixed="right" label="操作" width="200" class-name="small-padding fixed-width">
 					<template slot-scope="scope">
 						<el-button
 							v-permission="[ 'POST /admin/category/update' ]" type="primary" size="mini"
@@ -107,12 +107,13 @@
 					</template>
 				</el-table-column>
 			</el-table>
+
 		</div>
 
-		<Pagination
+		<!-- <Pagination
 			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
 			@pagination="getList"
-		/>
+			/> -->
 
 		<!-- 添加或修改对话框 -->
 		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -154,7 +155,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAppIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.appIconUrl" :src="common.splicingImgUrl() + dataForm.appIconUrl" class="avatar">
+						<img v-if="dataForm.appIconUrl" :src="common.seamingImgUrl(dataForm.appIconUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -163,7 +164,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.iconUrl" :src="common.splicingImgUrl() + dataForm.iconUrl" class="avatar">
+						<img v-if="dataForm.iconUrl" :src="common.seamingImgUrl(dataForm.iconUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -172,7 +173,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.splicingImgUrl() + dataForm.picUrl" class="avatar">
+						<img v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -194,11 +195,12 @@
 import { listCategory, listCatL1, listCatL2, createCategory, updateCategory, deleteCategory } from '@/api/business/category'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'BrandCategoryShow',
-	components: { Pagination },
+	// components: { Pagination },
 	data() {
 		return {
 			uploadPath,
@@ -207,7 +209,7 @@ export default {
 			listLoading: true,
 			listQuery: {
 				page: 1,
-				limit: 20,
+				limit: 9999,
 				id: undefined,
 				name: undefined,
 				brandId: undefined,
@@ -262,7 +264,11 @@ export default {
 			this.listLoading = true
 			listCategory(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
+					// this.list = response.data.data.items
+					this.list = XeUtils.toArrayTree(response.data.data.items, {
+						parentKey: 'pid'
+					})
+					console.log(this.list)
 					this.total = response.data.data.total
 					this.listLoading = false
 				})
@@ -288,10 +294,10 @@ export default {
 			this.getCatL2(this.dataForm.parentId)
 			this.dataForm.pid = undefined
 		},
-		handleFilter() {
-			this.listQuery.page = 1
-			this.getList()
-		},
+		// handleFilter() {
+		// 	this.listQuery.page = 1
+		// 	this.getList()
+		// },
 		resetForm() {
 			this.dataForm = {
 				id: undefined,

@@ -47,8 +47,8 @@
 				<el-table-column align="center" min-width="100px" property="avatar" label="头像">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.avatar" :src="common.splicingImgUrl() + scope.row.avatar" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + scope.row.avatar ]"
+							v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -121,8 +121,8 @@
 				<el-form-item label="头像" prop="avatar">
 					<div>
 						<el-image
-							v-if="dialogDetail.avatar" :src="common.splicingImgUrl() + dialogDetail.avatar" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + dialogDetail.avatar ]"
+							v-if="dialogDetail.avatar" :src="common.seamingImgUrl(dialogDetail.avatar)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dialogDetail.avatar) ]"
 						/>
 						<span v-else>--</span>
 					</div>
@@ -161,8 +161,8 @@
 						<el-table-column align="center" min-width="100px" property="logoUrl" label="logo">
 							<template slot-scope="scope">
 								<el-image
-									v-if="scope.row.logoUrl" :src="common.splicingImgUrl() + scope.row.logoUrl" style="width:40px; height:40px" fit="cover"
-									:preview-src-list="[ common.splicingImgUrl() + scope.row.logoUrl ]"
+									v-if="scope.row.logoUrl" :src="common.seamingImgUrl(scope.row.logoUrl)" style="width:40px; height:40px" fit="cover"
+									:preview-src-list="[ common.seamingImgUrl(scope.row.logoUrl) ]"
 								/>
 								<span v-else>--</span>
 							</template>
@@ -174,7 +174,7 @@
 								<div v-if="scope.row.caseUrl && scope.row.caseUrl.length">
 									<el-image
 										:src="scope.row.caseUrl[0]" style="width:40px; height:40px" fit="cover"
-										:preview-src-list="scope.row.caseUrl ? scope.row.caseUrl.map(item => common.splicingImgUrl() + item) : ''"
+										:preview-src-list="scope.row.caseUrl ? scope.row.caseUrl.map(item => common.seamingImgUrl(item)) : ''"
 									/>
 									<span v-if="scope.row.caseUrl.length > 1" style="margin-left:8px;">+{{ scope.row.caseUrl.length }}</span>
 								</div>
@@ -188,8 +188,8 @@
 							<template slot-scope="scope">
 								<div v-if="scope.row.productUrl && scope.row.productUrl.length">
 									<el-image
-										:src="scope.row.productUrl[0]" style="width:40px; height:40px" fit="cover"
-										:preview-src-list="scope.row.productUrl ? scope.row.productUrl.map(item => common.splicingImgUrl() + item) : ''"
+										:src="common.seamingImgUrl(scope.row.productUrl[0])" style="width:40px; height:40px" fit="cover"
+										:preview-src-list="scope.row.productUrl ? scope.row.productUrl.map(item => common.seamingImgUrl(item)) : ''"
 									/>
 									<span v-if="scope.row.productUrl.length > 1" style="margin-left:8px;">+{{ scope.row.productUrl.length }}</span>
 								</div>
@@ -224,7 +224,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataForm.avatar = response.data.url"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.avatar" :src="common.splicingImgUrl() + dataForm.avatar" width="145">
+						<img v-if="dataForm.avatar" :src="common.seamingImgUrl(dataForm.avatar)" width="145">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -301,8 +301,8 @@
 						<el-table-column align="center" min-width="100px" property="logoUrl" label="logo">
 							<template slot-scope="scope">
 								<el-image
-									v-if="scope.row.logoUrl" :src="common.splicingImgUrl() + scope.row.logoUrl" style="width:40px; height:40px" fit="cover"
-									:preview-src-list="[ common.splicingImgUrl() + scope.row.logoUrl ]"
+									v-if="scope.row.logoUrl" :src="common.seamingImgUrl(scope.row.logoUrl)" style="width:40px; height:40px" fit="cover"
+									:preview-src-list="[ common.seamingImgUrl(scope.row.logoUrl) ]"
 								/>
 								<span v-else>--</span>
 							</template>
@@ -314,8 +314,8 @@
 							<template slot-scope="scope">
 								<div v-if="scope.row.caseUrl && scope.row.caseUrl.length">
 									<el-image
-										:src="common.splicingImgUrl() + scope.row.caseUrl[0]" style="width:40px; height:40px" fit="cover"
-										:preview-src-list="scope.row.caseUrl ? scope.row.caseUrl.map(item => common.splicingImgUrl() + item) : ''"
+										:src="common.seamingImgUrl(scope.row.caseUrl[0])" style="width:40px; height:40px" fit="cover"
+										:preview-src-list="scope.row.caseUrl ? scope.row.caseUrl.map(item => common.seamingImgUrl(item)) : ''"
 									/>
 									<span v-if="scope.row.caseUrl.length > 1" style="margin-left:8px;">+{{ scope.row.caseUrl.length }}</span>
 								</div>
@@ -328,8 +328,8 @@
 							<template slot-scope="scope">
 								<div v-if="scope.row.productUrl && scope.row.productUrl.length">
 									<el-image
-										:src="common.splicingImgUrl() + scope.row.productUrl[0]" style="width:40px; height:40px" fit="cover"
-										:preview-src-list="scope.row.productUrl ? scope.row.productUrl.map(item => common.splicingImgUrl() + item) : ''"
+										:src="common.seamingImgUrl(scope.row.productUrl[0])" style="width:40px; height:40px" fit="cover"
+										:preview-src-list="scope.row.productUrl ? scope.row.productUrl.map(item => common.seamingImgUrl(item)) : ''"
 									/>
 									<span v-if="scope.row.productUrl.length > 1" style="margin-left:8px;">+{{ scope.row.productUrl.length }}</span>
 								</div>
@@ -376,7 +376,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataFormCase.logoUrl = response.data.url"
 						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataFormCase.logoUrl" :src="common.splicingImgUrl() + dataFormCase.logoUrl" width="145">
+						<img v-if="dataFormCase.logoUrl" :src="common.seamingImgUrl(dataFormCase.logoUrl)" width="145">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -439,7 +439,7 @@
 </template>
 
 <script>
-import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUpdateTalent, dtsTalentToExamine, dtsTalentDatailList, dtsTalentDatailAddOne, dtsTalentDatailUpdate, dtsTalentDatailDelete } from '@/api/marketing/wiseManList'
+import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUpdateTalent, dtsTalentToExamine, dtsTalentDatailList, dtsTalentDatailAddOne, dtsTalentDatailUpdate, dtsTalentDatailDelete } from '@/api/marketingManagement/wiseManList'
 import { fetchList } from '@/api/business/user'
 import { uploadPath } from '@/api/business/storage'
 import { listSubRegion } from '@/api/business/region'
@@ -797,8 +797,8 @@ export default {
 		},
 		handleUpdateCase(row) {
 			this.resetFormCase()
-			this.caseUrlList = JSON.parse(JSON.stringify(row.caseUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
-			this.productUrlList = JSON.parse(JSON.stringify(row.productUrl)).map((item) => ({ name: this.common.splicingImgUrl() + item, url: this.common.splicingImgUrl() + item }))
+			this.caseUrlList = JSON.parse(JSON.stringify(row.caseUrl)).map((item) => ({ name: this.common.seamingImgUrl(item), url: this.common.seamingImgUrl(item) }))
+			this.productUrlList = JSON.parse(JSON.stringify(row.productUrl)).map((item) => ({ name: this.common.seamingImgUrl(item), url: this.common.seamingImgUrl(item) }))
 			this.dataFormCase = Object.assign(this.dataFormCase, {
 				id: row.id,
 				name: row.name,

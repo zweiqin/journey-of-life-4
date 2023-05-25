@@ -54,8 +54,8 @@
 					>
 						<el-image
 							v-if="goods.picUrl"
-							class="avatar" :src="goods.picUrl.startsWith('https://') ? goods.picUrl : common.splicingImgUrl() + goods.picUrl" style="" fit="cover"
-							:preview-src-list="[ goods.picUrl.startsWith('https://') ? goods.picUrl : common.splicingImgUrl() + goods.picUrl ]"
+							class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
@@ -128,8 +128,8 @@
 				<el-table-column property="picUrl" label="规格图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.picUrl.startsWith('https://') ? scope.row.picUrl : common.splicingImgUrl() + scope.row.picUrl ]"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -160,8 +160,8 @@
 						>
 							<el-image
 								v-if="specForm.picUrl"
-								class="avatar" :src="specForm.picUrl.startsWith('https://') ? specForm.picUrl : common.splicingImgUrl() + specForm.picUrl" style="" fit="cover"
-								:preview-src-list="[ specForm.picUrl.startsWith('https://') ? specForm.picUrl : common.splicingImgUrl() + specForm.picUrl ]"
+								class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style="" fit="cover"
+								:preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -189,8 +189,8 @@
 				<el-table-column property="url" width="100" label="货品图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.url" :src="scope.row.url.startsWith('https://') ? scope.row.url : common.splicingImgUrl() + scope.row.url" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.url.startsWith('https://') ? scope.row.url : common.splicingImgUrl() + scope.row.url ]"
+							v-if="scope.row.url" :src="common.seamingImgUrl(scope.row.url)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.url) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -224,11 +224,11 @@
 							:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadProductUrl"
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="productForm.url" :src="common.splicingImgUrl() + productForm.url" class="avatar">
+							<img v-if="productForm.url" :src="common.seamingImgUrl(productForm.url)" class="avatar">
 							<el-image
 								v-if="productForm.url"
-								class="avatar" :src="productForm.url.startsWith('https://') ? productForm.url : common.splicingImgUrl() + productForm.url" style="" fit="cover"
-								:preview-src-list="[ productForm.url.startsWith('https://') ? productForm.url : common.splicingImgUrl() + productForm.url ]"
+								class="avatar" :src="common.seamingImgUrl(productForm.url)" style="" fit="cover"
+								:preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -512,7 +512,7 @@ export default {
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
 					this.galleryFileList.push({
-						url: this.goods.gallery[i].startsWith('https:\/\/') ? this.goods.gallery[i] : this.common.splicingImgUrl() + this.goods.gallery[i]
+						url: this.common.seamingImgUrl(this.goods.gallery[i])
 					})
 				}
 				const keywords = response.data.data.goods.keywords
@@ -640,7 +640,7 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-				if (this.common.splicingImgUrl() + this.goods.gallery[i] === url) {
+				if (this.common.seamingImgUrl(this.goods.gallery[i]) === url) {
 					this.goods.gallery.splice(i, 1)
 				}
 			}

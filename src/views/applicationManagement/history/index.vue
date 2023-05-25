@@ -211,27 +211,27 @@
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="门店logo">
 					<el-image
-						v-if="dialogFormitem.picUrl" :src="common.splicingImgUrl() + dialogFormitem.picUrl"
+						v-if="dialogFormitem.picUrl" :src="common.seamingImgUrl(dialogFormitem.picUrl)"
 						style="width: 100px; height: 100px" fit="contain"
 					/>
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="营业执照">
 					<el-image
-						v-if="dialogFormitem.licenseUrl" :src="common.splicingImgUrl() + dialogFormitem.licenseUrl"
+						v-if="dialogFormitem.licenseUrl" :src="common.seamingImgUrl(dialogFormitem.licenseUrl)"
 						style="width: 100px; height: 100px" fit="contain"
 					/>
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="法人身份证正面">
 					<el-image
 						v-if="dialogFormitem.brandIdcardProsUrl"
-						:src="common.splicingImgUrl() + dialogFormitem.brandIdcardProsUrl" style="width: 100px; height: 100px"
+						:src="common.seamingImgUrl(dialogFormitem.brandIdcardProsUrl)" style="width: 100px; height: 100px"
 						fit="contain"
 					/>
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="法人身份证反面">
 					<el-image
 						v-if="dialogFormitem.brandIdcardConsUrl"
-						:src="common.splicingImgUrl() + dialogFormitem.brandIdcardConsUrl" style="width: 100px; height: 100px"
+						:src="common.seamingImgUrl(dialogFormitem.brandIdcardConsUrl)" style="width: 100px; height: 100px"
 						fit="contain"
 					/>
 				</el-descriptions-item>
@@ -260,13 +260,13 @@
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 2" label="身份证正面">
 					<el-image
-						v-if="dialogFormitem.idcardProsUrl" :src="common.splicingImgUrl() + dialogFormitem.idcardProsUrl"
+						v-if="dialogFormitem.idcardProsUrl" :src="common.seamingImgUrl(dialogFormitem.idcardProsUrl)"
 						style="width: 100px; height: 100px" fit="contain"
 					/>
 				</el-descriptions-item>
 				<el-descriptions-item v-if="dialogFormitem.applicationType == 2" label="身份证反面">
 					<el-image
-						v-if="dialogFormitem.idcardConsUrl" :src="common.splicingImgUrl() + dialogFormitem.idcardConsUrl"
+						v-if="dialogFormitem.idcardConsUrl" :src="common.seamingImgUrl(dialogFormitem.idcardConsUrl)"
 						style="width: 100px; height: 100px" fit="contain"
 					/>
 				</el-descriptions-item>

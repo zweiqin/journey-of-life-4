@@ -86,7 +86,7 @@
 
 			<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
 				<template slot-scope="scope">
-					<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="80">
+					<img v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" width="80">
 				</template>
 			</el-table-column>
 
@@ -109,7 +109,7 @@
 				<template slot-scope="scope">
 				<img
 				v-if="scope.row.licenseUrl"
-				:src="common.splicingImgUrl()+scope.row.licenseUrl"
+				:src="common.seamingImgUrl(scope.row.licenseUrl)"
 				width="80"
 				>
 				</template>
@@ -124,7 +124,7 @@
 				<template slot-scope="scope">
 				<img
 				v-if="scope.row.idcardProsUrl"
-				:src="common.splicingImgUrl()+scope.row.idcardProsUrl"
+				:src="common.seamingImgUrl(scope.row.idcardProsUrl)"
 				width="80"
 				>
 				</template>
@@ -139,7 +139,7 @@
 				<template slot-scope="scope">
 				<img
 				v-if="scope.row.idcardConsUrl"
-				:src="common.splicingImgUrl()+scope.row.idcardConsUrl"
+				:src="common.seamingImgUrl(scope.row.idcardConsUrl)"
 				width="80"
 				>
 				</template>

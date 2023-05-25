@@ -48,8 +48,8 @@
 							<img :src="scope.row.avatar" :width="40 * $root.dw + 'px'">
 							</div> -->
 						<el-image
-							v-if="scope.row.avatar" :src="scope.row.avatar" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ scope.row.avatar ]"
+							v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -92,7 +92,7 @@
 				</el-form-item>
 				<el-form-item label="推广二维码">
 					<!-- <img :src="agencyDetail.shareUrl" width="300"> -->
-					<el-image v-if="agencyDetail.shareUrl" :src="agencyDetail.shareUrl" style="width:80px; height:80px" fit="cover" :preview-src-list="[ agencyDetail.shareUrl ]" />
+					<el-image v-if="agencyDetail.shareUrl" :src="common.seamingImgUrl(agencyDetail.shareUrl)" style="width:80px; height:80px" fit="cover" :preview-src-list="[ common.seamingImgUrl(agencyDetail.shareUrl) ]" />
 					<span v-else>--</span>
 				</el-form-item>
 			</el-form>

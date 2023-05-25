@@ -35,7 +35,7 @@
 				<template slot-scope="props">
 					<el-form label-position="left" class="table-expand">
 						<el-form-item label="宣传画廊">
-							<img v-for="pic in props.row.gallery" :key="pic" :src="common.splicingImgUrl() + pic" class="gallery">
+							<img v-for="pic in props.row.gallery" :key="pic" :src="common.seamingImgUrl(pic)" class="gallery">
 							<!-- <img v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery"> -->
 						</el-form-item>
 						<el-form-item label="商品介绍">
@@ -63,14 +63,14 @@
 
 			<el-table-column align="center" property="iconUrl" label="图片">
 				<template slot-scope="scope">
-					<img :src="common.splicingImgUrl() + scope.row.picUrl" width="40">
+					<img :src="common.seamingImgUrl(scope.row.picUrl)" width="40">
 					<!-- <img :src="scope.row.picUrl" width="40"> -->
 				</template>
 			</el-table-column>
 
 			<!-- <el-table-column align="center" property="iconUrl" label="分享图">
 				<template slot-scope="scope">
-				<img :src="common.splicingImgUrl() + scope.row.shareUrl" width="40">
+				<img :src="common.seamingImgUrl(scope.row.shareUrl)" width="40">
 				</template>
 				</el-table-column> -->
 

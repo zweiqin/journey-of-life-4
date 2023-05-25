@@ -67,8 +67,8 @@
 				<el-table-column align="center" min-width="100px" property="img" label="图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.img" :src="common.splicingImgUrl() + scope.row.img" style="width:40px; height:40px"
-							fit="cover" :preview-src-list="[ common.splicingImgUrl() + scope.row.img ]"
+							v-if="scope.row.img" :src="common.seamingImgUrl(scope.row.img)" style="width:40px; height:40px"
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(scope.row.img) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -145,9 +145,9 @@
 				<el-form-item label="图片">
 					<div>
 						<el-image
-							v-if="dialogDetail.img" :src="common.splicingImgUrl() + dialogDetail.img"
+							v-if="dialogDetail.img" :src="common.seamingImgUrl(dialogDetail.img)"
 							style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.splicingImgUrl() + dialogDetail.img ]"
+							:preview-src-list="[ common.seamingImgUrl(dialogDetail.img) ]"
 						/>
 						<span v-else>--</span>
 					</div>
@@ -213,7 +213,7 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.img" :src="common.splicingImgUrl() + dataForm.img" width="145">
+						<img v-if="dataForm.img" :src="common.seamingImgUrl(dataForm.img)" width="145">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -258,8 +258,8 @@
 
 <script>
 import { listBrand } from '@/api/business/brand'
-// import { talentTaskUpload, talentTaskList, talentTaskInfo, talentTaskUpdate, talentTaskDelete } from '@/api/marketing/wiseManTask'
-import { talentTaskList, talentTaskDelete, dtsTalentTaskList, dtsTalentTaskUpdateBox, dtsTalentTaskSubmitBox } from '@/api/marketing/wiseManTask'
+// import { talentTaskUpload, talentTaskList, talentTaskInfo, talentTaskUpdate, talentTaskDelete } from '@/api/marketingManagement/wiseManTask'
+import { talentTaskList, talentTaskDelete, dtsTalentTaskList, dtsTalentTaskUpdateBox, dtsTalentTaskSubmitBox } from '@/api/marketingManagement/wiseManTask'
 import { uploadPath } from '@/api/business/storage'
 import { listSubRegion } from '@/api/business/region'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination

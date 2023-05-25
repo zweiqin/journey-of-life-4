@@ -70,7 +70,7 @@
 						class="avatar-uploader"
 						accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="goods.picUrl" :src="common.splicingImgUrl() + goods.picUrl" class="avatar">
+						<img v-if="goods.picUrl" :src="common.seamingImgUrl(goods.picUrl)" class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -156,7 +156,7 @@
 				</el-table-column>
 				<el-table-column property="picUrl" label="规格图片">
 					<template slot-scope="scope">
-						<img v-if="scope.row.picUrl" :src="common.splicingImgUrl() + scope.row.picUrl" width="40">
+						<img v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" width="40">
 					</template>
 				</el-table-column>
 				<el-table-column v-if="multipleSpec" align="center" label="操作" width="250" class-name="small-padding fixed-width">
@@ -191,7 +191,7 @@
 							class="avatar-uploader"
 							accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="specForm.picUrl" :src="common.splicingImgUrl() + specForm.picUrl" class="avatar">
+							<img v-if="specForm.picUrl" :src="common.seamingImgUrl(specForm.picUrl)" class="avatar">
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -217,7 +217,7 @@
 				<el-table-column property="number" width="100" label="货品数量" />
 				<el-table-column property="url" width="100" label="货品图片">
 					<template slot-scope="scope">
-						<img v-if="scope.row.url" :src="common.splicingImgUrl() + scope.row.url" width="40">
+						<img v-if="scope.row.url" :src="common.seamingImgUrl(scope.row.url)" width="40">
 					</template>
 				</el-table-column>
 				<el-table-column align="center" label="操作" width="100" class-name="small-padding fixed-width">
@@ -256,7 +256,7 @@
 							class="avatar-uploader"
 							accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="productForm.url" :src="common.splicingImgUrl() + productForm.url" class="avatar">
+							<img v-if="productForm.url" :src="common.seamingImgUrl(productForm.url)" class="avatar">
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -723,8 +723,8 @@ export default {
 						specifications: this.specifications,
 						products: this.products,
 						attributes: this.attributes,
-						goodsCoupons: this.goodsCoupons,
-						prefix: this.common.splicingImgUrl()
+						goodsCoupons: this.goodsCoupons
+						// prefix: this.xxx
 					}
 					publishGoods(finalGoods).then((response) => {
 						this.$notify.success({

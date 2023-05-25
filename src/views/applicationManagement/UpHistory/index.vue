@@ -124,28 +124,28 @@
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="门店logo">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.picUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.picUrl" style="width: 100px; height: 100px"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.picUrl)" style="width: 100px; height: 100px"
 								fit="contain"
 							/>
 						</el-descriptions-item>
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="营业执照">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.licenseUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.licenseUrl" style="width: 100px; height: 100px"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.licenseUrl)" style="width: 100px; height: 100px"
 								fit="contain"
 							/>
 						</el-descriptions-item>
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="法人身份证正面">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.brandIdcardProsUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.brandIdcardProsUrl"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.brandIdcardProsUrl)"
 								style="width: 100px; height: 100px" fit="contain"
 							/>
 						</el-descriptions-item>
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="法人身份证反面">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.brandIdcardConsUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.brandIdcardConsUrl"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.brandIdcardConsUrl)"
 								style="width: 100px; height: 100px" fit="contain"
 							/>
 						</el-descriptions-item>
@@ -175,14 +175,14 @@
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 2" label="身份证正面">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.idcardProsUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.idcardProsUrl"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.idcardProsUrl)"
 								style="width: 100px; height: 100px" fit="contain"
 							/>
 						</el-descriptions-item>
 						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 2" label="身份证反面">
 							<el-image
 								v-if="scope.row.userUpgradeInfo.idcardConsUrl"
-								:src="common.splicingImgUrl() + scope.row.userUpgradeInfo.idcardConsUrl"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.idcardConsUrl)"
 								style="width: 100px; height: 100px" fit="contain"
 							/>
 						</el-descriptions-item>

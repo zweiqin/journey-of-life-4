@@ -103,8 +103,8 @@ export default {
 			this.listLoading = true
 			listRole(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -123,7 +123,7 @@ export default {
 			selectH5RoleEmpower({ roleId: row.id })
 				.then((response) => {
 					const iconPermissionsArr = []
-					response.data.data.permissions.forEach((item) => {
+					response.data.permissions.forEach((item) => {
 						if (!iconPermissionsArr[item.type]) {
 							iconPermissionsArr[item.type] = {
 								iconName: item.type,
@@ -134,7 +134,7 @@ export default {
 						}
 					})
 					this.iconPermissions = iconPermissionsArr
-					this.assignedIconPermissions = response.data.data.rolePermissions.map((item) => item.iconId)
+					this.assignedIconPermissions = response.data.rolePermissions.map((item) => item.iconId)
 				})
 		},
 		updateIconPermission() {

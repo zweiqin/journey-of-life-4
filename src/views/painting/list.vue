@@ -174,9 +174,9 @@ export default {
 		getList() {
 			this.listLoading = true
 			listGet(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				// console.log(response.data.data.total)
-				this.total = response.data.data.total
+				this.list = response.data.items
+				// console.log(response.data.total)
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -191,9 +191,9 @@ export default {
 			// console.log(this.listQueryImg)
 
 			listGetPicture(this.listQueryImg).then((response) => {
-				this.$set(this.listImg, id, response.data.data.items)
+				this.$set(this.listImg, id, response.data.items)
 				console.log(this.listImg[id])
-				// this.total = response.data.data.total
+				// this.total = response.data.total
 				this.listImgLoading = false
 			})
 				.catch(() => {

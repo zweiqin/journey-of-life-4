@@ -374,7 +374,8 @@ export default {
 	created() {
 		listDtsStoreType()
 			.then((response) => {
-				this.TypeOptions = response.data.data // .items
+				console.log(response)
+				this.TypeOptions = response.data // .items
 				this.getList()
 			})
 			.catch((error) => {
@@ -387,7 +388,7 @@ export default {
 
 		roleOptions()
 			.then((response) => {
-				this.roleOptions = response.data.data
+				this.roleOptions = response.data
 			})
 			.catch((error) => {
 				this.$message({
@@ -431,8 +432,8 @@ export default {
 			}
 			listGet(queryInfo, this.listQuery.page)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -490,7 +491,7 @@ export default {
 		//       data.dtsSalesman = this.salesmanDataForm
 		//       listAdd(data)
 		//         .then(response => {
-		//           // this.list.unshift(response.data.data.dtsAdmin)
+		//           // this.list.unshift(response.dat.dtsAdmin)
 		//           this.getList()
 		//           this.dialogFormVisible = false
 		//           this.$notify.success({
@@ -512,8 +513,8 @@ export default {
 		//     .then(response => {
 		//       this.resetForm()
 		//       this.dataForm = Object.assign({}, row)
-		//       if (response.data.data !== '未找到对应业务员') {
-		//         this.salesmanDataForm = response.data.data
+		//       if (response.data !== '未找到对应业务员') {
+		//         this.salesmanDataForm = response.data
 		//       }
 		//     })
 		//     .catch(response => {

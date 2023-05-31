@@ -257,9 +257,9 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员') {
 						this.$router.push({ name: 'brandCategory' })
-					} else if (response.data.data.roles[0] === '门店' || response.data.data.roles[0] === '营销策划') {
+					} else if (response.data.roles[0] === '门店' || response.data.roles[0] === '营销策划') {
 						this.getList()
 						this.getCatL1()
 					}
@@ -270,8 +270,8 @@ export default {
 			this.listLoading = true
 			listCategory(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -282,14 +282,14 @@ export default {
 		},
 		getCatL1() {
 			listCatL1().then((response) => {
-				this.catL1 = response.data.data
+				this.catL1 = response.data
 			})
 		},
 		getCatL2(id) {
 			listCatL2({
 				parentId: id
 			}).then((response) => {
-				this.catL2 = response.data.data
+				this.catL2 = response.data
 			})
 		},
 		onLevel1Change() {

@@ -217,7 +217,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					// if (response.data.data.roles[0] === '超级管理员') {
+					// if (response.data.roles[0] === '超级管理员') {
 					// 	this.$router.push({ name: 'brandInfo' })
 					// } else {
 					this.getList()
@@ -228,8 +228,8 @@ export default {
 		},
 		init() {
 			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
+				this.categoryList = response.data.categoryList
+				this.adminList = response.data.adminList
 				// 获取门店类型
 				this.getTypeOption()
 			})
@@ -240,7 +240,7 @@ export default {
 			})
 			listBrand(this.listQuery)
 				.then((response) => {
-					this.dataForm = response.data.data.items[0]
+					this.dataForm = response.data.items[0]
 				})
 				.catch(() => {
 				})
@@ -248,7 +248,7 @@ export default {
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
 				console.log(response)
-				this.typeOptions = response.data.data
+				this.typeOptions = response.data
 			})
 				.catch(() => {
 					this.typeOptions = []

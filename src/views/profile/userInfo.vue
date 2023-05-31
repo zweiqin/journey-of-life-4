@@ -141,8 +141,8 @@ export default {
 	methods: {
 		getUserInfo() {
 			UserInfoGet().then((response) => {
-				console.log(response.data.data)
-				this.UserInfo = response.data.data
+				console.log(response.data)
+				this.UserInfo = response.data
 				// this.$notify.success({
 				//   title: '成功',
 				//   message: '修改密码成功'

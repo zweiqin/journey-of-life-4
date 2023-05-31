@@ -123,7 +123,7 @@ export default {
 					formData.append('file', blobInfo.blob())
 					createStorage(formData)
 						.then((res) => {
-							success(res.data.data.url)
+							success(res.data.url)
 						})
 						.catch(() => {
 							failure('上传失败，请重新上传')
@@ -149,7 +149,7 @@ export default {
 			}
 			const articleId = this.$route.query.id
 			detailArticle(articleId).then((response) => {
-				this.article = response.data.data
+				this.article = response.data
 			})
 		},
 		handleCancel() {

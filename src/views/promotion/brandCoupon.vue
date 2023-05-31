@@ -93,10 +93,10 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员') {
 						this.getList()
 						this.init()
-					} else if (response.data.data.roles[0] === '门店') {
+					} else if (response.data.roles[0] === '门店') {
 						this.$router.push({ name: 'coupon' })
 					}
 				})
@@ -106,8 +106,8 @@ export default {
 			this.listLoading = true
 			listBrand(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -119,8 +119,8 @@ export default {
 
 		init() {
 			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
+				this.categoryList = response.data.categoryList
+				this.adminList = response.data.adminList
 			})
 		},
 

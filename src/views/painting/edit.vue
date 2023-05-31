@@ -72,10 +72,10 @@ export default {
 
 			this.paint_id = this.$route.query.id
 			listDetail(this.paint_id).then((response) => {
-				// console.log(response.data.data.paint_title)
-				this.painting.paint_title = response.data.data.paint_title
-				this.painting.paint_url = response.data.data.paint_url
-				this.painting.paint_info = response.data.data.paint_info
+				// console.log(response.data.paint_title)
+				this.painting.paint_title = response.data.paint_title
+				this.painting.paint_url = response.data.paint_url
+				this.painting.paint_info = response.data.paint_info
 			})
 			console.log(this.painting.paint_title)
 		},

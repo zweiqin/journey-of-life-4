@@ -635,15 +635,15 @@ export default {
 		init() {
 			listCatAndBrand().then((response) => {
 				this.getList()
-				this.categoryList = response.data.data.categoryList
-				this.brandList = response.data.data.brandList
+				this.categoryList = response.data.categoryList
+				this.brandList = response.data.brandList
 			})
 		},
 		getList() {
 			this.listLoading = true
 			listGoods(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -662,28 +662,27 @@ export default {
 		},
 		getSelectedGood(row) {
 			const goodsId = row.id
-			detailGoods(goodsId).then((response) => {
-				this.goods = response.data.data.goods
+			detailGoods({ id: goodsId }).then((response) => {
+				this.goods = response.data.goods
 				this.goods.id = null
 				this.goods.isAppoint = true
 				this.goods.timeType = 1
-				this.specifications = response.data.data.specifications
-				this.products = response.data.data.products
-				this.attributes = response.data.data.attributes
-				this.categoryIds = response.data.data.categoryIds
-
+				this.specifications = response.data.specifications
+				this.products = response.data.products
+				this.attributes = response.data.attributes
+				this.categoryIds = response.data.categoryIds
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
 					this.galleryFileList.push({
 						url: this.common.seamingImgUrl(this.goods.gallery[i])
 					})
 				}
-				const keywords = response.data.data.goods.keywords
+				const keywords = response.data.goods.keywords
 				if (keywords !== null) {
 					this.keywords = keywords.split(',')
 				}
 				listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
-					this.goodsCouponsList = response.data.data.items.map((item) => ({
+					this.goodsCouponsList = response.data.items.map((item) => ({
 						value: item.id,
 						label: item.name,
 						startTime: item.startTime,

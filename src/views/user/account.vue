@@ -171,8 +171,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			fetchList(this.listQuery).then((response) => {
-				this.list = response.data.data.traceList
-				this.total = response.data.data.total
+				this.list = response.data.traceList
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {

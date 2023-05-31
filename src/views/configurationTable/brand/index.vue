@@ -453,7 +453,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员') {
 						this.getList()
 						this.init()
 					} else {
@@ -464,8 +464,8 @@ export default {
 		},
 		init() {
 			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
+				this.categoryList = response.data.categoryList
+				this.adminList = response.data.adminList
 				// 获取门店类型
 				this.getTypeOption()
 			})
@@ -474,7 +474,7 @@ export default {
 		},
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
-				this.typeOptions = response.data.data
+				this.typeOptions = response.data
 			})
 				.catch(() => {
 					this.typeOptions = []
@@ -484,8 +484,8 @@ export default {
 			this.listLoading = true
 			listBrand(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -545,8 +545,8 @@ export default {
 		handleCreate() {
 			this.bgUrlList = []
 			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
+				this.categoryList = response.data.categoryList
+				this.adminList = response.data.adminList
 			})
 				.catch(() => {
 				})
@@ -559,8 +559,8 @@ export default {
 		},
 		handleUpdate(row) {
 			listCatAndAdmin(row.id).then((response) => {
-				this.categoryList = response.data.data.categoryList
-				this.adminList = response.data.data.adminList
+				this.categoryList = response.data.categoryList
+				this.adminList = response.data.adminList
 			})
 				.catch(() => {
 				})

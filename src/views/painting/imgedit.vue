@@ -73,10 +73,10 @@ export default {
 			this.img_id = this.$route.query.img_id
 			this.img.paint_id = this.$route.query.paint_id
 			listDetailPicture(this.img_id).then((response) => {
-				// console.log(response.data.data.img_title)
-				this.img.img_title = response.data.data.img_title
-				this.img.img_url = response.data.data.img_url
-				this.img.img_info = response.data.data.img_info
+				// console.log(response.data.img_title)
+				this.img.img_title = response.data.img_title
+				this.img.img_url = response.data.img_url
+				this.img.img_info = response.data.img_info
 			})
 			console.log(this.img.img_title)
 		},

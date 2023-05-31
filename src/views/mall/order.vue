@@ -269,8 +269,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			listOrder(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -281,7 +281,7 @@ export default {
 		},
 		getListShipChannel() {
 			listShipChannel().then((response) => {
-				this.shipChannelList = response.data.data.shipChannelList
+				this.shipChannelList = response.data.shipChannelList
 			})
 		},
 		handleFilter() {
@@ -290,7 +290,7 @@ export default {
 		},
 		handleDetail(row) {
 			detailOrder(row.id).then((response) => {
-				this.orderDetail = response.data.data
+				this.orderDetail = response.data
 			})
 			this.orderDialogVisible = true
 		},

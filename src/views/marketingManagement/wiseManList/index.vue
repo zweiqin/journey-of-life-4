@@ -460,7 +460,7 @@ export default {
 				lazyLoad(node, resolve) {
 					const { level } = node
 					listSubRegion({ id: level === 0 ? 0 : node.data.id }).then((response) => {
-						resolve(response.data.data.map((item) => ({
+						resolve(response.data.map((item) => ({
 							id: item.id,
 							value: item.code,
 							label: level === 2 ? `${item.name}（${item.code}）` : item.name,
@@ -595,7 +595,7 @@ export default {
 		this.getList()
 		fetchList({ page: 1, limit: 99999, username: undefined, mobile: undefined, sort: 'add_time', order: 'desc' })
 			.then((response) => {
-				this.userFetchlist = response.data.data.items || []
+				this.userFetchlist = response.data.items || []
 			})
 			.catch(() => {})
 	},
@@ -604,8 +604,8 @@ export default {
 			this.listLoading = true
 			this.listQuery.region = this.regionArr[2]
 			dtsTalentList(this.listQuery).then((response) => {
-				this.list = response.data.data.list
-				this.total = response.data.data.total
+				this.list = response.data.list
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -631,7 +631,7 @@ export default {
 				dtsTalentDatail: []
 			}
 			await dtsTalentQueryDetail({ id: row.id }).then((response) => {
-				this.dialogDetail = response.data.data
+				this.dialogDetail = response.data
 				this.dialogDetail.dtsTalentDatail = this.dialogDetail.dtsTalentDatail.map((item) => ({
 					...item,
 					caseUrl: item.caseUrl ? item.caseUrl.substring(1, item.caseUrl.length - 1).split(',')
@@ -767,10 +767,10 @@ export default {
 			this.resetFormService()
 			this.dataFormService = Object.assign(this.dataFormService, row)
 			await dtsTalentDatailList({ id: row.id }).then((response) => {
-				// { ...response.data.data, caseUrl: response.data.data.caseUrl ? JSON.stringify(response.data.data.caseUrl) : [], productUrl: response.data.data.productUrl ? JSON.stringify(response.data.data.productUrl) : [] }
+				// { ...response.data, caseUrl: response.data.caseUrl ? JSON.stringify(response.data.caseUrl) : [], productUrl: response.data.productUrl ? JSON.stringify(response.data.productUrl) : [] }
 				// imageUrl: `[${this.images.map((item) => `'${item}'`).join(',')}]`,
 				// scope.row.caseUrl.substring(1, scope.row.caseUrl.length - 1).split(',').map((section) => section.substring(1, section.length - 1))
-				this.dataFormService.dtsTalentDatail = response.data.data.map((item) => ({
+				this.dataFormService.dtsTalentDatail = response.data.map((item) => ({
 					...item,
 					caseUrl: item.caseUrl ? item.caseUrl.substring(1, item.caseUrl.length - 1).split(',')
 						.map((section) => section.substring(1, section.length - 1)) : [],

@@ -270,7 +270,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					this.isAdmin = response.data.data.roles[0] === '超级管理员'
+					this.isAdmin = response.data.roles[0] === '超级管理员'
 					if (this.isAdmin) {
 						this.getList()
 					} else {
@@ -283,8 +283,8 @@ export default {
 			this.listLoading = true
 			listStore(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -305,8 +305,8 @@ export default {
 				this.listIdQuery.brandId = id
 			}
 			listMember(this.listIdQuery).then((response) => {
-				this.$set(this.listId, id, response.data.data.items)
-				this.$set(this.totalId, id, response.data.data.total)
+				this.$set(this.listId, id, response.data.items)
+				this.$set(this.totalId, id, response.data.total)
 				this.listIdLoading = false
 			})
 				.catch(() => {

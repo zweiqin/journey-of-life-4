@@ -148,8 +148,8 @@ export default {
 			this.listLoading = true
 			listRole(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -182,7 +182,7 @@ export default {
 				if (valid) {
 					createRole(this.dataForm)
 						.then((response) => {
-							this.list.unshift(response.data.data)
+							this.list.unshift(response.data)
 							this.dialogFormVisible = false
 							this.$notify.success({
 								title: '成功',
@@ -255,8 +255,8 @@ export default {
 			this.permissionForm.roleId = row.id
 			getPermission({ roleId: row.id })
 				.then((response) => {
-					this.systemPermissions = response.data.data.systemPermissions
-					this.assignedPermissions = response.data.data.assignedPermissions
+					this.systemPermissions = response.data.systemPermissions
+					this.assignedPermissions = response.data.assignedPermissions
 				})
 		},
 		updatePermission() {

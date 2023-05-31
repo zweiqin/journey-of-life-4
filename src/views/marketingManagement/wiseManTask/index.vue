@@ -277,7 +277,7 @@ export default {
 				lazyLoad(node, resolve) {
 					const { level } = node
 					listSubRegion({ id: level === 0 ? 0 : node.data.id }).then((response) => {
-						resolve(response.data.data.map((item) => ({
+						resolve(response.data.map((item) => ({
 							id: item.id,
 							value: item.code,
 							label: level === 2 ? `${item.name}（${item.code}）` : item.name,
@@ -378,8 +378,8 @@ export default {
 			this.listLoading = true
 			this.listQuery.region = this.regionArr[2]
 			talentTaskList(this.listQuery).then((response) => {
-				this.list = response.data.data.list
-				this.total = response.data.data.total
+				this.list = response.data.list
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -389,7 +389,7 @@ export default {
 				})
 			listBrand({ page: 1, limit: 9999, sort: 'add_time', order: 'desc' })
 				.then((response) => {
-					this.brandList = response.data.data.items
+					this.brandList = response.data.items
 				})
 				.catch((response) => {
 					this.$notify.error({
@@ -418,7 +418,7 @@ export default {
 		},
 		handleDetail(row) {
 			// talentTaskInfo({ id: row.id }).then((response) => {
-			// 	this.dialogDetail = response.data.data
+			// 	this.dialogDetail = response.data
 			// })
 			this.dialogDetail = Object.assign({}, row)
 			this.detailDialogVisible = true

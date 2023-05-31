@@ -221,10 +221,10 @@ export default {
 			}
 
 			const goodsId = this.$route.query.id
-			detailGoods(goodsId).then((response) => {
-				this.goods = response.data.data.goods
-				this.specifications = response.data.data.specifications
-				this.products = response.data.data.products
+			detailGoods({ id: goodsId }).then((response) => {
+				this.goods = response.data.goods
+				this.specifications = response.data.specifications
+				this.products = response.data.products
 
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {

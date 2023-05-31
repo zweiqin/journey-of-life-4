@@ -165,8 +165,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			fetchList(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -185,7 +185,7 @@ export default {
 				settlementRate: undefined
 			}
 			detailApprove(row.id).then((response) => {
-				this.agencyDetail = response.data.data
+				this.agencyDetail = response.data
 			})
 			this.detailDialogVisible = true
 		},

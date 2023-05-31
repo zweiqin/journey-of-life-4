@@ -668,7 +668,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					this.isBrand = response.data.data.roles[0] === '门店'
+					this.isBrand = response.data.roles[0] === '门店'
 				})
 				.catch()
 		},
@@ -676,11 +676,11 @@ export default {
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				this.goods.brandId = this.$route.query.brandId
 				listCatAndBrand(this.goods.brandId).then((response) => {
-					this.categoryList = response.data.data.categoryList
-					this.brandList = response.data.data.brandList
+					this.categoryList = response.data.categoryList
+					this.brandList = response.data.brandList
 				})
 				listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
-					this.goodsCouponsList = response.data.data.items.map((item) => ({
+					this.goodsCouponsList = response.data.items.map((item) => ({
 						value: item.id,
 						label: item.name,
 						startTime: item.startTime,
@@ -689,11 +689,11 @@ export default {
 				})
 			} else {
 				listCatAndBrand().then((response) => {
-					this.categoryList = response.data.data.categoryList
-					this.brandList = response.data.data.brandList
+					this.categoryList = response.data.categoryList
+					this.brandList = response.data.brandList
 				})
 				listCoupon({ type: 3, status: 0 }).then((response) => {
-					this.goodsCouponsList = response.data.data.items.map((item) => ({
+					this.goodsCouponsList = response.data.items.map((item) => ({
 						value: item.id,
 						label: item.name,
 						startTime: item.startTime,

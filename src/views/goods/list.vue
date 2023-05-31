@@ -163,9 +163,9 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员') {
 						this.$router.push({ name: 'brandGoodsList' })
-					} else if (response.data.data.roles[0] === '门店' || response.data.data.roles[0] === '营销策划') {
+					} else if (response.data.roles[0] === '门店' || response.data.roles[0] === '营销策划') {
 						this.getList()
 					}
 				})
@@ -174,8 +174,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			listGoods(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {

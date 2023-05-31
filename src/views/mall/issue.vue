@@ -134,8 +134,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			listIssue(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -167,7 +167,7 @@ export default {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
 					createIssue(this.dataForm).then((response) => {
-						this.list.unshift(response.data.data)
+						this.list.unshift(response.data)
 						this.dialogFormVisible = false
 						this.$notify.success({
 							title: '成功',

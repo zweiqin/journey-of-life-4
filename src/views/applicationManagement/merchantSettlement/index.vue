@@ -391,7 +391,7 @@ export default {
 	created() {
 		this.getList()
 		roleOptions().then((response) => {
-			this.roleOptions = response.data.data
+			this.roleOptions = response.data
 		})
 	},
 	methods: {
@@ -419,9 +419,9 @@ export default {
 					//   message: '查询成功',
 					//   type: 'success'
 					// })
-					this.list = response.data.data.items
+					this.list = response.data.items
 					console.log(this.list)
-					this.total = response.data.data.total
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -479,7 +479,7 @@ export default {
 		//       data.dtsSalesman = this.salesmanDataForm
 		//       listAdd(data)
 		//         .then(response => {
-		//           // this.list.unshift(response.data.data.dtsAdmin)
+		//           // this.list.unshift(response.data.dtsAdmin)
 		//           this.getList()
 		//           this.dialogFormVisible = false
 		//           this.$notify.success({
@@ -501,8 +501,8 @@ export default {
 		//     .then(response => {
 		//       this.resetForm()
 		//       this.dataForm = Object.assign({}, row)
-		//       if (response.data.data !== '未找到对应业务员') {
-		//         this.salesmanDataForm = response.data.data
+		//       if (response.data !== '未找到对应业务员') {
+		//         this.salesmanDataForm = response.data
 		//       }
 		//     })
 		//     .catch(response => {

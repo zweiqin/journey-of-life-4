@@ -58,8 +58,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			listCollect(this.listQuery).then((response) => {
-				this.list = response.data.data.items
-				this.total = response.data.data.total
+				this.list = response.data.items
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {

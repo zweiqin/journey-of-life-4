@@ -408,7 +408,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.data.roles[0] === '高级业务员') {
+					if (response.data.roles[0] === '高级业务员') {
 						this.$router.push({ name: 'subordinateManagement' })
 					} else {
 						this.getList()
@@ -420,9 +420,9 @@ export default {
 			this.listLoading = true
 			listGet(this.listQuery)
 				.then((response) => {
-					// console.log(response.data.data.items)
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					// console.log(response.data.items)
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -480,7 +480,7 @@ export default {
 				if (valid) {
 					listAdd(this.dataForm)
 						.then((response) => {
-							this.list.unshift(response.data.data)
+							this.list.unshift(response.data)
 							this.dialogFormVisible = false
 							this.$notify.success({
 								title: '成功',
@@ -561,7 +561,7 @@ export default {
 			}
 			listGet(data)
 				.then((response) => {
-					this.AdSalesmanOptions = response.data.data.items
+					this.AdSalesmanOptions = response.data.items
 				})
 				.catch((response) => {
 					this.$notify.error({
@@ -573,7 +573,7 @@ export default {
 		getbrand() {
 			brandGet()
 				.then((response) => {
-					this.brandOptions = response.data.data.items
+					this.brandOptions = response.data.items
 				})
 				.catch((response) => {
 					this.$notify.error({
@@ -585,8 +585,8 @@ export default {
 		userGet(condition) {
 			userGet({ condition })
 				.then((response) => {
-					if (response.data.data.items !== null) {
-						this.dataForm.nickname = response.data.data.items[0].nickname
+					if (response.data.items !== null) {
+						this.dataForm.nickname = response.data.items[0].nickname
 					}
 				})
 				.catch((response) => {

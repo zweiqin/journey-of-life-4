@@ -292,9 +292,9 @@ export default {
 			this.listLoading = true
 			listGet(this.listQuery)
 				.then((response) => {
-					// console.log(response.data.data.items)
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					// console.log(response.data.items)
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -357,7 +357,7 @@ export default {
 				if (valid) {
 					// listAdd(this.dataForm)
 					//   .then(response => {
-					//     this.list.unshift(response.data.data)
+					//     this.list.unshift(response.data)
 					//     this.dialogFormVisible = false
 					//     this.$notify.success({
 					//       title: '成功',

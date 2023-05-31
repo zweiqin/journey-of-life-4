@@ -388,9 +388,9 @@ export default {
 			this.listLoading = true
 			listGet(this.listQuery).then((response) => {
 				// 设置列表数据
-				this.list = response.data.data.items
+				this.list = response.data.items
 				// 设置列表页
-				this.total = response.data.data.total
+				this.total = response.data.total
 				// 列表查询状态
 				this.listLoading = false
 			})
@@ -419,20 +419,20 @@ export default {
 			this.listQueryId.id = salesmanid
 			adminGet(this.listQueryId).then((response) => {
 				// 设置列表数据
-				if (response.data.data === '当前业务员未绑定任何会员') {
+				if (response.data === '当前业务员未绑定任何会员') {
 					this.$set(this.listId, salesmanid + 'a', [])
 				} else {
-					var arr = response.data.data.items
+					var arr = response.data.items
 					for (let i = 0; i < arr.length; i++) {
-						this.$set(arr[i], 'salesmanId', response.data.data.salesmanId)
+						this.$set(arr[i], 'salesmanId', response.data.salesmanId)
 					}
 					this.$set(this.listId, salesmanid + 'a', arr)
 				}
 				// 设置列表页
-				this.$set(this.IdTotal, salesmanid + 'a', response.data.data.total)
-				this.$set(this.deleteDataFormListTotal, salesmanid + 'a', response.data.data.total)
-				// this.IdTotal = response.data.data.total
-				// this.deleteDataFormListTotal = response.data.data.total
+				this.$set(this.IdTotal, salesmanid + 'a', response.data.total)
+				this.$set(this.deleteDataFormListTotal, salesmanid + 'a', response.data.total)
+				// this.IdTotal = response.data.total
+				// this.deleteDataFormListTotal = response.data.total
 				// 列表查询状态
 				this.listIdLoading = false
 			})
@@ -520,9 +520,9 @@ export default {
 		GetUnbindingStore() {
 			this.dataFormListLoading = true
 			idGet(this.dataFormListQuery).then((response) => {
-				this.$set(this.addDataFormListTotal, this.bindingDataForm.salesmanId + 'a', response.data.data.total)
-				// this.$set(this.$data, 'addDataFormListTotal', response.data.data.total)
-				this.$set(this.$data, 'dataFormList', response.data.data.items)
+				this.$set(this.addDataFormListTotal, this.bindingDataForm.salesmanId + 'a', response.data.total)
+				// this.$set(this.$data, 'addDataFormListTotal', response.data.total)
+				this.$set(this.$data, 'dataFormList', response.data.items)
 				this.dataFormListLoading = false
 			})
 				.catch((response) => {
@@ -533,8 +533,8 @@ export default {
 					// 清空列表数据
 					this.dataFormList = []
 					// 清空列表页数
-					this.$set(this.addDataFormListTotal, this.bindingDataForm.salesmanId + 'a', response.data.data.total)
-					// this.$set(this.$data, 'addDataFormListTotal', response.data.data.total)
+					this.$set(this.addDataFormListTotal, this.bindingDataForm.salesmanId + 'a', response.data.total)
+					// this.$set(this.$data, 'addDataFormListTotal', response.data.total)
 					// 列表查询状态
 					this.dataFormListLoading = false
 				})

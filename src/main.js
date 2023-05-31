@@ -16,6 +16,13 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import LemonMessageOrder from '@/views/layout/components/Chat/components/LemonMessageOrder'
+import LemonMessageGoods from '@/views/layout/components/Chat/components/LemonMessageGoods'
+
+// import VideoPlayer from "vue-video-player";
+import LemonIMUI from 'lemon-imui'
+import 'lemon-imui/dist/index.css'
+
 import i18n from './lang' // Internationalization
 import './icons' // icon
 import './permission' // permission control
@@ -43,12 +50,16 @@ window._AMapSecurityConfig = {
 //   size: Cookies.get('size') || 'medium', // set element-ui default size
 //   i18n: (key, value) => i18n.t(key, value)
 // })
+Vue.use(LemonIMUI)
 Vue.directive('permission', permission)
 
 // register global utility filters.
 Object.keys(filters).forEach((key) => {
 	Vue.filter(key, filters[key])
 })
+
+Vue.component(LemonMessageOrder.name, LemonMessageOrder)
+Vue.component(LemonMessageGoods.name, LemonMessageGoods)
 
 Vue.config.productionTip = false
 
@@ -84,10 +95,10 @@ new Vue({
 					formData.append('file', blobInfo.blob())
 					createStorage(formData).then((res) => {
 						// 修改拼接key
-						success(process.env.BASE_API + '/storage/fetch/' + res.data.data.url)
+						success(process.env.BASE_API + '/storage/fetch/' + res.data.url)
 						// 没修改url之前
-						// success(res.data.data.url)
-						// console.log(process.env.BASE_API + '/storage/fetch/' + res.data.data.url)
+						// success(res.data.url)
+						// console.log(process.env.BASE_API + '/storage/fetch/' + res.data.url)
 					})
 						.catch(() => {
 							failure('上传失败，请重新上传')

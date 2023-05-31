@@ -75,12 +75,12 @@ export default {
 		getList() {
 			this.listLoading = true
 			listGetPicture(this.listQueryImg).then((response) => {
-				this.list = response.data.data.items
+				this.list = response.data.items
 				this.list = this.list.filter(function (item) {
 					return item.paint_id !== 1
 				})
 				// console.log(this.list)
-				this.total = response.data.data.total
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {

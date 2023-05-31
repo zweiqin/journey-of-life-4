@@ -207,7 +207,7 @@ export default {
 
 		// roleOptions()
 		//   .then(response => {
-		//     this.roleOptions = response.data.data
+		//     this.roleOptions = response.data
 		//   })
 	},
 	methods: {
@@ -221,7 +221,7 @@ export default {
 		},
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
-				this.typeOptions = response.data.data
+				this.typeOptions = response.data
 				this.typeLevel1 = XeUtils.filterTree(this.typeOptions, (item) => item.level === '1')
 				this.typeLevel2 = XeUtils.filterTree(this.typeOptions, (item) => item.level === '2')
 			})
@@ -233,8 +233,8 @@ export default {
 			this.listLoading = true
 			listGet(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -288,14 +288,14 @@ export default {
 				.then((response) => {
 					this.dataForm = Object.assign(this.dataForm, {
 						original: '',
-						id: response.data.data.id,
+						id: response.data.id,
 						storeType: {
-							id: response.data.data.id,
-							storeName: response.data.data.storeName,
-							picUrl: response.data.data.picUrl
+							id: response.data.id,
+							storeName: response.data.storeName,
+							picUrl: response.data.picUrl
 						}
 					})
-					const storeTypeItem = XeUtils.findTree(this.typeOptions, (i) => i.id === response.data.data.id)
+					const storeTypeItem = XeUtils.findTree(this.typeOptions, (i) => i.id === response.data.id)
 					if (storeTypeItem !== undefined && Array.isArray(storeTypeItem.nodes)) {
 						this.dataForm.original = storeTypeItem.nodes.map((i) => i.storeName).join('/')
 						if (storeTypeItem.nodes.length === 1) {

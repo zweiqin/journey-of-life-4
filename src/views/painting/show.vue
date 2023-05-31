@@ -79,14 +79,14 @@ export default {
 		getList() {
 			this.listLoading = true
 			listGet(this.listQuery).then((response) => {
-				this.list = response.data.data.items
+				this.list = response.data.items
 				this.banner = this.list[0]
 				this.listQueryImg.paint_id = this.banner.paint_id
 				this.getListImg()
 				this.list.splice(0, 1)
 				// console.log(this.listQueryImg.paint_id)
-				// console.log(response.data.data.items)
-				this.total = response.data.data.total
+				// console.log(response.data.items)
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -98,8 +98,8 @@ export default {
 		getListImg() {
 			this.listLoading2 = true
 			listGetPicture(this.listQueryImg).then((response) => {
-				this.banner = response.data.data.items
-				// console.log(response.data.data.items)
+				this.banner = response.data.items
+				// console.log(response.data.items)
 				this.listLoading2 = false
 			})
 				.catch(() => {

@@ -411,8 +411,8 @@ export default {
 		getMemberLevelList() {
 			listGet()
 				.then((response) => {
-					for (let i = 0; i < response.data.data.items.length; i++) {
-						this.$set(this.memberLevel, response.data.data.items[i].id, response.data.data.items[i].name)
+					for (let i = 0; i < response.data.items.length; i++) {
+						this.$set(this.memberLevel, response.data.items[i].id, response.data.items[i].name)
 					}
 					this.getList()
 				})
@@ -424,8 +424,8 @@ export default {
 			this.listLoading = true
 			memberListGet(this.listQuery)
 				.then((response) => {
-					this.list = response.data.data.items
-					this.total = response.data.data.total
+					this.list = response.data.items
+					this.total = response.data.total
 					this.listLoading = false
 				})
 				.catch(() => {
@@ -437,7 +437,7 @@ export default {
 		getStoreTypeList() {
 			listDtsStoreType()
 				.then((response) => {
-					this.TypeOptions = response.data.data
+					this.TypeOptions = response.data
 				})
 				.catch((error) => {
 					this.$message({
@@ -458,8 +458,8 @@ export default {
 			this.storeDataForm.applicationType = 1
 			InfoGet({ userId: row.id, applicationType: 1 })
 				.then((response) => {
-					if (response.data.data) {
-						this.storeDataForm = Object.assign({}, response.data.data)
+					if (response.data) {
+						this.storeDataForm = Object.assign({}, response.data)
 					}
 				})
 				.catch((response) => {
@@ -480,8 +480,8 @@ export default {
 			this.marketDataForm.applicationType = 2
 			InfoGet({ userId: row.id, applicationType: 2 })
 				.then((response) => {
-					if (response.data.data) {
-						this.marketDataForm = Object.assign({}, response.data.data)
+					if (response.data) {
+						this.marketDataForm = Object.assign({}, response.data)
 					}
 				})
 				.catch((response) => {

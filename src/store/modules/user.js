@@ -10,6 +10,7 @@ const user = {
 		name: '',
 		avatar: '',
 		userId: '',
+		personId: '',
 		brandId: '',
 		introduction: '',
 		roles: [],
@@ -44,6 +45,9 @@ const user = {
 		SET_USERID: (state, userId) => {
 			state.userId = userId
 		},
+		SET_PERSONID: (state, personId) => {
+			state.personId = personId
+		},
 		SET_BRANDID: (state, brandId) => {
 			state.brandId = brandId
 		},
@@ -64,7 +68,7 @@ const user = {
 			const uuid = userInfo.uuid
 			return new Promise((resolve, reject) => {
 				loginByUsername(username, password, code, uuid).then((response) => {
-					const token = response.data.data
+					const token = response.data
 					commit('SET_TOKEN', token)
 					setToken(token)
 					resolve()
@@ -90,7 +94,7 @@ const user = {
 				// 	'avatar': 'http://bus.deyisoft.cn:11111/dts-admin-api/admin/storage/fetch/28frxec24ilpqbgq4fgy.png',
 				// 	'userId': null
 				// } } }
-					const data = response.data.data
+					const data = response.data
 					if (data.perms && data.perms.length > 0) { // 验证返回的perms是否是一个非空数组
 						commit('SET_PERMS', data.perms)
 					} else {
@@ -100,6 +104,7 @@ const user = {
 					commit('SET_NAME', data.name)
 					commit('SET_AVATAR', data.avatar)
 					commit('SET_USERID', data.userId)
+					commit('SET_PERSONID', data.id)
 					commit('SET_BRANDID', data.brandId)
 					commit('SET_INTRODUCTION', data.introduction)
 					resolve(response)
@@ -160,6 +165,7 @@ const user = {
 					commit('SET_PERMS', data.perms)
 					commit('SET_NAME', data.name)
 					commit('SET_AVATAR', data.avatar)
+					commit('SET_PERSONID', data.personId)
 					commit('SET_INTRODUCTION', data.introduction)
 					dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
 					resolve()

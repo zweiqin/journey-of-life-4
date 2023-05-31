@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
 			NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
 		} else if (store.getters.perms.length === 0) { // 判断当前用户是否已拉取完user_info信息
 			store.dispatch('GetUserInfo').then((res) => { // 拉取user_info
-				const perms = res.data.data.perms // note: perms must be a array! such as: ['GET /aaa','POST /bbb']
+				const perms = res.data.perms // note: perms must be a array! such as: ['GET /aaa','POST /bbb']
 				store.dispatch('GenerateRoutes', { perms }).then(() => { // 根据perms权限生成可访问的路由表
 					router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 					next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record

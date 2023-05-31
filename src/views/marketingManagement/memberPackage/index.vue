@@ -285,7 +285,7 @@ export default {
 		this.getList()
 		listRole({ page: 1, limit: 99999 })
 			.then((response) => {
-				this.roleList = response.data.data.items
+				this.roleList = response.data.items
 			})
 			.catch(() => {
 				this.roleList = []
@@ -295,8 +295,8 @@ export default {
 		getList() {
 			this.listLoading = true
 			packageMemberList(this.listQuery).then((response) => {
-				this.list = response.data.data.limit
-				this.total = response.data.data.total
+				this.list = response.data.limit
+				this.total = response.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -407,8 +407,8 @@ export default {
 			this.serviceTotal = 0
 			this.serviceListLoading = true
 			await packageServiceList(this.serviceQuery).then((response) => {
-				this.dataFormService.serviceList = response.data.data.limit
-				this.serviceTotal = response.data.data.total
+				this.dataFormService.serviceList = response.data.limit
+				this.serviceTotal = response.data.total
 				this.serviceListLoading = false
 			})
 				.catch(() => {

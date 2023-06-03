@@ -1,4 +1,5 @@
 <template>
+	<!-- 营销策划师申请 -->
 	<div class="app-container">
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
@@ -94,9 +95,9 @@
 																: scope.row.status == 4
 																	? '已付款'
 																	: scope.row.status == 5
-																		? '已驳回'
+																		? '已退回申请'
 																		: scope.row.status == 6
-																			? '已创建账户'
+																			? '已通话'
 																			: ''
 							}}
 						</el-tag>
@@ -164,7 +165,7 @@
 		/>
 		<el-dialog
 			v-if="dialogFormitem != null"
-			:title="dialogFormitem.name + '-申请表内容'"
+			:title="dialogFormitem.nickname + '-申请表内容'"
 			:visible.sync="dialogFormVisible"
 			width="80%"
 		>
@@ -172,9 +173,9 @@
 				<el-descriptions-item label="申请人ID">
 					{{ dialogFormitem.userId }}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="申请人">
-					{{ dialogFormitem.areaUser }}
-					</el-descriptions-item> -->
+				<el-descriptions-item label="申请人">
+					{{ dialogFormitem.name }}
+				</el-descriptions-item>
 				<el-descriptions-item label="申请表类型">
 					{{
 						dialogFormitem.applicationType == 1
@@ -190,34 +191,20 @@
 				<el-descriptions-item label="申请表ID">
 					{{ dialogFormitem.id }}
 				</el-descriptions-item>
-				<el-descriptions-item label="申请的系统账户名">
+				<el-descriptions-item label="申请的系统账户名  /  ID">
 					{{
-						dialogFormitem.applicationType == 1
-							? dialogFormitem.username
-							: dialogFormitem.phone
+						dialogFormitem.applicationType == 1 ? dialogFormitem.userId ? dialogFormitem.userId : dialogFormitem.name : dialogFormitem.phone
 					}}
 				</el-descriptions-item>
 				<!-- <el-descriptions-item label="系统账户头像">
 					<img v-if="dialogFormitem.avatar" :src="dialogFormitem.avatar" width="40" />
 					</el-descriptions-item> -->
 				<!-- 门店 -->
-				<el-descriptions-item label="门店名">
-					{{ dialogFormitem.name }}
-				</el-descriptions-item>
-				<el-descriptions-item label="门店类型">
-					{{ dialogFormitem.methods }}
-				</el-descriptions-item>
 				<el-descriptions-item label="门店地址">
 					{{ dialogFormitem.address }}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="开门时间">
-					{{ dialogFormitem.createTime }}
-					</el-descriptions-item> -->
-				<el-descriptions-item label="信息更改修改时间">
+				<el-descriptions-item label="审核修改时间">
 					{{ dialogFormitem.updateTime }}
-				</el-descriptions-item>
-				<el-descriptions-item label="门店简介">
-					{{ dialogFormitem.desc }}
 				</el-descriptions-item>
 				<!-- <el-descriptions-item label="入驻说明" v-if="dialogFormitem.applicationType == 1">
 					{{ dialogFormitem.latitude }}
@@ -240,16 +227,6 @@
 				>
 					退回
 				</el-button>
-				<!-- <el-button
-					v-if="
-					scope.row.status == 5 ||
-					scope.row.status == 3 ||
-					scope.row.status == 2
-					"
-					type="success"
-					@click="sign(dialogFormitem, '注册')"
-					>注册</el-button
-					> -->
 			</div>
 		</el-dialog>
 	</div>
@@ -258,36 +235,46 @@
 <script>
 import {
 	upgradeRequestList,
-	upgradeRequestListOne,
-	upgradeRequestCareful
+	UpgradeRequestRegionalAgent
 } from '@/api/applicationManagement/merchantSettlement'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'MerchantSettlement',
 	components: { Pagination },
 	data() {
 		return {
 			list: [],
+			dialogFormVisible: true,
 			dialogFormitem: null,
-			dialogFormVisible: false,
 			total: 0,
 			roleOptions: null,
 			listLoading: true,
 			listQuery: {
 				page: 1,
 				size: 10,
-				type: 1
-				// name: null,
-				// phone: null,
-				// sort: 'add_time',
-				// order: 'desc'
+				type: 2,
+				name: null,
+				phone: null,
+				sort: 'add_time',
+				order: 'desc'
 			}
 		}
 	},
 	created() {
-		this.getListData()
+		upgradeRequestList({
+			page: this.listQuery.page,
+			size: this.listQuery.size,
+			type: this.listQuery.type
+		})
+			.then((res) => {
+				this.list = res.data.limit
+				this.total = res.data.total
+				this.listLoading = false
+			})
+			.catch((err) => {
+				console.log(err)
+			})
 	},
 	methods: {
 		handleFilter() {
@@ -329,10 +316,10 @@ export default {
 			)
 				.then(() => {
 					// 审核申请表
-					upgradeRequestCareful({
-						carefulId: row.id,
+					UpgradeRequestRegionalAgent({
 						status,
-						reason: ''
+						carefulId: row.id,
+						reason: '审核通过'
 					})
 						.then((response) => {
 							this.$message({
@@ -361,9 +348,6 @@ export default {
 </script>
 
 <style scoped>
-.app-container {
-  min-height: 100%;
-}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

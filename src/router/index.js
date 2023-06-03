@@ -1239,9 +1239,73 @@ export const asyncRouterMap = [
 				name: 'MerchantSettlement',
 				meta: {
 					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful', 'GET /admin/dtsUpgradeRequest/listOne'],
-					title: '商家入驻',
+					title: '会员商家入驻审核',
 					noCache: true
 				}
+			},
+			{
+				path: 'marketingPlannerApplication',
+				component: () => import('@/views/applicationManagement/marketingPlannerApplication'),
+				name: 'marketingPlannerApplication',
+				meta: {
+					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/marketing'],
+					title: '营销策划师申请审核',
+					noCache: true
+				}
+			},
+			{
+				path: 'regionalAgentApplication',
+				component: () => import('@/views/applicationManagement/regionalAgentApplication'),
+				name: 'regionalAgentApplication',
+				meta: {
+					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					title: '区域审核申请',
+					noCache: true
+				}
+			},
+			{
+				path: 'relationChain',
+				component: () => import('@/views/children'),
+				redirect: 'noredirect',
+				name: 'relationChain',
+				alwaysShow: true,
+				meta: {
+					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/marketing'],
+					title: '关系链',
+					noCache: true
+				},
+				children: [
+					{
+						path: 'administrativeBranch',
+						component: () => import('@/views/applicationManagement/relationChain/administrativeBranch'),
+						name: 'administrativeBranch',
+						meta: {
+							perms: ['GET /admin/dtsAdmin/administrationList', 'GET /admin/dtsAdmin/areaUserList'],
+							title: '行政-分公司',
+							noCache: true
+						}
+					},
+					{
+						path: 'businessSalesman',
+						component: () => import('@/views/applicationManagement/relationChain/businessSalesman'),
+						name: 'businessSalesman',
+						meta: {
+							perms: ['GET /admin/dtsAdmin/plannerList', 'GET /admin/dtsAdmin/businessUserList'],
+							title: '业务-营销员',
+							noCache: true
+						}
+					},
+					{
+						path: 'businessMerchant',
+						component: () => import('@/views/applicationManagement/relationChain/businessMerchant'),
+						name: 'businessMerchant',
+						meta: {
+							perms: ['GET /admin/dtsAdmin/plannerList', 'GET /admin/dtsAdmin/businessUserList'],
+							title: '业务-商户',
+							noCache: true
+						}
+					}
+				]
 			},
 			{
 				path: 'ShopUpCreate',

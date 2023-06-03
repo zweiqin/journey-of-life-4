@@ -1,4 +1,5 @@
 <template>
+	<!-- 营销策划师申请 -->
 	<div class="app-container">
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
@@ -94,7 +95,7 @@
 																: scope.row.status == 4
 																	? '已付款'
 																	: scope.row.status == 5
-																		? '已驳回'
+																		? '已退回申请'
 																		: scope.row.status == 6
 																			? '已创建账户'
 																			: ''
@@ -201,14 +202,11 @@
 					<img v-if="dialogFormitem.avatar" :src="dialogFormitem.avatar" width="40" />
 					</el-descriptions-item> -->
 				<!-- 门店 -->
-				<el-descriptions-item label="门店名">
+				<el-descriptions-item label="申请人姓名">
 					{{ dialogFormitem.name }}
 				</el-descriptions-item>
-				<el-descriptions-item label="门店类型">
+				<el-descriptions-item label="申请类型">
 					{{ dialogFormitem.methods }}
-				</el-descriptions-item>
-				<el-descriptions-item label="门店地址">
-					{{ dialogFormitem.address }}
 				</el-descriptions-item>
 				<!-- <el-descriptions-item label="开门时间">
 					{{ dialogFormitem.createTime }}
@@ -258,36 +256,46 @@
 <script>
 import {
 	upgradeRequestList,
-	upgradeRequestListOne,
-	upgradeRequestCareful
+	UpgradeRequestMarketing
 } from '@/api/applicationManagement/merchantSettlement'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'MerchantSettlement',
 	components: { Pagination },
 	data() {
 		return {
 			list: [],
+			dialogFormVisible: true,
 			dialogFormitem: null,
-			dialogFormVisible: false,
 			total: 0,
 			roleOptions: null,
 			listLoading: true,
 			listQuery: {
 				page: 1,
 				size: 10,
-				type: 1
-				// name: null,
-				// phone: null,
-				// sort: 'add_time',
-				// order: 'desc'
+				type: 0,
+				name: null,
+				phone: null,
+				sort: 'add_time',
+				order: 'desc'
 			}
 		}
 	},
 	created() {
-		this.getListData()
+		upgradeRequestList({
+			page: this.listQuery.page,
+			size: this.listQuery.size,
+			type: this.listQuery.type
+		})
+			.then((res) => {
+				this.list = res.data.limit
+				this.total = res.data.total
+				this.listLoading = false
+			})
+			.catch((err) => {
+				console.log(err)
+			})
 	},
 	methods: {
 		handleFilter() {
@@ -329,10 +337,10 @@ export default {
 			)
 				.then(() => {
 					// 审核申请表
-					upgradeRequestCareful({
-						carefulId: row.id,
+					UpgradeRequestMarketing({
 						status,
-						reason: ''
+						carefulId: row.id,
+						reason: '审核通过'
 					})
 						.then((response) => {
 							this.$message({
@@ -361,9 +369,6 @@ export default {
 </script>
 
 <style scoped>
-.app-container {
-  min-height: 100%;
-}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

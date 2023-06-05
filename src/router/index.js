@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-len */
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -326,6 +328,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/mall/order'),
 						name: 'order',
 						meta: {
+							// eslint-disable-next-line vue/max-len
 							perms: ['GET /admin/order/list', 'GET /admin/order/detail', 'POST /admin/order/refund', 'POST /admin/order/reply', 'POST /admin/order/ship', 'GET /admin/order/listShipChannel'],
 							title: '订单管理',
 							icon: 'nested',
@@ -990,6 +993,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/sys/role'),
 				name: 'role',
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['GET /admin/role/list', 'POST /admin/role/create', 'POST /admin/role/update', 'POST /admin/role/delete', 'GET /admin/role/permissions', 'POST /admin/role/permissions', 'GET /admin/role/read'],
 					title: '角色管理',
 					icon: 'qq',
@@ -1012,6 +1016,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/sys/SalesmanManagement'),
 				name: 'SalesmanManagement',
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/salesman/update', 'POST /admin/salesman/delete', 'GET /admin/salesman/bound', 'POST /admin/salesman/create', 'GET /admin/salesman/unBound', 'GET /admin/salesman/smlist'],
 					title: '业务员管理',
 					icon: 'logininfor',
@@ -1158,6 +1163,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/configurationTable/upgradeMoney'),
 				name: 'upgradeMoney',
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/upgradeMoney/update', 'POST /admin/upgradeMoney/delete', 'POST /admin/upgradeMoney/create', 'GET /admin/upgradeMoney/list', 'GET /admin/upgradeMoney/detail'],
 					title: '升级金额配置',
 					icon: '',
@@ -1191,6 +1197,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/configurationTable/brokerageInfo'),
 				name: 'brokerageInfo',
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/brokerageInfo/update', 'POST /admin/brokerageInfo/delete', 'POST /admin/brokerageInfo/create', 'GET /admin/brokerageInfo/list', 'GET /admin/brokerageInfo/detail'],
 					title: '佣金关系配置',
 					icon: '',
@@ -1230,6 +1237,7 @@ export const asyncRouterMap = [
 			title: '申请管理',
 			icon: 'log',
 			noCache: true,
+			// eslint-disable-next-line vue/max-len
 			perms: ['POST /admin/upRecord/list', 'POST /admin/userup/list', 'POST /admin/userup/manage', 'POST /admin/userup/signin', 'POST /admin/userup/userUpVip', 'POST /admin/userup/vipList', 'GET /admin/userup/pdlist']
 		},
 		children: [
@@ -1406,6 +1414,7 @@ export const asyncRouterMap = [
 					title: '业务员管理',
 					icon: '',
 					noCache: true,
+					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/brandSalesman/update', 'POST /admin/brandSalesman/delete', 'POST /admin/brandSalesman/create', 'GET /admin/brandSalesman/list', 'GET /admin/brandSalesman/detail', 'GET /admin/brandSalesman/bidList']
 				},
 				children: [
@@ -1491,6 +1500,7 @@ export const asyncRouterMap = [
 				path: 'bookGoods',
 				component: () => import('@/views/children'),
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/appoint/add', 'POST /admin/appoint/update', 'POST /admin/appoint/delete', 'GET /admin/appoint/list', 'POST /admin/appoint/onSale', 'POST /admin/appoint/unSale', 'GET /admin/appoint/detail'],
 					title: '商品预约',
 					icon: '',
@@ -1548,6 +1558,7 @@ export const asyncRouterMap = [
 				path: 'creditGoods',
 				component: () => import('@/views/children'),
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['GET /admin/integralGoods/detail', 'POST /admin/integralGoods/update', 'POST /admin/integralGoods/delete', 'POST /admin/integralGoods/create', 'GET /admin/integralGoods/list'],
 					title: '积分商品',
 					icon: '',
@@ -1824,6 +1835,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/marketingManagement/memberPackage'),
 				name: 'MemberPackage',
 				meta: {
+					// eslint-disable-next-line vue/max-len
 					perms: ['GET /admin/dtsPackageMember/memberList', 'POST /admin/rolePermission/add', 'POST /admin/dtsPackageMember/update', 'GET /admin/dtsPackageService/list', 'POST /admin/dtsPackageService/add', 'POST /admin/dtsPackageService/update'],
 					title: '会员套餐',
 					icon: '',

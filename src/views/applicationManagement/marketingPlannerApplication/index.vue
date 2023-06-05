@@ -51,7 +51,7 @@
 				<el-table-column align="center" label="电话号码" prop="username">
 					<template slot-scope="scope">
 						{{
-							scope.row.applicationType == 1
+							scope.row.applicationType === 1
 								? scope.row.username
 								: scope.row.phone
 						}}
@@ -76,28 +76,28 @@
 					<template slot-scope="scope">
 						<el-tag>
 							{{
-								scope.row.status == 0
+								scope.row.status === 0
 									? '待审核'
-									: scope.row.status == 1
+									: scope.row.status === 1
 										? '审核中'
-										: scope.row.status == -1
+										: scope.row.status === -1
 											? '未提交'
-											: scope.row.status == -2
+											: scope.row.status === -2
 												? '用户主动撤销'
-												: scope.row.status == -3
+												: scope.row.status === -3
 													? '已驳回'
-													: scope.row.status == -4
+													: scope.row.status === -4
 														? '注册流程失败'
-														: scope.row.status == 2
+														: scope.row.status === 2
 															? '已通过,等待付款'
-															: scope.row.status == 3
+															: scope.row.status === 3
 																? '已通话，等待付款'
-																: scope.row.status == 4
+																: scope.row.status === 4
 																	? '已付款'
-																	: scope.row.status == 5
+																	: scope.row.status === 5
 																		? '已退回申请'
-																		: scope.row.status == 6
-																			? '已创建账户'
+																		: scope.row.status === 6
+																			? '已完成审核'
 																			: ''
 							}}
 						</el-tag>
@@ -111,7 +111,7 @@
 				>
 					<template slot-scope="scope">
 						<el-button
-							v-if="scope.row.status == 0 ? true : false"
+							v-if="scope.row.status === 0 ? true : false"
 							v-permission="[ 'POST /admin/applicationManagement/update' ]"
 							type="primary"
 							@click="updateData(scope.row, 1, '开始审核')"
@@ -119,7 +119,7 @@
 							开始审核
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 1 ? true : false"
+							v-if="scope.row.status === 1 ? true : false"
 							v-permission="[ 'POST /admin/applicationManagement/update' ]"
 							type="primary"
 							size="mini"
@@ -128,7 +128,7 @@
 							查看
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 2 ? true : false"
+							v-if="scope.row.status === 2 ? true : false"
 							type="primary"
 							size="mini"
 							@click="updateData(scope.row, 6, '已致电')"
@@ -136,7 +136,7 @@
 							已致电
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 1 ? true : false"
+							v-if="scope.row.status === 1 ? true : false"
 							type="success"
 							size="mini"
 							@click="updateData(scope.row, 2, '通过')"
@@ -144,7 +144,7 @@
 							通过
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 1 ? true : false"
+							v-if="scope.row.status === 1 ? true : false"
 							v-permission="[ 'POST /admin/applicationManagement/update' ]"
 							type="danger"
 							size="mini"
@@ -164,7 +164,7 @@
 			@pagination="getListData"
 		/>
 		<el-dialog
-			v-if="dialogFormitem != null"
+			v-if="dialogFormitem !== null"
 			:title="dialogFormitem.name + '-申请表内容'"
 			:visible.sync="dialogFormVisible"
 			width="80%"
@@ -178,9 +178,9 @@
 					</el-descriptions-item> -->
 				<el-descriptions-item label="申请表类型">
 					{{
-						dialogFormitem.applicationType == 1
+						dialogFormitem.applicationType === 1
 							? '普通业务员'
-							: dialogFormitem.applicationType == 2
+							: dialogFormitem.applicationType === 2
 								? '高级业务员'
 								: '其他'
 					}}
@@ -193,7 +193,7 @@
 				</el-descriptions-item>
 				<el-descriptions-item label="申请的系统账户名">
 					{{
-						dialogFormitem.applicationType == 1
+						dialogFormitem.applicationType === 1
 							? dialogFormitem.username
 							: dialogFormitem.phone
 					}}
@@ -261,6 +261,7 @@ import {
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
+	// eslint-disable-next-line vue/match-component-file-name
 	name: 'MerchantSettlement',
 	components: { Pagination },
 	data() {

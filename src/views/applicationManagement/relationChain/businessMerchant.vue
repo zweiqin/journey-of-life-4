@@ -58,11 +58,12 @@
 					<template slot-scope="scope">
 						<el-button
 							v-permission="[ 'GET /admin/dtsAdmin/areaUserList' ]"
+							disabled
 							type="primary"
 							size="mini"
 							@click="checking(scope.row)"
 						>
-							查看
+							暂时无法查看
 						</el-button>
 					</template>
 				</el-table-column>
@@ -87,10 +88,8 @@
 
 <script>
 import {
-	getDtsAdminList,
-	getUserList,
-	upgradeRequestCareful
-} from '@/api/relationChain/administrativeBranch'
+	getBusinessList
+} from '@/api/relationChain/businessList'
 export default {
 	// eslint-disable-next-line vue/component-definition-name-casing, vue/match-component-file-name
 	name: 'administrativeBranch',
@@ -118,7 +117,7 @@ export default {
 	methods: {
 		getList() {
 			this.listLoading = true
-			getDtsAdminList(this.listQuery).then((response) => {
+			getBusinessList(this.listQuery).then((response) => {
 				this.list = response.data.limit
 				this.total = response.data.total
 				window.console.log(this.list)
@@ -127,11 +126,6 @@ export default {
 				.catch((err) => {
 					window.console.log(err)
 				})
-		},
-		checking(row) {
-			getUserList({ ...this.UserListQuery, areaid: 607 }).then((res) => {
-				window.console.log(res)
-			})
 		}
 	}
 }

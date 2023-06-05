@@ -10,7 +10,7 @@ export function getPlannerList(params) {
 
 export function getUserList(params) {
 	return request({
-		url: '/dtsAdmin/businessUserList',
+		url: 'dtsAdmin/businessUserList',
 		method: 'get',
 		params
 	})

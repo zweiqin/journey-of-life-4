@@ -41,6 +41,7 @@ service.interceptors.response.use((response) => {
 		})
 		return Promise.reject('error')
 	} else if (res.errno === 502) {
+		window.console.log(res.errno)
 		MessageBox.alert('系统内部错误，请联系管理员维护', '错误', {
 			confirmButtonText: '确定',
 			type: 'error'

@@ -750,7 +750,8 @@ export const asyncRouterMap = [
 				children: [
 					{
 						path: 'list',
-						component: () => import('@/views/painting/list'),
+						// component: () => import('@/views/painting/list'),
+						component: () => import('@/views/painting/newList'),
 						name: 'paintingList',
 						meta: {
 							perms: [ 'POST /admin/paintAlbum/delete' ],

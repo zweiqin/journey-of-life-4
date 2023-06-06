@@ -227,7 +227,6 @@
 
 				<el-form-item label="结束营业时间" prop="endTime">
 					<el-time-picker v-model="dataForm.endTime" placeholder="结束时间" value-format="HH:mm:ss" />
-
 				</el-form-item>
 
 				<el-form-item label="门店地址" prop="address">
@@ -306,6 +305,10 @@
 					</el-radio-group>
 				</el-form-item>
 
+				<el-form-item label="每次消费可得代金券" prop="simpleDesc">
+					<el-input v-model="dataForm.voucherNum" type="number" placeholder="请输入每次消费可得代金券" />
+				</el-form-item>
+
 				<el-form-item label="入驻说明" prop="explain">
 					<el-input v-model="dataForm.explain" placeholder="请输入入驻说明" />
 				</el-form-item>
@@ -377,6 +380,7 @@ export default {
 				balanceRatio: undefined,
 				enableLevel: undefined,
 				supportVoucher: undefined,
+				voucherNum: undefined,
 				logoUrl: undefined
 			},
 			dialogFormVisible: false,
@@ -524,6 +528,7 @@ export default {
 				balanceRatio: undefined,
 				enableLevel: undefined,
 				supportVoucher: undefined,
+				voucherNum: undefined,
 				logoUrl: undefined
 			}
 		},

@@ -1713,6 +1713,14 @@ export const asyncRouterMap = [
 					}
 				]
 			},
+			// !这里是优惠卷管理
+			{
+				path: 'preferentialManagement',
+				component: () => import('@/views/preferentialManagement/preferentialManagement.vue'),
+				meta: { title: '优惠卷管理', icon: '', noCache: true },
+				children: [
+				]
+			},
 			{
 				path: 'groupBooking',
 				alwaysShow: true,

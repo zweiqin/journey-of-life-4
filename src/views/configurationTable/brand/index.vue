@@ -317,7 +317,6 @@
 				<el-button v-else type="primary" @click="updateData">确定</el-button>
 			</div>
 		</el-dialog>
-
 	</div>
 </template>
 

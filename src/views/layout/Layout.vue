@@ -56,6 +56,7 @@ export default {
 		},
 		classObj() {
 			return {
+				// 控制class的出现或隐藏 从cookie中或取状态 1为false 0为true 由于加了!号因此结果再次倒转为1为true 0为false
 				hideSidebar: !this.sidebar.opened,
 				openSidebar: this.sidebar.opened,
 				withoutAnimation: this.sidebar.withoutAnimation,

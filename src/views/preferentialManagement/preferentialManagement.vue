@@ -90,7 +90,7 @@
 					class="filter-item"
 					type="primary"
 					icon="el-icon-edit"
-					@click="openFrom = true"
+					@click="ClearData"
 				>
 					添加优惠卷
 				</el-button>
@@ -100,7 +100,7 @@
 		<div v-show="isMerchant" v-tableHeight>
 			<el-table
 				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
-				border fit height="100%"
+				border fit height="90%"
 				highlight-current-row
 			>
 				<el-table-column align="center" min-width="30px" max-width="40px" label="门店ID" prop="brandId" sortable />
@@ -148,7 +148,7 @@
 					<template slot-scope="scope">
 						<el-button
 							v-permission="[ 'POST /admin/brand/update' ]" type="primary" size="mini"
-							@click="handleUpdate(scope.row)"
+							@click="UpdataFrom(scope.row)"
 						>
 							编辑
 						</el-button>
@@ -161,6 +161,10 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			<Pagination
+				v-show="total > 0" :total="total" :page.sync="merchantListQuery.page" :limit.sync="merchantListQuery.limit"
+				@pagination="selectFromData"
+			/>
 		</div>
 		<!-- 用户优惠卷 -->
 		<div v-show="!isMerchant" v-tableHeight>
@@ -212,11 +216,15 @@
 					</template>
 					</el-table-column> -->
 			</el-table>
+			<Pagination
+				v-show="userListTotal > 0" :total="userListTotal" :page.sync="userListQuery.page" :limit.sync="userListQuery.limit"
+				@pagination="selectFromData"
+			/>
 		</div>
 		<!-- 添加和修改使用的对话框 -->
 		<el-dialog
 			v-show="openFrom"
-			title="创建新优惠卷"
+			:title="(fromData.id ? '修改' : '创建') + '新优惠卷'"
 			:visible.sync="openFrom"
 			width="80%"
 		>
@@ -241,7 +249,7 @@
 				</el-form-item>
 				<el-form-item label="门店ID" prop="brand_id" label-width="120px">
 					<el-input
-						v-model="fromData.brand_id"
+						v-model="fromData.brandId"
 						autocomplete="off"
 					></el-input>
 				</el-form-item>
@@ -310,7 +318,7 @@
 				</el-form-item>
 				<el-form-item v-if="fromData.time_type == 1" prop="timeValue" label="自定义优惠卷使用时间" label-width="165px">
 					<el-date-picker
-						v-model="timeValue"
+						v-model="fromData.timeValue"
 						value-format="yyyy-MM-dd "
 						type="daterange"
 						range-separator="至"
@@ -321,7 +329,10 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button type="primary" @click="createCoupon()">
+				<el-button v-if="fromData.id" type="primary" @click="handleUpdate()">
+					确定
+				</el-button>
+				<el-button v-else type="primary" @click="createCoupon()">
 					确定
 				</el-button>
 				<el-button @click="openFrom = false"> 取消 </el-button>
@@ -331,6 +342,7 @@
 </template>
 
 <script>
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import {
 	SelectMerchantPreferential,
 	SelectUserPreferential,
@@ -342,10 +354,12 @@ import {
 export default {
 	// eslint-disable-next-line vue/match-component-file-name, vue/component-definition-name-casing
 	name: 'preferentialManagement',
+	components: { Pagination },
 	data() {
 		return {
 			isMerchant: true,
 			total: 0,
+			userListTotal: 0,
 			userTotal: 0,
 			openFrom: false,
 			listLoading: true,
@@ -356,7 +370,7 @@ export default {
 				'id': null,
 				'name': '',
 				'desc': '',
-				'brand_id': '',
+				'brandId': '',
 				'tag': '',
 				'total': '',
 				'discount': '',
@@ -369,7 +383,8 @@ export default {
 				'time_type': '',
 				'days': '',
 				'startTime': null,
-				'endTime': null
+				'endTime': null,
+				'timeValue': []
 			},
 			merchantListQuery: {
 				brandId: '',
@@ -377,14 +392,14 @@ export default {
 				type: '',
 				status: '',
 				page: 1,
-				limit: 10
+				limit: 12
 			},
 			userListQuery: {
 				userId: '',
 				couponId: '',
 				status: '',
 				page: 1,
-				limit: 10
+				limit: 12
 			},
 			rules: {
 				id: [
@@ -396,7 +411,7 @@ export default {
 				desc: [
 					{ required: true, message: '请输入优惠卷简介', trigger: 'blur' }
 				],
-				brand_id: [
+				brandId: [
 					//  type: 'date',
 					{ required: true, message: '请输入商户ID', trigger: 'blur' }
 				],
@@ -428,7 +443,8 @@ export default {
 					{ required: false, message: '请输入商品限制值', trigger: 'blur' }
 				],
 				timeValue: [
-					{ type: 'date,array', required: true, message: '请选择优惠卷有效时间', trigger: 'blur,change' }
+					{ required: true, message: '请选择时间区间', trigger: 'change' },
+					{ validator: this.validateTimeRange, trigger: 'change' }
 				],
 				time_type: [
 					{ required: false, message: '请选择优惠卷有效期类型', trigger: 'blur' }
@@ -441,6 +457,7 @@ export default {
 	},
 	created() {
 		this.selectPreferential()
+		// 以下接口的调用均用于测试 如若觉得影响体验可以删除，方法已经完善
 		// !搜索商家优惠卷 用户搜索也一致 参数只有页数和条数时获取所有，带上ID name TYPE 时为搜索
 		// SelectMerchantPreferential({
 		// 	brandId: '',
@@ -467,7 +484,7 @@ export default {
 		// 	'id': '',
 		// 	'name': '1',
 		// 	'desc': '1',
-		// 	'brand_id': '13709394',
+		// 	'brandId': '1001232',
 		// 	'tag': '1',
 		// 	'total': '12',
 		// 	'discount': '1',
@@ -493,7 +510,7 @@ export default {
 		// 	'name': '测试修改2',
 		// 	'desc': '123123',
 		// 	'tag': '123',
-		// 	'brandId': '',
+		// 	'brandId': '',   //! 此参数不用_替代大写字母。。。。
 		// 	'total': 100,
 		// 	'discount': 0,
 		// 	'min': 0,
@@ -534,8 +551,21 @@ export default {
 		},
 		// 查找优惠卷数据
 		selectFromData() {
-			console.log(123)
+			if (this.isMerchant) {
+				SelectMerchantPreferential(this.merchantListQuery).then((res) => {
+					this.list = res.data.items
+					this.total = res.data.total
+					this.listLoading = false
+				})
+			} else {
+				SelectUserPreferential(this.userListQuery).then((res) => {
+					this.userList = res.data.items
+					this.userTotal = res.data.total
+					this.listLoading = false
+				})
+			}
 		},
+		// 删除优惠卷的方法
 		handleDelete(row) {
 			this.$confirm(
 				'确认要进行此操作-删除此优惠卷？',
@@ -571,9 +601,25 @@ export default {
 					})
 				})
 		},
+		// 时间区间选择器表单验证方法
+		validateTimeRange(rule, value, callback) {
+			// 自定义校验规则，验证时间区间的逻辑
+			if (value && value.length === 2) {
+				const startTime = value[0]
+				const endTime = value[1]
+				if (startTime > endTime) {
+					callback(new Error('开始日期不能大于结束日期'))
+				} else {
+					callback()
+				}
+			} else {
+				callback(new Error('请选择时间区间'))
+			}
+		},
+		// 添加优惠卷
 		createCoupon() {
-			this.fromData.startTime = this.timeValue[0]
-			this.fromData.endTime = this.timeValue[1]
+			this.fromData.startTime = this.fromData.timeValue[0]
+			this.fromData.endTime = this.fromData.timeValue[1]
 			this.$refs.creatFromData.validate((valid) => {
 				if (valid) {
 					CreatePreferential(this.fromData)
@@ -588,7 +634,7 @@ export default {
 						.catch((response) => {
 							this.$notify.error({
 								title: '失败',
-								message: response.data.errmsg
+								message: response.errmsg
 							})
 						})
 				} else {
@@ -598,6 +644,46 @@ export default {
 					})
 				}
 			})
+		},
+		// 修改优惠卷时先更改表单
+		UpdataFrom(row) {
+			this.openFrom = true
+			this.fromData = { ...row }
+		},
+		// 更改优惠卷信息的方法
+		handleUpdate(row) {
+			this.$refs.creatFromData.validate((valid) => {
+				if (valid) {
+					UpdataPreferential(this.fromData)
+						.then((response) => {
+							this.selectPreferential()
+							this.openFrom = false
+							this.$notify.success({
+								title: '成功',
+								message: '修改成功'
+							})
+						})
+						.catch((response) => {
+							this.$notify.error({
+								title: '失败',
+								message: response.errmsg
+							})
+						})
+				} else {
+					this.$notify.error({
+						title: '失败',
+						message: '缺少必填信息'
+					})
+				}
+			})
+		},
+		// 清空表单的所有数据
+		ClearData() {
+			this.openFrom = true; this.fromData.id = null
+			for (const key in this.fromData) {
+				this.fromData[key] = null
+			}
+			window.console.log(this.fromData)
 		}
 	}
 }

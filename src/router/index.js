@@ -1273,6 +1273,45 @@ export const asyncRouterMap = [
 				}
 			},
 			{
+				path: 'withdrawalAudit',
+				component: () => import('@/views/children'),
+				name: 'withdrawalAudit',
+				redirect: 'noredirect',
+				alwaysShow: true,
+				meta: {
+					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					title: '提现审核',
+					noCache: true
+				},
+				children: [{
+					path: 'userWithdrawalApplicationForm',
+					component: () => import('@/views/withdrawalAudit/userWithdrawalApplicationForm'),
+					name: 'userWithdrawalApplicationForm',
+					meta: {
+						title: '用户提现审核表',
+						noCache: true
+					}
+				}, {
+					path: 'withdrawalLogRecords',
+					component: () => import('@/views/withdrawalAudit/withdrawalLogRecords'),
+					name: 'withdrawalLogRecords',
+					meta: {
+						// perms: ['GET /admin/dtsAdmin/administrationList', 'GET /admin/dtsAdmin/areaUserList'],
+						title: '提现日志',
+						noCache: true
+					}
+				}, {
+					path: 'bankCardList',
+					component: () => import('@/views/withdrawalAudit/bankCardList'),
+					name: 'bankCardList',
+					meta: {
+						// perms: ['GET /admin/dtsAdmin/administrationList', 'GET /admin/dtsAdmin/areaUserList'],
+						title: '用户银行卡列表',
+						noCache: true
+					}
+				}]
+			},
+			{
 				path: 'relationChain',
 				component: () => import('@/views/children'),
 				redirect: 'noredirect',

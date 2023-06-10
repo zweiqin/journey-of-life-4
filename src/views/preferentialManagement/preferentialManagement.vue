@@ -232,6 +232,7 @@
 				<el-form-item v-if="fromData.id" label="优惠卷ID" prop="id" label-width="120px">
 					<el-input
 						v-model="fromData.id"
+						disabled
 						autocomplete="off"
 					></el-input>
 				</el-form-item>

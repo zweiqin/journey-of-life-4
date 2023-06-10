@@ -1911,7 +1911,46 @@ export const asyncRouterMap = [
 					icon: '',
 					noCache: true
 				}
+			},
+			{
+				path: 'mapRedEnvelope',
+				alwaysShow: true,
+				component: () => import('@/views/children'),
+				name: 'mapRedEnvelope',
+				redirect: 'noredirect',
+				meta: {
+					// perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],
+					title: '地图红包管理',
+					icon: '',
+					noCache: true
+				},
+				children: [{
+					path: 'mapRedEnvelope',
+					component: () => import('@/views/marketingManagement/mapRedEnvelope/mapRedEnvelope'),
+					name: 'mapRedEnvelope',
+					meta: {
+						// perms: [],
+						title: '查询红包列表',
+						icon: '',
+						noCache: true
+					}
+				}, {
+					path: 'listDiscountPapers',
+					component: () => import('@/views/marketingManagement/mapRedEnvelope/listDiscountPapers'),
+					name: 'listDiscountPapers',
+					meta: {
+						// perms: [],
+						title: '查询优惠卷列表',
+						icon: '',
+						noCache: true
+					}
+				}]
 			}
+			// path: 'couponManagement',
+			// alwaysShow: true,
+			// component: () => import('@/views/children'),
+			// redirect: 'noredirect',
+			// meta: { title: '代金券管理', icon: '', noCache: true },
 		]
 	},
 

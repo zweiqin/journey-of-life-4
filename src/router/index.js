@@ -1273,6 +1273,16 @@ export const asyncRouterMap = [
 				}
 			},
 			{
+				path: 'refundReview',
+				component: () => import('@/views/applicationManagement/refundReview'),
+				name: 'refundReview',
+				meta: {
+					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					title: '退款审核',
+					noCache: true
+				}
+			},
+			{
 				path: 'withdrawalAudit',
 				component: () => import('@/views/children'),
 				name: 'withdrawalAudit',

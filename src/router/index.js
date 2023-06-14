@@ -583,6 +583,18 @@ export const asyncRouterMap = [
 							noCache: true
 						}
 					}
+					// ,
+					// {
+					// 	path: 'goods',
+					// 	component: () => import('@/views/stat/goods'),
+					// 	name: 'statGoods',
+					// 	meta: {
+					// 		// perms: [ 'GET /admin/stat/goods' ],
+					// 		title: '总部统计',
+					// 		icon: '',
+					// 		noCache: true
+					// 	}
+					// }
 				]
 			}
 		]
@@ -1279,6 +1291,16 @@ export const asyncRouterMap = [
 				meta: {
 					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
 					title: '退款审核',
+					noCache: true
+				}
+			},
+			{
+				path: 'refundReason',
+				component: () => import('@/views/applicationManagement/refundReason'),
+				name: 'refundReason',
+				meta: {
+					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					title: '退款原因管理',
 					noCache: true
 				}
 			},

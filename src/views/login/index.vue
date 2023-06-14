@@ -286,7 +286,7 @@ export default {
 							.catch((response) => {
 								this.$notify.error({
 									title: '失败',
-									message: response.data.errmsg
+									message: response.errmsg
 								})
 								this.loading = false
 								this.getCode()

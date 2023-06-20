@@ -116,7 +116,7 @@ export default {
 		}
 	},
 	methods: {
-		getVoucherRankings(ev = null, index = null) {
+		getVoucherRankings(index = null, ev = null) {
 			// eslint-disable-next-line no-unused-vars
 			index === 0 ? this.openRaking = true : false
 			getSCBusinessCount(this.querList).then((res) => {

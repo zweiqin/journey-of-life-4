@@ -14,6 +14,21 @@ export default {
 					axisPointer: {
 						// 坐标轴指示器，坐标轴触发有效
 						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					},
+					backgroundColor: '#fff',
+					extraCssText: 'box-shadow: 2px 2px 5px 0px rgba(19, 78, 195, 0.1);',
+					padding: [
+						5,  // 上
+						10, // 右
+						5,  // 下
+						10 // 左
+					],
+					textStyle: { // 提示框浮层的文本样式。
+						color: 'black',
+						fontStyle: 'normal',
+						fontWeight: 'normal',
+						fontFamily: 'sans-serif',
+						fontSize: 14
 					}
 				},
 				grid: {

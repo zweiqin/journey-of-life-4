@@ -59,7 +59,7 @@ export default {
 		// 设置地图的点击事件
 		this.chart.on('click', function (params) {
 			// eslint-disable-next-line vue/require-explicit-emits, vue/custom-event-name-casing
-			that.$emit('replaAddres', params.name)
+			that.$emit('replaAddres', params.data.name)
 		})
 		// console.log(chartDom)
 		chartDom.setOption(this.option, true)
@@ -72,9 +72,9 @@ export default {
 #map_cn {
   /* z-index: 999; */
   top: -20px;
-  right: 30px;
+  right: 100px;
   width: 31.25vw;
-  height: 31.25vw;
+  height: 29.6875vw;
   position: absolute;
 }
 </style>

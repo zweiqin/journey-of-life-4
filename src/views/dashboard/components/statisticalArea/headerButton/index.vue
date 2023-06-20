@@ -7,7 +7,7 @@
 				:key="item"
 				href="javascript:;"
 				:class="{ isActice: index === AnyDataIndex }"
-				@click="(ev) => { switchData(index);onNavClick(ev, index) }"
+				@click="(ev) => { switchData(index);onNavClick(index, ev) }"
 			>
 				{{ item }}
 			</a>

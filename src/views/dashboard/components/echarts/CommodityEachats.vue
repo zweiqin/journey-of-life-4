@@ -23,7 +23,7 @@ export default {
 				backgroundColor: '#fff',
 				legend: {
 					position: 'top',
-					right: 20,
+					right: 10,
 					textStyle: {
 						color: 'black'
 					},
@@ -43,6 +43,21 @@ export default {
 						},
 						// 坐标轴指示器，坐标轴触发有效
 						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					},
+					backgroundColor: '#fff',
+					extraCssText: 'box-shadow: 2px 2px 5px 0px rgba(19, 78, 195, 0.1);',
+					padding: [
+						5,  // 上
+						10, // 右
+						5,  // 下
+						10 // 左
+					],
+					textStyle: { // 提示框浮层的文本样式。
+						color: 'black',
+						fontStyle: 'normal',
+						fontWeight: 'normal',
+						fontFamily: 'sans-serif',
+						fontSize: 14
 					}
 				},
 				xAxis: {
@@ -61,7 +76,7 @@ export default {
 				yAxis: [
 					{
 						type: 'category',
-						offset: 0,
+						// offset: -10,
 						axisTick: { show: false },
 						axisLabel: {
 							align: 'right'
@@ -77,6 +92,7 @@ export default {
 					},
 					{
 						type: 'category',
+						// offset: 30,
 						axisLine: { show: false },
 						axisLabel: { show: false },
 						axisTick: { show: false },
@@ -124,7 +140,7 @@ export default {
 	watch: {
 		shopDataName(newValue) {
 			this.shopDataNames = newValue
-			window.console.log(newValue)
+			// window.console.log(newValue)
 		},
 		shopDataValue(newValue) {
 			this.shopDataValues = newValue
@@ -133,7 +149,7 @@ export default {
 			this.chartDom.clear()
 			this.chartDom.setOption(this.option, true)
 			this.chartDom.resize({
-				height: EDom.style.height = this.shopDataName.length * 80 + 'px'
+				height: EDom.style.height = this.shopDataName.length * 80 + 100 + 'px'
 			})
 		}
 	},
@@ -147,7 +163,7 @@ export default {
 		this.chartDom = chartDom
 		chartDom.setOption(this.option, true)
 		chartDom.resize({
-			height: EDom.style.height = this.shopDataName.length * 80 + 'px'
+			height: EDom.style.height = this.shopDataName.length * 80 + 100 + 'px'
 		})
 	}
 }
@@ -162,7 +178,7 @@ export default {
   #CommodityTab {
     color: #ecf2fc60;
     width: 100%;
-    height: 8000px;
+    /* height: 8000px; */
   }
 }
 </style>

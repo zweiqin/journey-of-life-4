@@ -11,7 +11,7 @@
 				></TableHeader>
 				<AnalysisEchats></AnalysisEchats>
 				<!-- 表未数据展示区 -->
-				<div class="Analysis_footer">
+				<div v-if="AnalysisChart" class="Analysis_footer">
 					<!-- <div v-for="item in listArray" :key="item.value" class="Af_item">
 						<p>{{ item.name }}</p>
 						<p>
@@ -22,22 +22,36 @@
 						</p>
 						</div> -->
 					<div class="Af_item">
-						<p>本月交易额</p>
-						<p><span>76.33</span>万元</p>
-						<p>
+						<p>{{ anyListDataNameIndex < 2 ? anyListDataNames : anyListDataName }}新增用户</p>
+						<p><span>{{ AnalysisChart.userNum }}</span>人</p>
+						<!-- <p>
 							<img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上月
-						</p>
+							</p> -->
 					</div>
 					<div class="Af_item">
-						<p>本年交易额</p>
-						<p><span>76.33</span>万元</p>
-						<p>
+						<p>{{ anyListDataNameIndex < 2 ? anyListDataNames : anyListDataName }}订单数</p>
+						<p><span>{{ AnalysisChart.orderNum }}</span>笔</p>
+						<!-- <p>
 							<img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上年
-						</p>
+							</p> -->
+					</div>
+					<div class="Af_item">
+						<p>{{ anyListDataNameIndex < 2 ? anyListDataNames : anyListDataName }}订单交易额</p>
+						<p><span>{{ AnalysisChart.orderAmount ? AnalysisChart.orderAmount : 0 }}</span>元</p>
+						<!-- <p>
+							<img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上月
+							</p> -->
+					</div>
+					<div class="Af_item">
+						<p>{{ anyListDataNameIndex < 2 ? anyListDataNames : anyListDataName }}用户交易额</p>
+						<p><span>{{ AnalysisChart.userAmount ? AnalysisChart.userAmount : 0 }}</span>元</p>
+						<!-- <p>
+							<img src="@/assets/home/down.png" alt="" /><span>11.2%</span>较上月
+							</p> -->
 					</div>
 				</div>
 			</div>
-			<!-- 商品排行榜 -->
+			<!-- 商家排行榜 -->
 			<div class="CommodityRanking">
 				<!-- 表头的日期选择 -->
 				<TableHeader
@@ -59,26 +73,26 @@
 				></TableHeader>
 				<div class="DSquantity">
 					<p><span></span>网点数量</p>
-					<p><span>123</span>家</p>
+					<p><span>{{ addresMerchantRanking.length }}</span>家</p>
 				</div>
-				<div class="DSquantity">
+				<!-- <div class="DSquantity">
 					<p><span style="background-color: #165dff"></span>师傅数量</p>
 					<p><span>445566</span>人</p>
-				</div>
+					</div> -->
 				<div class="addresSelect">
-					<img src="@/assets/home/select.png" alt=""><input type="text" placeholder="请输入地址" @keyup.enter="addresSelect">
+					<img src="@/assets/home/select.png" alt=""><input v-model="addres" type="text" placeholder="请输入地址" @keyup.enter="addresSelect(addres)">
 				</div>
 				<MapChina @replaAddres="getAddres"></MapChina>
 			</div>
 			<!-- 商家排行榜 -->
 			<div class="CommodityRanking">
 				<TableHeader
-					:header-data="Commodity"
+					:header-data="MerchantRanking"
 					:on-nav-click="getMerchantRanking"
 				></TableHeader>
 				<MerchantRankingTab
-					:shop-data-name="['屮', '小刀', '刺', 'PIGU', '小刀', '刺', 'PIGU', '小刀', '刺', 'PIGU', '小刀', '刺', 'PIGU']"
-					:shop-data-value="[123, 456, 789, 456, 789, 456, 789, 456, 789, 456, 789]"
+					:shop-data-name="MerchantRankingArray[0]"
+					:shop-data-value="MerchantRankingArray[1]"
 				></MerchantRankingTab>
 			</div>
 		</div>
@@ -96,48 +110,145 @@ import CommodityEachats from '../../echarts/CommodityEachats.vue'
 import MerchantRankingTab from '../../echarts/MerchantRanking.vue'
 // 中国地图
 import MapChina from '../../echarts/MapChina.vue'
-import { getSGStatistics } from '@/api/dashboard'
+import { getSGStatistics, getAreaSearch, getGoodsRanking, getBusinessRanking } from '@/api/dashboard'
 export default {
 	// eslint-disable-next-line vue/match-component-file-name
 	name: 'Contents',
 	components: { TableHeader, AnalysisEchats, CommodityEachats, MapChina, MerchantRankingTab },
 	data() {
 		return {
-			Commodity: {
+			addres: '顺德区', // 初始地址
+			addresMerchantRanking: [],  // 使用地址请求后的数据
+			anyListDataName: '',  // 分析表数据
+			anyListDataNameIndex: 0, // 用于判断分析表查询时间的下标
+			Commodity: { // 头部时间选择按钮的数据 ---- 商品排行榜
 				name: '商品排行榜',
 				list: ['今日', '近七日', '自定义']
 			},
-			MerchantRanking: {
+			MerchantRanking: { // 头部时间选择按钮的数据 ---- 商家排行榜
 				name: '商家排行榜',
 				list: ['今日', '近七日', '自定义']
 			},
-			AnyList: { name: '分析图', list: ['今日', '近七日', '自定义'] } // 分析图切换按钮
+			MerchantRankingArray: [[], []], // 商家排行的数据
+			AnyList: { name: '分析图', list: ['今日', '近七日', '自定义'] }, // 分析图切换按钮
+			AnalysisChart: null // 分析表下方的展示数据
+		}
+	},
+	computed: {
+		anyListDataNames: {
+			get() {
+				this.anyListDataNameIndex === 0 && this.anyListDataNameIndex < 2 ? '今天' : '近七天'
+				return this.anyListDataNameIndex === 0 && this.anyListDataNameIndex < 2 ? '今天' : '近七天'
+			},
+			set(value) {
+				this.anyListDataName = value
+				console.log(this.anyListDataName)
+			}
 		}
 	},
 	created() {
-		getSGStatistics().then((res) => {
-			console.log(res)
-		})
+		this.getAnyListData(0)
+		this.addresSelect(this.addres)
+		this.getMerchantRanking()
 	},
 	methods: {
+		DaysNum(index) {
+			if (index < 2) {
+				return index == 0 ? 1 : 7
+			}
+		},
 		// 分析图天选择
-		getAnyListData(ev, index = '') {
-			console.log(index)
+		getAnyListData(index = null, ev) {
+			if (index < 2) {
+				this.anyListDataNameIndex = index
+				getSGStatistics({ days: this.DaysNum(index) }).then((res) => {
+					this.AnalysisChart = res.data
+					// console.log(res)
+				})
+			} else {
+				this.$prompt('请输入天数', '自定义查询的天数', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消'
+					// inputPattern: /^(?:\d|[1-9]\d{0,1}|[12]\d{2}|3[0-6]\d)$/,
+					// inputErrorMessage: '最多允许查询一年记录'
+				}).then(({ value }) => {
+					this.anyListDataNameIndex = index
+					getSGStatistics({ days: value }).then((res) => {
+						this.AnalysisChart = res.data
+						this.$message({
+							type: 'success',
+							message: '查询成功'
+						})
+						this.anyListDataNames = '近' + value + '天'
+						// console.log(res)
+					})
+						.catch((err) => {
+							this.$message.error('查询失败' + err.errmsg)
+						})
+				})
+					.catch(() => {
+						this.$message({
+							type: 'info',
+							message: '取消输入'
+						})
+					})
+			}
 		},
 		// 商品排行榜天数选择
-		getCommodityData(ev, index = '') {
+		getCommodityData(index = '', ev) {
 			console.log(index)
 		},
 		// 商家排行榜天数选择
-		getMerchantRanking(ev, index = '') {
-			console.log(index)
+		getMerchantRanking(index = '', ev) {
+			const arr = [[], []]
+			if (index < 2) {
+				getBusinessRanking({ days: this.DaysNum(index) }).then((res) => {
+					for (const key in res.data) {
+						arr[0].push(key)
+						arr[1].push(res.data[key])
+					}
+					this.MerchantRankingArray = arr
+				})
+			} else {
+				this.$prompt('请输入天数', '自定义查询的天数', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消'
+					// inputPattern: /^(?:\d|[1-9]\d{0,1}|[12]\d{2}|3[0-6]\d)$/,
+					// inputErrorMessage: '最多允许查询一年记录'
+				}).then(({ value }) => {
+					getBusinessRanking({ days: value }).then((res) => {
+						for (const key in res.data) {
+							arr[0].push(key)
+							arr[1].push(res.data[key])
+						}
+						this.$message({
+							type: 'success',
+							message: '查询成功'
+						})
+						this.MerchantRankingArray = arr
+					})
+						.catch((err) => {
+							this.$message.error('查询失败' + err.errmsg)
+						})
+				})
+					.catch(() => {
+						this.$message({
+							type: 'info',
+							message: '取消输入'
+						})
+					})
+			}
 		},
-		addresSelect() {
-			console.log(12312)
+		// 区域搜索
+		addresSelect(addressName) {
+			getAreaSearch({ addressName }).then((res) => {
+				this.addresMerchantRanking = res.data
+				console.log(res.data)
+			})
 		},
 		// 获取地图选择的地址
-		getAddres(addres) {
-			console.log(addres)
+		getAddres(addressName) {
+			console.log(addressName)
 		}
 	}
 }
@@ -267,7 +378,7 @@ export default {
       .addresSelect {
         z-index: 9;
         position: absolute;
-        top: 35px;
+        top: 30px;
         right: 60px;
         width: 12.7604vw;
         height: 1.9271vw;

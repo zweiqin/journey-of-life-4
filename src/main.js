@@ -31,7 +31,7 @@ import * as filters from './filters' // global filters
 
 import permission from '@/directive/permission/index.js' // 权限判断指令
 
-import 'default-passive-events'// 解决警告
+// import 'default-passive-events'// 解决警告
 
 /* 引入公共js,如果是不同作者的js请分开文件分开引入！！！*/
 

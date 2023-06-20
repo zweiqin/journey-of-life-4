@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/v-on-event-hyphenation -->
 <template>
 	<div class="ContainerDataBox">
 		<!-- 左边图表部分 -->
@@ -59,8 +60,8 @@
 					:on-nav-click="getCommodityData"
 				></TableHeader>
 				<CommodityEachats
-					:shop-data-name="['屮', '小刀', '刺', 'PIGU']"
-					:shop-data-value="[123, 456, 789]"
+					:shop-data-name="CommodityArray[0]"
+					:shop-data-value="CommodityArray[1]"
 				></CommodityEachats>
 			</div>
 		</div>
@@ -80,7 +81,7 @@
 					<p><span>445566</span>人</p>
 					</div> -->
 				<div class="addresSelect">
-					<img src="@/assets/home/select.png" alt=""><input v-model="addres" type="text" placeholder="请输入地址" @keyup.enter="addresSelect(addres)">
+					<img src="@/assets/home/select.png" alt="" @click="addresSelect(addres)"><input v-model="addres" type="text" placeholder="请输入地址" @keyup.enter="addresSelect(addres)">
 				</div>
 				<MapChina @replaAddres="getAddres"></MapChina>
 			</div>
@@ -110,6 +111,7 @@ import CommodityEachats from '../../echarts/CommodityEachats.vue'
 import MerchantRankingTab from '../../echarts/MerchantRanking.vue'
 // 中国地图
 import MapChina from '../../echarts/MapChina.vue'
+// eslint-disable-next-line no-unused-vars
 import { getSGStatistics, getAreaSearch, getGoodsRanking, getBusinessRanking } from '@/api/dashboard'
 export default {
 	// eslint-disable-next-line vue/match-component-file-name
@@ -129,6 +131,7 @@ export default {
 				name: '商家排行榜',
 				list: ['今日', '近七日', '自定义']
 			},
+			CommodityArray: [[], []],
 			MerchantRankingArray: [[], []], // 商家排行的数据
 			AnyList: { name: '分析图', list: ['今日', '近七日', '自定义'] }, // 分析图切换按钮
 			AnalysisChart: null // 分析表下方的展示数据
@@ -142,7 +145,7 @@ export default {
 			},
 			set(value) {
 				this.anyListDataName = value
-				console.log(this.anyListDataName)
+				// console.log(this.anyListDataName)
 			}
 		}
 	},
@@ -150,6 +153,7 @@ export default {
 		this.getAnyListData(0)
 		this.addresSelect(this.addres)
 		this.getMerchantRanking()
+		this.getCommodityData()
 	},
 	methods: {
 		DaysNum(index) {
@@ -196,7 +200,44 @@ export default {
 		},
 		// 商品排行榜天数选择
 		getCommodityData(index = '', ev) {
-			console.log(index)
+			const arr = [[], []]
+			if (index < 2) {
+				getGoodsRanking({ days: this.DaysNum(index) }).then((res) => {
+					for (const key in res.data) {
+						arr[0].push(key)
+						arr[1].push(res.data[key])
+					}
+					this.CommodityArray = arr
+				})
+			} else {
+				this.$prompt('请输入天数', '自定义查询的天数', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消'
+					// inputPattern: /^(?:\d|[1-9]\d{0,1}|[12]\d{2}|3[0-6]\d)$/,
+					// inputErrorMessage: '最多允许查询一年记录'
+				}).then(({ value }) => {
+					getGoodsRanking({ days: value }).then((res) => {
+						for (const key in res.data) {
+							arr[0].push(key)
+							arr[1].push(res.data[key])
+						}
+						this.$message({
+							type: 'success',
+							message: '查询成功'
+						})
+						this.CommodityArray = arr
+					})
+						.catch((err) => {
+							this.$message.error('查询失败' + err.errmsg)
+						})
+				})
+					.catch(() => {
+						this.$message({
+							type: 'info',
+							message: '取消输入'
+						})
+					})
+			}
 		},
 		// 商家排行榜天数选择
 		getMerchantRanking(index = '', ev) {
@@ -243,12 +284,17 @@ export default {
 		addresSelect(addressName) {
 			getAreaSearch({ addressName }).then((res) => {
 				this.addresMerchantRanking = res.data
-				console.log(res.data)
+				// console.log(res.data)
 			})
 		},
 		// 获取地图选择的地址
 		getAddres(addressName) {
-			console.log(addressName)
+			// console.log(addressName);
+			this.addres = addressName
+			getAreaSearch({ addressName }).then((res) => {
+				this.addresMerchantRanking = res.data
+				// console.log(res.data)
+			})
 		}
 	}
 }
@@ -395,6 +441,7 @@ export default {
           outline: none;
         }
         > img {
+          cursor: pointer;
           width: 18px;
           height: 18px;
         }

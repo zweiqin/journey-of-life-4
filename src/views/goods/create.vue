@@ -112,7 +112,7 @@
 				</el-form-item>
 
 				<el-form-item label="所属分类" prop="categoryId">
-					<el-cascader :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
+					<el-cascader :options="categoryList" :props="{ value: 'id', label: 'name' }" expand-trigger="hover" @change="handleCategoryChange" />
 				</el-form-item>
 
 				<el-form-item v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'" label="所属品牌商" prop="brandId">
@@ -602,7 +602,7 @@
 </template>
 
 <script>
-import { publishGoods, listCatAndBrand } from '@/api/business/goods'
+import { publishGoods, getCatAndBrandCategory } from '@/api/business/goods'
 import { listCoupon } from '@/api/business/coupon'
 import { uploadPath } from '@/api/business/storage'
 import { getUserInfo } from '@/api/login'
@@ -675,9 +675,10 @@ export default {
 		init() {
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				this.goods.brandId = this.$route.query.brandId
-				listCatAndBrand(this.goods.brandId).then((response) => {
-					this.categoryList = response.data.categoryList
-					this.brandList = response.data.brandList
+				getCatAndBrandCategory(this.goods.brandId).then((response) => {
+					this.categoryList = response.data
+					// this.categoryList = response.data.categoryList
+					// this.brandList = response.data.brandList
 				})
 				listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -688,9 +689,10 @@ export default {
 					}))
 				})
 			} else {
-				listCatAndBrand().then((response) => {
-					this.categoryList = response.data.categoryList
-					this.brandList = response.data.brandList
+				getCatAndBrandCategory().then((response) => {
+					this.categoryList = response.data
+					// this.categoryList = response.data.categoryList
+					// this.brandList = response.data.brandList
 				})
 				listCoupon({ type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({

@@ -420,7 +420,7 @@
 </template>
 
 <script>
-import { detailGoods, editGoods, listCatAndBrand } from '@/api/business/goods'
+import { detailGoods, editGoods, getCatAndBrandCategory } from '@/api/business/goods'
 import { listCoupon } from '@/api/business/coupon'
 import { uploadPath } from '@/api/business/storage'
 import { getUserInfo } from '@/api/login'
@@ -522,9 +522,10 @@ export default {
 			})
 
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
-				listCatAndBrand(this.$route.query.brandId).then((response) => {
-					this.categoryList = response.data.categoryList
-					this.brandList = response.data.brandList
+				getCatAndBrandCategory(this.$route.query.brandId).then((response) => {
+					this.categoryList = response.data
+					// this.categoryList = response.data.categoryList
+					// this.brandList = response.data.brandList
 				})
 				listCoupon({ brandId: this.$route.query.brandId, type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -535,9 +536,10 @@ export default {
 					}))
 				})
 			} else {
-				listCatAndBrand().then((response) => {
-					this.categoryList = response.data.categoryList
-					this.brandList = response.data.brandList
+				getCatAndBrandCategory().then((response) => {
+					this.categoryList = response.data
+					// this.categoryList = response.data.categoryList
+					// this.brandList = response.data.brandList
 				})
 				listCoupon({ type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({

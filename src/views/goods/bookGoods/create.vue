@@ -229,7 +229,7 @@
 					</el-form-item>
 
 					<el-form-item label="所属分类">
-						<el-cascader :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
+						<el-cascader v-model="categoryIds" :props="{ value: 'id', label: 'name' }" :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
 					</el-form-item>
 
 					<el-form-item label="所属品牌商">
@@ -555,13 +555,13 @@
 </template>
 
 <script>
-import { publishGoods, listCatAndBrand } from '@/api/business/bookGoods'
+import { publishGoods } from '@/api/business/bookGoods'
 import { listCoupon } from '@/api/business/coupon'
 import { uploadPath } from '@/api/business/storage'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
-import { listGoods, detailGoods } from '@/api/business/goods'
+import { listGoods, detailGoods, getCatAndBrandCategory } from '@/api/business/goods'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -591,6 +591,7 @@ export default {
 			keywords: [],
 			categoryList: [],
 			brandList: [],
+			categoryIds: [],
 			goods: { picUrl: '', gallery: [], isAppoint: true, endTime: null, startTime: null, timeType: 0 },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
@@ -633,10 +634,11 @@ export default {
 
 	methods: {
 		init() {
-			listCatAndBrand().then((response) => {
+			getCatAndBrandCategory().then((response) => {
 				this.getList()
-				this.categoryList = response.data.categoryList
-				this.brandList = response.data.brandList
+				this.categoryList = response.data
+				// this.categoryList = response.data.categoryList
+				// this.brandList = response.data.brandList
 			})
 		},
 		getList() {

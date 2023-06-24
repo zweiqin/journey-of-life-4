@@ -47,10 +47,3 @@ export function editGoods(data) {
 		data
 	})
 }
-
-export function listCatAndBrand() {
-	return request({
-		url: '/goods/catAndBrand',
-		method: 'get'
-	})
-}

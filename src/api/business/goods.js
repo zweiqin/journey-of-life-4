@@ -47,3 +47,11 @@ export function listCatAndBrand(brandId) {
 		params: { brandId }
 	})
 }
+
+export function getCatAndBrandCategory(brandId) {
+	return request({
+		url: '/goods/catAndBrandCategory',
+		method: 'get',
+		params: { brandId }
+	})
+}

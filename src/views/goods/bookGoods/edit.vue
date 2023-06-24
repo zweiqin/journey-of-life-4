@@ -85,7 +85,7 @@
 				<el-form-item label="所属分类">
 					<el-cascader
 						v-model="categoryIds" :options="categoryList" expand-trigger="hover"
-						@change="handleCategoryChange"
+						:props="{ value: 'id', label: 'name' }" @change="handleCategoryChange"
 					/>
 				</el-form-item>
 
@@ -396,7 +396,8 @@
 </template>
 
 <script>
-import { detailGoods, editGoods, listCatAndBrand } from '@/api/business/bookGoods'
+import { detailGoods, editGoods } from '@/api/business/bookGoods'
+import { getCatAndBrandCategory } from '@/api/business/goods'
 import { listCoupon } from '@/api/business/coupon'
 import { uploadPath } from '@/api/business/storage'
 import Editor from '@tinymce/tinymce-vue'
@@ -497,9 +498,10 @@ export default {
 				})
 			})
 
-			listCatAndBrand().then((response) => {
-				this.categoryList = response.data.categoryList
-				this.brandList = response.data.brandList
+			getCatAndBrandCategory().then((response) => {
+				this.categoryList = response.data
+				// this.categoryList = response.data.categoryList
+				// this.brandList = response.data.brandList
 			})
 		},
 		handleCategoryChange(value) {

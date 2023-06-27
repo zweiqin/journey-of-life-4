@@ -1265,6 +1265,16 @@ export const asyncRouterMap = [
 				}
 			},
 			{
+				path: 'complain',
+				component: () => import('@/views/applicationManagement/complain'),
+				name: 'complain',
+				meta: {
+					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful', 'GET /admin/dtsUpgradeRequest/listOne'],
+					title: '投诉申请管理',
+					noCache: true
+				}
+			},
+			{
 				path: 'marketingPlannerApplication',
 				component: () => import('@/views/applicationManagement/marketingPlannerApplication'),
 				name: 'marketingPlannerApplication',

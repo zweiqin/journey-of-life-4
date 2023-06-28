@@ -4,7 +4,7 @@
 
 <script>
 // 导入地图数据
-import dataList from '../MapChinaJson/index'
+import dataList from './MapChinaJson/index'
 // 中国地图
 // import 'echarts/map/js/china'
 // import chainData from '../MapChinaJson/100000.json'

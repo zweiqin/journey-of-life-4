@@ -17,7 +17,7 @@ export default {
 
 	// 拼接时间字符串
 	splicingDate(time) {
-		if (time === undefined || time.length !== 14) {
+		if (time === undefined || time === null || time.length !== 14) {
 			return ''
 		}
 		return time.substring(0, 4) + '-' +

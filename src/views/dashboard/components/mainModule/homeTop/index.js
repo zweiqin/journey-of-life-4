@@ -6,7 +6,9 @@ export const renderData = [{
 		{ name: '营销策划师', key: 'seniorTotal', value: '' },
 		{ name: '商家', key: 'businessTotal', value: '' },
 		{ name: '普通会员', key: 'ordinaryCount', value: '' }],
-	data: {}
+	data: {},
+	isDanger: false,
+	dagerText: '统计数据有问题，点击查看会员统计详情'
 },
 {
 	name: '订单统计',
@@ -15,7 +17,9 @@ export const renderData = [{
 		{ name: '今日单量', key: 'toDayCompleteShopping', value: '' },
 		{ name: '异常订单', key: 'toDayCompleteLocality', value: '' },
 		{ name: '完成订单', key: 'orderLocalityTotal', value: '' }],
-	data: {}
+	data: {},
+	isDanger: false,
+	dagerText: '订单统计有问题，点击查看订单详情'
 },
 {
 	name: '财务统计',
@@ -24,16 +28,21 @@ export const renderData = [{
 		{ name: '今日交易', key: 'shoppingCountToDay', value: '' },
 		{ name: '总提取', key: 'shoppingTurnover', value: '' },
 		{ name: '总支出', key: 'Withdrawal', value: '' }],
-	data: {}
+	data: {},
+	isDanger: false,
+	dagerText: '财务统计有问题，点击查看财务详情'
 },
 {
 	name: '代金卷统计',
 	imgSrc: require('@/assets/home/money.png'),
 	childName: [{ name: '总发行', key: 'voucherCount', value: '' },
 		{ name: '今日发行', key: 'toDayVoucherCount', value: '' },
-		{ name: '今日转账流水', key: 'purchaseCount', value: '' },
-		{ name: '今日购买', key: 'toDayPurchaseCount', value: '' }],
-	data: {}
+		{ name: '总购买金额', key: 'purchaseCount', value: '' },
+		{ name: '今日购买金额', key: 'toDayPurchaseCount', value: '' }],
+	data: {},
+	isDanger: false,
+	routerPath: '/marketingManagement/couponManagement/couponManagementOrder',
+	dagerText: '代金卷统计比例有误，点击查看代金卷订单详情'
 },
 {
 	name: '佣金统计',
@@ -42,7 +51,9 @@ export const renderData = [{
 		{ name: '今日佣金总额', key: 'toTaDayAmount', value: '' },
 		{ name: '佣金提现总额', key: 'toTaDayWithdrawal Amount', value: '' },
 		{ name: '佣金购买总额', key: 'withdrawalAmount', value: '' }],
-	data: {}
+	data: {},
+	isDanger: false,
+	dagerText: '佣金统计有问题，点击查看佣金详情'
 }]
 
 // getStatisticsMemberCount().then((res) => {

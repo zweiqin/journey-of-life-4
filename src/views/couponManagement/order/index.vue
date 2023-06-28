@@ -108,9 +108,9 @@ export default {
 			listQuery: {
 				page: 1,
 				limit: 20,
-				orderId: undefined,
-				userId: undefined,
-				status: undefined
+				orderId: null,
+				userId: null,
+				status: null
 			},
 			statusList: [
 				{
@@ -164,6 +164,7 @@ export default {
 						this.listQuery.userId = this.userId
 						this.getList()
 					}
+					// console.log(123);
 				})
 				.catch()
 		},
@@ -172,8 +173,10 @@ export default {
 				.then((response) => {
 					this.list = response.data.items
 					for (const i in this.list) {
+						// console.log(this.common.splicingDate);
 						this.list[i].payTime = this.common.splicingDate(this.list[i].payTime)
 					}
+					// console.log(this.list);
 					this.total = response.data.total
 					this.listLoading = false
 				})
@@ -223,9 +226,9 @@ export default {
 		},
 		resetForm() {
 			this.dataForm = {
-				id: undefined,
-				desc: undefined,
-				ratio: undefined,
+				id: null,
+				desc: null,
+				ratio: null,
 				enabled: 1
 			}
 		}

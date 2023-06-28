@@ -5,7 +5,11 @@
 		<p>统计区</p>
 		<div class="dataBox">
 			<!-- 会员统计 -->
-			<div v-for="item in renderData" :key="item.name" class="dataBox_item">
+			<div v-for="item in dataBoxList" :key="item.name" class="dataBox_item">
+				<div v-if="item.isDanger" class="isDanger animation-flash"></div>
+				<el-tooltip effect="light" :content="item.dagerText" placement="top">
+					<img v-if="item.isDanger" style="display: block" src="@/assets/home/danger.png" alt="" srcset="" class="dangerIcon animate__animated animate__tada" @click="$router.push({ path: item.routerPath })" />
+				</el-tooltip>
 				<div class="item_header">
 					<div><img :src="item.imgSrc" alt="" /></div>
 					<span>{{ item.name }}</span>
@@ -13,7 +17,7 @@
 				<div class="item_footer">
 					<div v-for="childItem in item.childName" :key="childItem.key">
 						<p>{{ childItem.name }}</p>
-						<p>{{ item.data[childItem.key] ? item.data[childItem.key] : '' }}</p>
+						<p>{{ item.data[childItem.key] ? item.data[childItem.key] : '0.00' }}</p>
 					</div>
 				</div>
 			</div>
@@ -78,7 +82,7 @@ export default {
 				page: 1,
 				size: 10
 			},
-			volumeRanking: { name: '商家代金卷排行',
+			volumeRanking: { name: '代金卷排行',
 				list: [ '查看排名详情' ] },
 			title: 'hellow',
 			renderData,
@@ -89,6 +93,20 @@ export default {
 				getCommissionCount()],
 			VoucherRankings: [],
 			VoucherRankingsTop: []
+		}
+	},
+	computed: {
+		// 在此处转化一次，将数据中出现错误的数据进行筛选，比如代金卷的购买金额和发行金额为2 : 1 因此需要进一步判断，再做出渲染
+		dataBoxList: {
+			get() {
+				const arr = this.renderData.map((item, index) => {
+					if (item.name === '代金卷统计' && ((item.childName[0].value !== (item.childName[0].value * 2)) || (item.childName[1].value !== (item.childName[3].value * 2)))) {
+						item.isDanger = true
+					}
+					return item
+				})
+				return arr
+			}
 		}
 	},
 	// eslint-disable-next-line no-empty-function
@@ -161,10 +179,11 @@ export default {
     /* align-items: center; */
     flex-wrap: wrap;
     .dataBox_item {
+      position: relative;
       padding: 0.7813vw;
       width: 30.8%;
       height: 9.1667vw;
-      border-radius: 6px;
+      border-radius: 0.6944vw;
       background: #f7f8fa;
       /* 每个数据块的头部图标和文字 */
       .item_header {
@@ -219,6 +238,47 @@ export default {
           height: 2.6042vw;
           border-radius: 50%;
         }
+      }
+      .isDanger {
+        position: absolute;
+        box-sizing: border-box;
+        border-radius: 0.6944vw;
+        top: -0.5%;
+        left: -0.5%;
+        width: 101%;
+        height: 101%;
+        box-shadow:#ff0000f6 0px 0px 0.8333vw;
+        box-shadow: #000;
+      }
+      .animation-flash {
+          animation: myfirst 1.2s linear;
+          -webkit-animation: myfirst 1.2s linear;
+          animation-iteration-count:infinite;
+          -webkit-animation-iteration-count:infinite;
+        }
+      @keyframes myfirst{
+        0%   { opacity:1; }
+        25%  { opacity:0.85; }
+        50%  { opacity:0.75; }
+        75%  { opacity:0.65; }
+        100% { opacity:0.25; }
+      }
+      @-webkit-keyframes myfirst{
+        0%   { opacity:1; }
+        25%  { opacity:0.85; }
+        50%  { opacity:0.65; }
+        75%  { opacity:0.65; }
+        100% { opacity:0.25; }
+      }
+      .dangerIcon {
+        position: absolute;
+        animation-duration: 1.2s;
+        animation-delay: 1s;
+        animation-iteration-count: infinite;
+        top: 1.3889vw;
+        right: 1.7361vw;
+        width: 1.4583vw;
+        height: 1.4583vw;
       }
     }
   }

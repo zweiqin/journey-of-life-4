@@ -88,7 +88,8 @@
 
 				<el-form-item label="所属分类">
 					<el-cascader
-						v-model="categoryIds" :options="categoryList" expand-trigger="hover"
+						v-model="categoryIds" lable="name" :options="categoryList" filterable
+						show-all-levels :props="catepropse" expand-trigger="hover"
 						@change="handleCategoryChange"
 					/>
 				</el-form-item>
@@ -433,6 +434,13 @@ export default {
 	components: { Editor },
 	data() {
 		return {
+			catepropse: {
+				label: 'name',
+				value: 'id',
+				children: 'children',
+				checkStrictly: true,
+				emitPath: false
+			},
 			server: process.env.BASE_API,
 			uploadPath,
 			isBrand: undefined,
@@ -523,7 +531,11 @@ export default {
 
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				getCatAndBrandCategory(this.$route.query.brandId).then((response) => {
-					this.categoryList = response.data
+					this.categoryList = response.data.categoryList
+					// 遍历子集，将空的children变为unll
+					this.categoryList.forEach((item) => {
+						this.setEmptyChildrenToNull(item)
+					})
 					// this.categoryList = response.data.categoryList
 					// this.brandList = response.data.brandList
 				})
@@ -537,7 +549,7 @@ export default {
 				})
 			} else {
 				getCatAndBrandCategory().then((response) => {
-					this.categoryList = response.data
+					this.categoryList = response.data.categoryList
 					// this.categoryList = response.data.categoryList
 					// this.brandList = response.data.brandList
 				})
@@ -552,6 +564,7 @@ export default {
 			}
 		},
 		handleCategoryChange(value) {
+			console.log(value)
 			this.goods.categoryId = value[value.length - 1]
 		},
 		handleCancel() {
@@ -805,6 +818,17 @@ export default {
 		handleGoodsCouponsDelete(row) {
 			const index = this.goodsCoupons.indexOf(row)
 			this.goodsCoupons.splice(index, 1)
+		},
+		setEmptyChildrenToNull(obj) {
+			if (Array.isArray(obj.children)) {
+				if (obj.children.length === 0) {
+					obj.children = null // 或者设置为 undefined
+				} else {
+					obj.children.forEach((child) => {
+						this.setEmptyChildrenToNull(child)
+					})
+				}
+			}
 		}
 	}
 }

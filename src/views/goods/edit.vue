@@ -89,9 +89,15 @@
 				<el-form-item label="所属分类">
 					<el-cascader
 						v-model="categoryIds" lable="name" :options="categoryList" filterable
-						show-all-levels :props="catepropse" expand-trigger="hover"
+						show-all-levels :props="catepropse" expandTrigger="hover"
 						@change="handleCategoryChange"
-					/>
+					>
+						<template slot-scope="{ node }">
+							<span :class="{ 'is-disabled': node.level === 1 }">
+								{{ node.label }}
+							</span>
+						</template>
+					</el-cascader>
 				</el-form-item>
 
 				<el-form-item
@@ -534,8 +540,10 @@ export default {
 					this.categoryList = response.data.categoryList
 					// 遍历子集，将空的children变为unll
 					this.categoryList.forEach((item) => {
+						item.isdasbale = false
 						this.setEmptyChildrenToNull(item)
 					})
+					this.disableFirstLevel()
 					// this.categoryList = response.data.categoryList
 					// this.brandList = response.data.brandList
 				})
@@ -565,7 +573,7 @@ export default {
 		},
 		handleCategoryChange(value) {
 			console.log(value)
-			this.goods.categoryId = value[value.length - 1]
+			this.goods.categoryId = value
 		},
 		handleCancel() {
 			if (this.$route.query.lastRouter === 'brandListShow') {
@@ -829,12 +837,24 @@ export default {
 					})
 				}
 			}
+		},
+		disableFirstLevel() {
+			const firstLevelRadioGroup = document.querySelectorAll('.el-cascader-menu__list> .el-radio')
+			// console.log(firstLevelRadioGroup)
+			firstLevelRadioGroup.forEach((radio) => {
+				radio.disabled = true
+			})
 		}
 	}
 }
 </script>
 
 <style>
+.is-disabled {
+  color: #ccc;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
 .el-card {
 	margin-bottom: 10px;
 }

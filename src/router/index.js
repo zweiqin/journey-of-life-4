@@ -440,7 +440,7 @@ export const asyncRouterMap = [
 					icon: '',
 					noCache: true
 				},
-				hidden: false
+				hidden: true
 			},
 			{
 				path: '',

@@ -72,7 +72,7 @@ export default {
 			// 实例化socket
 			// this.socket = new WebSocket(this.path, [ this.$store.getters.token ])
 			// this.$refs.chat.init(this.socket)
-			this.$refs.chat.init(this.path)
+			// this.$refs.chat.init(this.path)
 		}
 	},
 	methods: {

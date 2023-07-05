@@ -540,7 +540,7 @@ export default {
 					this.categoryList = response.data.categoryList
 					// 遍历子集，将空的children变为unll
 					this.categoryList.forEach((item) => {
-						item.isdasbale = false
+						// item.isdasbale = false
 						this.setEmptyChildrenToNull(item)
 					})
 					this.disableFirstLevel()
@@ -830,7 +830,7 @@ export default {
 		setEmptyChildrenToNull(obj) {
 			if (Array.isArray(obj.children)) {
 				if (obj.children.length === 0) {
-					obj.children = null // 或者设置为 undefined
+					obj.children = null // 或者设置为 undefined 阻止children为空的值渲染
 				} else {
 					obj.children.forEach((child) => {
 						this.setEmptyChildrenToNull(child)

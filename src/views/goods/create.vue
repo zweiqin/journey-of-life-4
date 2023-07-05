@@ -676,7 +676,13 @@ export default {
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				this.goods.brandId = this.$route.query.brandId
 				getCatAndBrandCategory(this.goods.brandId).then((response) => {
-					this.categoryList = response.data
+					// console.log(response)
+					this.categoryList = response.data.categoryList
+					this.categoryList.forEach((item) => {
+						this.setEmptyChildrenToNull(item)
+					})
+					// console.log(this.categoryList)
+					this.setEmptyChildrenToNull()
 					// this.categoryList = response.data.categoryList
 					// this.brandList = response.data.brandList
 				})
@@ -690,7 +696,7 @@ export default {
 				})
 			} else {
 				getCatAndBrandCategory().then((response) => {
-					this.categoryList = response.data
+					this.categoryList = response.data.categoryList
 					// this.categoryList = response.data.categoryList
 					// this.brandList = response.data.brandList
 				})
@@ -952,6 +958,17 @@ export default {
 		handleGoodsCouponsDelete(row) {
 			const index = this.goodsCoupons.indexOf(row)
 			this.goodsCoupons.splice(index, 1)
+		},
+		setEmptyChildrenToNull(obj) {
+			if (Array.isArray(obj.children)) {
+				if (obj.children.length === 0) {
+					obj.children = null // 或者设置为 undefined 阻止children为空的值渲染
+				} else {
+					obj.children.forEach((child) => {
+						this.setEmptyChildrenToNull(child)
+					})
+				}
+			}
 		}
 	}
 }

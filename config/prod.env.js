@@ -3,9 +3,9 @@ module.exports = {
   ENV_CONFIG: '"prod"',
 
   //巨峰
-  BASE_API: '"https://www.tuanfengkeji.cn:9527/jf-admin-api/admin"',
-  BASE_WS_API: '"wss://www.tuanfengkeji.cn:9528/jf-admin-api/webSocket"',
+  BASE_API: '"https://admin.jfcmei.com/api/admin"',
+  BASE_WS_API: '"wss://admin.jfcmei.com/api/ws"',
   BASE_SHOWAPI: '"https://bus.deyisoft.cn:8890/jfshop"',
-  BASE_WXAPI: '"https://www.tuanfengkeji.cn:9527/jf-admin-api/wx"'
+  BASE_WXAPI: '"https://admin.jfcmei.com/api/wx"'
 
 }

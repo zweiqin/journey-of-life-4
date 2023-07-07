@@ -73,12 +73,12 @@ export default {
 			console.log('socketInfo连接错误')
 		},
 		onmessageInfo(msg) {
-			// console.log(msg.data) // {"chatId":15,"sendUserId":5,"userType":"APP","message":"{\"event\":\"1234\",\"message\":{\"id\":1677132694342,\"status\":\"succeed\",\"type\":\"text\",\"sendTime\":1677132694342,\"content\":\"公司把这个不hj\",\"toContactId\":15,\"fromUser\":{\"id\":5,\"displayName\":\"哈哈哈\",\"avatar\":\"https://www.tuanfengkeji.cn/tfshop/static/img/logo.024b746.png\"}}}"}
+			// console.log(msg.data) // {"chatId":15,"sendUserId":5,"userType":"APP","message":"{\"event\":\"1234\",\"message\":{\"id\":1677132694342,\"status\":\"succeed\",\"type\":\"text\",\"sendTime\":1677132694342,\"content\":\"公司把这个不hj\",\"toContactId\":15,\"fromUser\":{\"id\":5,\"displayName\":\"哈哈哈\",\"avatar\":\"https://xxx/static/img/logo.024b746.png\"}}}"}
 			const { IMUI } = this.$refs
 			const dataAll = JSON.parse(msg.data)
-			// console.log(dataAll) // { "chatId": 15, "sendUserId": 5, "userType": "APP", "message": "{\"event\":\"1234\",\"message\":{\"id\":1677132694342,\"status\":\"succeed\",\"type\":\"text\",\"sendTime\":1677132694342,\"content\":\"公司把这个不hj\",\"toContactId\":15,\"fromUser\":{\"id\":5,\"displayName\":\"哈哈哈\",\"avatar\":\"https://www.tuanfengkeji.cn/tfshop/static/img/logo.024b746.png\"}}}" }
+			// console.log(dataAll) // { "chatId": 15, "sendUserId": 5, "userType": "APP", "message": "{\"event\":\"1234\",\"message\":{\"id\":1677132694342,\"status\":\"succeed\",\"type\":\"text\",\"sendTime\":1677132694342,\"content\":\"公司把这个不hj\",\"toContactId\":15,\"fromUser\":{\"id\":5,\"displayName\":\"哈哈哈\",\"avatar\":\"https://xxx/static/img/logo.024b746.png\"}}}" }
 			const data = JSON.parse(dataAll.message)
-			console.log(data) // { "event": "1234", "message": { "id": 1677132694342, "status": "succeed", "type": "text", "sendTime": 1677132694342, "content": "公司把这个不hj", "toContactId": 15, "fromUser": { "id": 5, "displayName": "哈哈哈", "avatar": "https://www.tuanfengkeji.cn/tfshop/static/img/logo.024b746.png" } } }
+			console.log(data) // { "event": "1234", "message": { "id": 1677132694342, "status": "succeed", "type": "text", "sendTime": 1677132694342, "content": "公司把这个不hj", "toContactId": 15, "fromUser": { "id": 5, "displayName": "哈哈哈", "avatar": "https://xxx/static/img/logo.024b746.png" } } }
 			switch (data.event) {
 				// case 'init':
 				//   this.messageInitEvent(data, IMUI)

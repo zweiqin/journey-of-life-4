@@ -1,3 +1,4 @@
+/* eslint-disable vue/max-len */
 /* eslint-disable max-lines */
 /* eslint-disable max-len */
 import Vue from 'vue'
@@ -21,11 +22,11 @@ import Layout from '@/views/layout/Layout'
 * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
-    perms: ['GET /aaa','POST /bbb']     will control the page perms (you can set multiple perms)
-    title: 'title'               the name show in submenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar,
-    noCache: true                if true ,the page will no be cached(default is false)
-  }
+		perms: ['GET /aaa','POST /bbb']     will control the page perms (you can set multiple perms)
+		title: 'title'               the name show in submenu and breadcrumb (recommend set)
+		icon: 'svg-name'             the icon show in the sidebar,
+		noCache: true                if true ,the page will no be cached(default is false)
+	}
 **/
 
 export const constantRouterMap = [
@@ -85,12 +86,13 @@ export const constantRouterMap = [
 	{
 		path: '',
 		component: Layout,
-		redirect: 'dashboard',
+		redirect: 'homepage',
+		_ROLES: [ 'ADMIN' ],
 		children: [
 			{
-				path: 'dashboard',
+				path: 'homepage',
 				component: () => import('@/views/dashboard/index'),
-				name: 'Dashboard',
+				name: 'Homepage',
 				meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
 			}
 		]
@@ -102,19 +104,6 @@ export const constantRouterMap = [
 		component: () => import('@/views/dashboard/index'),
 		hidden: true
 	}
-	// {
-	//   path: '/dataStatisticsDashboard',
-	//   component: Layout,
-	//   // component: () => import('@/views/dataStatisticsDashboard'),
-	//   children: [
-	//     {
-	//       path: 'dashboard',
-	//       component: () => import('@/views/dataStatisticsDashboard'),
-	//       name: 'dataStatisticsDashboard',
-	//       meta: { title: '数据看板', icon: 'table', noCache: true }
-	//     }
-	//   ]
-	// }
 ]
 
 export default new Router({
@@ -147,7 +136,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/user/user'),
 						name: 'user',
 						meta: {
-							perms: ['GET /admin/user/list', 'GET /admin/user/query', 'GET /admin/user/tranList', 'GET /admin/user/detailApprove', 'POST /admin/user/approveAgency'],
+							perms: ['GET /admin/user/list', 'GET /admin/user/detailApprove', 'POST /admin/user/approveAgency'],
 							title: '会员管理',
 							icon: 'user',
 							noCache: true
@@ -158,7 +147,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/user/vipUser'),
 						name: 'vipUser',
 						meta: {
-							perms: [ 'GET /admin/user/levelList' ],
+							perms: ['GET /admin/user/levelList', 'GET /admin/user/detailApprove', 'POST /admin/user/approveAgency'],
 							title: 'VIP会员管理',
 							icon: 'people',
 							noCache: true
@@ -282,6 +271,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/mall/region'),
 						name: 'region',
 						meta: {
+							perms: [ 'GET /admin/region/list' ],
 							title: '行政区域',
 							icon: 'international',
 							noCache: true
@@ -304,7 +294,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/mall/brandCategory'),
 						name: 'brandCategory',
 						meta: {
-							// perms: [],
+							perms: ['GET /admin/brand/list', 'GET /admin/brand/catAndAdmin'],
 							title: '门店-商品类目',
 							icon: 'list',
 							noCache: true
@@ -316,7 +306,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/mall/brandCategoryShow'),
 						name: 'brandCategoryShow',
 						meta: {
-							perms: ['GET /admin/category/list', 'POST /admin/category/create', 'GET /admin/category/read', 'POST /admin/category/update', 'POST /admin/category/delete'],
+							perms: ['GET /admin/category/list', 'GET /admin/category/l1', 'GET /admin/category/l2', 'POST /admin/category/create', 'POST /admin/category/update', 'POST /admin/category/delete'],
 							title: '门店-商品类目展示',
 							icon: 'list',
 							noCache: true
@@ -328,7 +318,6 @@ export const asyncRouterMap = [
 						component: () => import('@/views/mall/order'),
 						name: 'order',
 						meta: {
-							// eslint-disable-next-line vue/max-len
 							perms: ['GET /admin/order/list', 'GET /admin/order/detail', 'POST /admin/order/refund', 'POST /admin/order/reply', 'POST /admin/order/ship', 'GET /admin/order/listShipChannel'],
 							title: '订单管理',
 							icon: 'nested',
@@ -370,38 +359,46 @@ export const asyncRouterMap = [
 						path: 'MarketingStores',
 						component: () => import('@/views/RelationshipChainManagement/MarketingStores'),
 						name: 'MarketingStores',
-						meta: { title: '营销-门店',
+						meta: {
+							title: '营销-门店',
 							icon: 'tree-table',
 							noCache: true,
-							perms: ['POST /admin/smmanage/add', 'POST /admin/smmanage/delect', 'GET /admin/smmanage/smlist', 'GET /admin/smmanage/bdlist', 'GET /admin/smmanage/unlist'] }
+							perms: ['POST /admin/smmanage/add', 'POST /admin/smmanage/delect', 'GET /admin/smmanage/smlist', 'GET /admin/smmanage/bdlist', 'GET /admin/smmanage/unlist']
+						}
 					},
 					{
 						path: 'StoreMember',
 						component: () => import('@/views/RelationshipChainManagement/StoreMember'),
 						name: 'StoreMember',
-						meta: { title: '业务员-会员',
+						meta: {
+							title: '业务员-会员',
 							icon: 'tree-table',
 							noCache: true,
-							perms: ['GET /admin/salesman/brandlist', 'GET /admin/salesman/userlist', 'POST /admin/bduser/add', 'POST /admin/bduser/delect', 'GET /admin/bduser/unlist'] }
+							perms: ['GET /admin/salesman/brandlist', 'GET /admin/salesman/userlist', 'POST /admin/bduser/add', 'POST /admin/bduser/delect', 'GET /admin/bduser/unlist']
+						}
 					},
 					{
 						path: 'salesmanManagement',
 						component: () => import('@/views/RelationshipChainManagement/salesmanManagement'),
 						name: 'salesmanManagement',
-						meta: { title: '所属门店',
+						meta: {
+							title: '所属门店',
 							icon: 'tree-table',
 							noCache: true,
-							perms: ['GET /admin/sexclusive/bdlist', 'POST /admin/sexclusive/delect'] }
+							perms: ['GET /admin/salesman/introsp', 'GET /admin/sexclusive/bdlist', 'POST /admin/sexclusive/delect']
+						}
 					},
 					{
 						path: 'MemberManagement',
 						component: () => import('@/views/RelationshipChainManagement/MemberManagement'),
 
 						name: 'MemberManagement',
-						meta: { title: '所属会员',
+						meta: {
+							title: '所属会员',
 							icon: 'tree-table',
 							noCache: true,
-							perms: ['GET /admin/brands/userlist', 'POST /admin/brands/delect'] }
+							perms: ['GET /admin/brands/userlist', 'POST /admin/brands/delect']
+						}
 					}
 				]
 			}
@@ -424,7 +421,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/goods/list'),
 				name: 'goodsList',
 				meta: {
-					// perms: ['GET /admin/goods/list', 'POST /admin/goods/delete'],
+					perms: ['GET /admin/goods/list', 'POST /admin/goods/delete'],
 					title: '商品列表',
 					icon: '',
 					noCache: true
@@ -435,7 +432,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/goods/create'),
 				name: 'goodsCreate',
 				meta: {
-					// perms: ['POST /admin/goods/create'],
+					perms: [ 'POST /admin/goods/create' ],
 					title: '商品上架',
 					icon: '',
 					noCache: true
@@ -447,7 +444,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/goods/edit'),
 				name: 'goodsEdit',
 				meta: {
-					// perms: ['GET /admin/goods/detail', 'POST /admin/goods/update', 'POST /admin/goods/catAndBrand'],
+					perms: ['GET /admin/goods/detail', 'POST /admin/goods/update', 'POST /admin/goods/catAndBrand'],
 					title: '商品编辑',
 					icon: '',
 					noCache: true
@@ -470,7 +467,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/goods/brandList'),
 				name: 'brandGoodsList',
 				meta: {
-					// perms: [],
+					perms: ['GET /admin/brand/list', 'GET /admin/brand/catAndAdmin'],
 					title: '门店-商品',
 					icon: '',
 					noCache: true
@@ -482,7 +479,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/goods/brandListShow'),
 				name: 'brandGoodsListShow',
 				meta: {
-					// perms: [],
+					perms: ['GET /admin/goods/list', 'POST /admin/goods/delete'],
 					title: '门店-商品展示',
 					icon: '',
 					noCache: true
@@ -495,7 +492,7 @@ export const asyncRouterMap = [
 		path: '/dataStatisticsDashboard',
 		component: Layout,
 		redirect: 'noredirect',
-		// alwaysShow: true,
+		alwaysShow: true,
 		name: 'dataStatisticsDashboard',
 		meta: {
 			title: '情报数据看板',
@@ -506,8 +503,10 @@ export const asyncRouterMap = [
 			{
 				path: '',
 				component: () => import('@/views/digitalDashboard/informationSentry'),
+				_ROLES: [ 'ADMIN' ],
 				name: 'informationSentry',
 				meta: {
+					perms: [ '/admin/developing' ],
 					title: '信息哨兵',
 					icon: ''
 				}
@@ -515,8 +514,10 @@ export const asyncRouterMap = [
 			{
 				path: '/performanceControlDashboard',
 				component: () => import('@/views/digitalDashboard/performanceControlDashboard'),
+				_ROLES: [ 'ADMIN' ],
 				name: 'performanceControlDashboard',
 				meta: {
+					perms: [ '/admin/developing' ],
 					title: '业绩看板',
 					icon: ''
 				}
@@ -524,8 +525,10 @@ export const asyncRouterMap = [
 			{
 				path: '/marketingToolsDashboard',
 				component: () => import('@/views/digitalDashboard/marketingToolsDashboard'),
+				_ROLES: [ 'ADMIN' ],
 				name: 'marketingToolsDashboard',
 				meta: {
+					perms: [ '/admin/developing' ],
 					title: '营销看板',
 					icon: ''
 				}
@@ -533,8 +536,10 @@ export const asyncRouterMap = [
 			{
 				path: '/userPortraitDashboard',
 				component: () => import('@/views/digitalDashboard/userPortraitDashboard'),
+				_ROLES: [ 'ADMIN' ],
 				name: 'userPortraitDashboard',
 				meta: {
+					perms: [ '/admin/developing' ],
 					title: '用户看板',
 					icon: ''
 				}
@@ -766,7 +771,6 @@ export const asyncRouterMap = [
 						component: () => import('@/views/painting/newList'),
 						name: 'paintingList',
 						meta: {
-							perms: [ 'POST /admin/paintAlbum/delete' ],
 							title: '画册列表',
 							icon: 'list',
 							noCache: true
@@ -777,7 +781,7 @@ export const asyncRouterMap = [
 								component: () => import('@/views/painting/create'),
 								name: 'paintingCreate',
 								meta: {
-									// perms: ['POST /admin/paintAlbum/create'],
+									perms: [ 'POST /admin/paintAlbum/create' ],
 									title: '画册设置',
 									icon: 'link',
 									noCache: true
@@ -789,7 +793,7 @@ export const asyncRouterMap = [
 								component: () => import('@/views/painting/edit'),
 								name: 'paintingEdit',
 								meta: {
-									// perms: ['GET /admin/paintAlbum/detail', 'POST /paintAlbum/update'],
+									perms: ['GET /admin/paintAlbum/detail', 'POST /paintAlbum/update'],
 									title: '画册编辑',
 									icon: 'form',
 									noCache: true
@@ -801,7 +805,7 @@ export const asyncRouterMap = [
 								component: () => import('@/views/painting/imgcreate'),
 								name: 'imgcreate',
 								meta: {
-									// perms: ['POST /admin/painting/imgcreate'],
+									perms: [ 'POST /admin/imgAlbum/create' ],
 									title: '添加图片',
 									icon: 'link',
 									noCache: true
@@ -813,7 +817,7 @@ export const asyncRouterMap = [
 								component: () => import('@/views/painting/imgedit'),
 								name: 'imgedit',
 								meta: {
-									// perms: ['GET /admin/painting/imgdetail', 'POST /admin/painting/imgupdate'],
+									perms: ['GET /admin/imgAlbum/detail', 'POST /admin/imgAlbum/update'],
 									title: '图片编辑',
 									icon: 'form',
 									noCache: true
@@ -822,12 +826,12 @@ export const asyncRouterMap = [
 							}
 						]
 					},
-
 					{
 						path: 'paintingshow',
 						name: 'paintingshow',
 						component: () => import('@/views/painting/show'),
 						meta: {
+							perms: ['GET /admin/imgAlbum/list', 'GET /admin/paintAlbum/list'],
 							title: '画册展示',
 							icon: 'form',
 							noCache: true
@@ -837,6 +841,12 @@ export const asyncRouterMap = [
 						path: 'pictureShow',
 						name: 'pictureShow',
 						component: () => import('@/views/painting/pictureShow'),
+						meta: {
+							perms: [ 'GET /admin/imgAlbum/list' ],
+							title: '图片展示',
+							icon: 'form',
+							noCache: true
+						},
 						hidden: true
 					},
 					{
@@ -844,30 +854,13 @@ export const asyncRouterMap = [
 						name: 'QRCode',
 						component: () => import('@/views/painting/QRCode'),
 						meta: {
+							perms: [ 'GET /admin/paintAlbum/list' ],
 							title: '二维码生成',
 							icon: 'wechat',
 							noCache: true
 						}
 					}
-					// {
-					//   redirect: '/paintingshow',
-					//   alwaysShow: true,
-					//   name: 'paintingshow'
-
-					//   // path: '/paintingshow'
-					// }
 				]
-			},
-			{
-				path: 'tkb',
-				component: () => import('@/views/errorPage/developing'),
-				name: 'tkb',
-				meta: {
-					// perms: [],
-					title: '拓客宝',
-					icon: '',
-					noCache: true
-				}
 			},
 			{
 				path: 'discountCouponManagement',
@@ -875,7 +868,6 @@ export const asyncRouterMap = [
 				component: () => import('@/views/children'),
 				name: 'discountCouponManagement',
 				meta: {
-					// perms: [],
 					title: '核销券',
 					icon: '',
 					noCache: true
@@ -897,7 +889,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/promotion/brandCoupon'),
 						name: 'brandCoupon',
 						meta: {
-							// perms: [],
+							perms: ['POST /admin/coupon/update', 'POST /admin/coupon/delete', 'POST /admin/coupon/create', 'GET /admin/coupon/list'],
 							title: '门店-核销优惠券',
 							icon: '',
 							noCache: true
@@ -921,7 +913,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/promotion/couponDetail'),
 						name: 'couponDetail',
 						meta: {
-							perms: ['GET /admin/coupon/list', 'GET /admin/coupon/listuser'],
+							perms: ['GET /admin/coupon/read', 'GET /admin/coupon/listuser'],
 							title: '核销优惠券详情',
 							icon: 'tab',
 							noCache: true
@@ -933,7 +925,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'couponCard',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '核销卡',
 							icon: '',
 							noCache: true
@@ -968,7 +960,6 @@ export const asyncRouterMap = [
 					{
 						path: 'iconList',
 						component: () => import('@/views/iconManagement/iconList'),
-
 						name: 'IconList',
 						meta: {
 							title: '图标列表',
@@ -1006,7 +997,6 @@ export const asyncRouterMap = [
 				component: () => import('@/views/sys/role'),
 				name: 'role',
 				meta: {
-					// eslint-disable-next-line vue/max-len
 					perms: ['GET /admin/role/list', 'POST /admin/role/create', 'POST /admin/role/update', 'POST /admin/role/delete', 'GET /admin/role/permissions', 'POST /admin/role/permissions', 'GET /admin/role/read'],
 					title: '角色管理',
 					icon: 'qq',
@@ -1029,7 +1019,6 @@ export const asyncRouterMap = [
 				component: () => import('@/views/sys/SalesmanManagement'),
 				name: 'SalesmanManagement',
 				meta: {
-					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/salesman/update', 'POST /admin/salesman/delete', 'GET /admin/salesman/bound', 'POST /admin/salesman/create', 'GET /admin/salesman/unBound', 'GET /admin/salesman/smlist'],
 					title: '业务员管理',
 					icon: 'logininfor',
@@ -1108,7 +1097,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/profile',
 		component: Layout,
@@ -1119,18 +1107,25 @@ export const asyncRouterMap = [
 				path: 'password',
 				component: () => import('@/views/profile/password'),
 				name: 'password',
-				meta: { title: '修改密码', noCache: true }
+				meta: {
+					title: '修改密码',
+					noCache: true,
+					perms: [ 'POST /admin/profile/password' ]
+				}
 			},
 			{
 				name: 'userInfo',
 				path: 'userInfo',
 				component: () => import('@/views/profile/userInfo'),
-				meta: { title: '个人中心', noCache: true }
+				meta: {
+					title: '个人中心',
+					noCache: true,
+					perms: [ 'GET /admin/personal/info' ]
+				}
 			}
 		],
 		hidden: true
 	},
-
 	{
 		path: '/configurationTable',
 		alwaysShow: true,
@@ -1176,7 +1171,6 @@ export const asyncRouterMap = [
 				component: () => import('@/views/configurationTable/upgradeMoney'),
 				name: 'upgradeMoney',
 				meta: {
-					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/upgradeMoney/update', 'POST /admin/upgradeMoney/delete', 'POST /admin/upgradeMoney/create', 'GET /admin/upgradeMoney/list', 'GET /admin/upgradeMoney/detail'],
 					title: '升级金额配置',
 					icon: '',
@@ -1194,23 +1188,11 @@ export const asyncRouterMap = [
 					noCache: true
 				}
 			},
-			// {
-			//   path: 'storeLevel',
-			//   component: () => import('@/views/configurationTable/storeLevel'),
-			//   name: 'storeLevel',
-			//   meta: {
-			//     perms: ['POST /admin/brandLevel/create', 'GET /admin/brandLevel/list', 'POST /admin/brandLevel/update', 'POST /admin/brandLevel/delete'],
-			//     title: '门店等级配置',
-			//     icon: '',
-			//     noCache: true
-			//   }
-			// },
 			{
 				path: 'brokerageInfo',
 				component: () => import('@/views/configurationTable/brokerageInfo'),
 				name: 'brokerageInfo',
 				meta: {
-					// eslint-disable-next-line vue/max-len
 					perms: ['POST /admin/brokerageInfo/update', 'POST /admin/brokerageInfo/delete', 'POST /admin/brokerageInfo/create', 'GET /admin/brokerageInfo/list', 'GET /admin/brokerageInfo/detail'],
 					title: '佣金关系配置',
 					icon: '',
@@ -1241,7 +1223,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/applicationManagement',
 		component: Layout,
@@ -1249,9 +1230,7 @@ export const asyncRouterMap = [
 		meta: {
 			title: '申请管理',
 			icon: 'log',
-			noCache: true,
-			// eslint-disable-next-line vue/max-len
-			perms: ['POST /admin/upRecord/list', 'POST /admin/userup/list', 'POST /admin/userup/manage', 'POST /admin/userup/signin', 'POST /admin/userup/userUpVip', 'POST /admin/userup/vipList', 'GET /admin/userup/pdlist']
+			noCache: true
 		},
 		children: [
 			{
@@ -1259,7 +1238,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/merchantSettlement'),
 				name: 'MerchantSettlement',
 				meta: {
-					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful', 'GET /admin/dtsUpgradeRequest/listOne'],
+					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful'],
 					title: '会员商家入驻审核',
 					noCache: true
 				}
@@ -1269,7 +1248,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/complain'),
 				name: 'complain',
 				meta: {
-					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/careful', 'GET /admin/dtsUpgradeRequest/listOne'],
+					perms: ['GET /admin/dtsBrandInforms/selectComplaint', 'POST /admin/dtsBrandInforms/handle'],
 					title: '投诉申请管理',
 					noCache: true
 				}
@@ -1299,7 +1278,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/refundReview'),
 				name: 'refundReview',
 				meta: {
-					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					perms: ['GET /admin/dtsOrderRefunds/getRefundsList', 'POST /admin/dtsOrderRefunds/toExamine'],
 					title: '退款审核',
 					noCache: true
 				}
@@ -1309,7 +1288,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/refundReason'),
 				name: 'refundReason',
 				meta: {
-					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
+					perms: ['GET /admin/dtsOrderRefundsReason/list', 'POST /admin/dtsOrderRefundsReason/add', 'POST /admin/dtsOrderRefundsReason/update'],
 					title: '退款原因管理',
 					noCache: true
 				}
@@ -1321,37 +1300,41 @@ export const asyncRouterMap = [
 				redirect: 'noredirect',
 				alwaysShow: true,
 				meta: {
-					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
 					title: '提现审核',
 					noCache: true
 				},
-				children: [{
-					path: 'userWithdrawalApplicationForm',
-					component: () => import('@/views/withdrawalAudit/userWithdrawalApplicationForm'),
-					name: 'userWithdrawalApplicationForm',
-					meta: {
-						title: '用户提现审核表',
-						noCache: true
+				children: [
+					{
+						path: 'userWithdrawalApplicationForm',
+						component: () => import('@/views/withdrawalAudit/userWithdrawalApplicationForm'),
+						name: 'userWithdrawalApplicationForm',
+						meta: {
+							perms: ['GET /admin/withdrawal/list', 'POST /admin/withdrawal/toExamine'],
+							title: '用户提现审核表',
+							noCache: true
+						}
+					},
+					{
+						path: 'withdrawalLogRecords',
+						component: () => import('@/views/withdrawalAudit/withdrawalLogRecords'),
+						name: 'withdrawalLogRecords',
+						meta: {
+							perms: [ 'GET /admin/withdrawalLogs/list' ],
+							title: '提现日志',
+							noCache: true
+						}
+					},
+					{
+						path: 'bankCardList',
+						component: () => import('@/views/withdrawalAudit/bankCardList'),
+						name: 'bankCardList',
+						meta: {
+							perms: [ 'GET /admin/withdrawalBank/list' ],
+							title: '用户银行卡列表',
+							noCache: true
+						}
 					}
-				}, {
-					path: 'withdrawalLogRecords',
-					component: () => import('@/views/withdrawalAudit/withdrawalLogRecords'),
-					name: 'withdrawalLogRecords',
-					meta: {
-						// perms: ['GET /admin/dtsAdmin/administrationList', 'GET /admin/dtsAdmin/areaUserList'],
-						title: '提现日志',
-						noCache: true
-					}
-				}, {
-					path: 'bankCardList',
-					component: () => import('@/views/withdrawalAudit/bankCardList'),
-					name: 'bankCardList',
-					meta: {
-						// perms: ['GET /admin/dtsAdmin/administrationList', 'GET /admin/dtsAdmin/areaUserList'],
-						title: '用户银行卡列表',
-						noCache: true
-					}
-				}]
+				]
 			},
 			{
 				path: 'relationChain',
@@ -1360,7 +1343,6 @@ export const asyncRouterMap = [
 				name: 'relationChain',
 				alwaysShow: true,
 				meta: {
-					// perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/marketing'],
 					title: '关系链',
 					noCache: true
 				},
@@ -1390,7 +1372,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/applicationManagement/relationChain/businessMerchant'),
 						name: 'businessMerchant',
 						meta: {
-							perms: ['GET /admin/dtsAdmin/plannerList', 'GET /admin/dtsAdmin/businessUserList'],
+							perms: [ 'GET /admin/dtsAdmin/businessList' ],
 							title: '业务-商户',
 							noCache: true
 						}
@@ -1413,7 +1395,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/advancedSalesmanApplication'),
 				name: 'advancedSalesmanApplication',
 				meta: {
-					perms: [ 'GET /admin/userup/pdlist' ],
+					perms: ['GET /admin/userup/pdlist', 'POST /admin/userup/manage'],
 					title: '营销申请管理',
 					icon: 'validCode',
 					noCache: true
@@ -1424,7 +1406,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/salesmanApplication'),
 				name: 'salesmanApplication',
 				meta: {
-					perms: [ 'GET /admin/userup/pdlist' ],
+					perms: ['GET /admin/userup/pdlist', 'POST /admin/userup/manage'],
 					title: '门店申请管理',
 					icon: 'validCode',
 					noCache: true
@@ -1435,7 +1417,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/history'),
 				name: 'applicationHistory',
 				meta: {
-					perms: [ 'POST /admin/userup/list' ],
+					perms: ['POST /admin/userup/list', 'GET /admin/dtsStoreType/typeTree', 'GET /admin/role/options'],
 					title: '申请表查询',
 					icon: 'skill',
 					noCache: true
@@ -1446,7 +1428,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/applicationManagement/UpHistory'),
 				name: 'UpHistory',
 				meta: {
-					perms: [ 'POST /admin/upRecord/list' ],
+					perms: ['POST /admin/upRecord/list', 'POST /admin/userup/signin', 'POST /admin/userup/userUpVip', 'GET /admin/dtsStoreType/typeTree', 'GET /admin/role/options'],
 					title: '升级记录表查询',
 					icon: 'skill',
 					noCache: true
@@ -1454,7 +1436,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/brand',
 		component: Layout,
@@ -1479,50 +1460,13 @@ export const asyncRouterMap = [
 				path: 'brandSetting',
 				component: () => import('@/views/configurationTable/brandSetting'),
 				name: 'brandSetting',
-				perms: ['GET /admin/brand/list', 'POST /admin/brand/update'],
 				meta: {
+					perms: ['GET /admin/brand/list', 'POST /admin/brand/update'],
 					title: '门店信息配置(用户)',
 					icon: '',
 					noCache: true
 				},
 				hidden: true
-			},
-			{
-				path: 'salesManagement',
-				component: () => import('@/views/children'),
-				redirect: 'noredirect',
-				alwaysShow: true,
-				meta: {
-					title: '业务员管理',
-					icon: '',
-					noCache: true,
-					// eslint-disable-next-line vue/max-len
-					perms: ['POST /admin/brandSalesman/update', 'POST /admin/brandSalesman/delete', 'POST /admin/brandSalesman/create', 'GET /admin/brandSalesman/list', 'GET /admin/brandSalesman/detail', 'GET /admin/brandSalesman/bidList']
-				},
-				children: [
-					{
-						path: '',
-						component: () => import('@/views/salesManagement/salesManagement'),
-
-						name: 'salesManagement',
-						meta: { title: '业务员列表',
-							icon: '',
-							noCache: true,
-							perms: [] }
-					},
-					{
-						path: 'subordinateManagement',
-						component: () => import('@/views/salesManagement/subordinateManagement'),
-						name: 'subordinateManagement',
-						meta: {
-							title: '所属业务员',
-							icon: '',
-							noCache: true,
-							perms: []
-						},
-						hidden: true
-					}
-				]
 			},
 			{
 				path: 'storeLevel',
@@ -1571,7 +1515,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/marketingManagement',
 		component: Layout,
@@ -1582,8 +1525,6 @@ export const asyncRouterMap = [
 				path: 'bookGoods',
 				component: () => import('@/views/children'),
 				meta: {
-					// eslint-disable-next-line vue/max-len
-					perms: ['POST /admin/appoint/add', 'POST /admin/appoint/update', 'POST /admin/appoint/delete', 'GET /admin/appoint/list', 'POST /admin/appoint/onSale', 'POST /admin/appoint/unSale', 'GET /admin/appoint/detail'],
 					title: '商品预约',
 					icon: '',
 					noCache: true
@@ -1594,7 +1535,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/bookGoods/list'),
 						name: 'bookGoodsList',
 						meta: {
-							perms: [ 'GET /admin/appoint/list' ],
+							perms: ['GET /admin/appoint/list', 'POST /admin/goods/delete'],
 							title: '预约商品列表',
 							icon: '',
 							noCache: true
@@ -1605,7 +1546,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/bookGoods/create'),
 						name: 'bookGoodsCreate',
 						meta: {
-							perms: [ 'POST /admin/appoint/onSale' ],
+							perms: ['POST /admin/appoint/add', 'GET /admin/coupon/list'],
 							title: '预约商品上架',
 							icon: '',
 							noCache: true
@@ -1616,7 +1557,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/bookGoods/edit'),
 						name: 'bookGoodsEdit',
 						meta: {
-							perms: [ 'POST /admin/appoint/update' ],
+							perms: ['POST /admin/appoint/update', 'GET /admin/appoint/detail', 'GET /admin/coupon/list'],
 							title: '预约商品编辑',
 							icon: '',
 							noCache: true
@@ -1640,8 +1581,6 @@ export const asyncRouterMap = [
 				path: 'creditGoods',
 				component: () => import('@/views/children'),
 				meta: {
-					// eslint-disable-next-line vue/max-len
-					perms: ['GET /admin/integralGoods/detail', 'POST /admin/integralGoods/update', 'POST /admin/integralGoods/delete', 'POST /admin/integralGoods/create', 'GET /admin/integralGoods/list'],
 					title: '积分商品',
 					icon: '',
 					noCache: true
@@ -1652,7 +1591,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/creditGoods/list'),
 						name: 'creditGoodsList',
 						meta: {
-							// perms: [],
+							perms: ['GET /admin/integralGoods/list', 'POST /admin/integralGoods/delete'],
 							title: '积分商品列表',
 							icon: '',
 							noCache: true
@@ -1663,7 +1602,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/creditGoods/create'),
 						name: 'creditGoodsCreate',
 						meta: {
-							// perms: [],
+							perms: [ 'POST /admin/integralGoods/create' ],
 							title: '积分商品上架',
 							icon: '',
 							noCache: true
@@ -1674,7 +1613,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/goods/creditGoods/edit'),
 						name: 'creditGoodsEdit',
 						meta: {
-							// perms: [],
+							perms: ['GET /admin/integralGoods/detail', 'POST /admin/integralGoods/update'],
 							title: '积分商品编辑',
 							icon: '',
 							noCache: true
@@ -1682,17 +1621,6 @@ export const asyncRouterMap = [
 						hidden: true
 					}
 				]
-			},
-			{
-				path: 'storeLevel',
-				component: () => import('@/views/configurationTable/storeLevel'),
-				name: 'storeLevel',
-				meta: {
-					perms: ['POST /admin/brandLevel/create', 'GET /admin/brandLevel/list', 'POST /admin/brandLevel/update', 'POST /admin/brandLevel/delete'],
-					title: '门店会员等级',
-					icon: '',
-					noCache: true
-				}
 			},
 			// {
 			// 	path: 'balance',
@@ -1734,7 +1662,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'promotionCenter',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '推广中心',
 					icon: '',
 					noCache: true
@@ -1752,7 +1680,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/couponManagement/give'),
 						name: 'couponManagementGive',
 						meta: {
-							perms: ['GET /admin/circula/list', 'POST /admin/circula/circula'],
+							perms: [ 'GET /admin/circula/list' ],
 							title: '转增记录',
 							icon: '',
 							noCache: true
@@ -1763,7 +1691,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/couponManagement/order'),
 						name: 'couponManagementOrder',
 						meta: {
-							perms: [ 'GET /admin/voucherRecord/list' ],
+							perms: ['GET /admin/voucherRecord/list', 'POST /admin/hold/add'],
 							title: '订单记录',
 							icon: '',
 							noCache: true
@@ -1774,7 +1702,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/couponManagement/possess'),
 						name: 'couponManagementPossess',
 						meta: {
-							perms: ['GET /admin/hold/list', 'GET /admin/hold/query'],
+							perms: [ 'GET /admin/hold/list' ],
 							title: '持有管理',
 							icon: '',
 							noCache: true
@@ -1794,13 +1722,16 @@ export const asyncRouterMap = [
 					}
 				]
 			},
-			// !这里是优惠卷管理
 			{
 				path: 'preferentialManagement',
 				component: () => import('@/views/preferentialManagement/preferentialManagement.vue'),
-				meta: { title: '优惠卷管理', icon: '', noCache: true },
-				children: [
-				]
+				name: 'PreferentialManagement',
+				meta: {
+					perms: ['GET /admin/coupon/list', 'GET /admin/coupon/listuser', 'POST /admin/coupon/create', 'POST /admin/coupon/update', 'POST /admin/coupon/delete'],
+					title: '优惠卷管理',
+					icon: '',
+					noCache: true
+				}
 			},
 			{
 				path: 'groupBooking',
@@ -1808,7 +1739,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'groupBooking',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '拼团',
 					icon: '',
 					noCache: true
@@ -1819,7 +1750,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'groupBookingNormal',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '正常拼团',
 							icon: '',
 							noCache: true
@@ -1830,7 +1761,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'groupBookingDraw',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '抽奖拼团',
 							icon: '',
 							noCache: true
@@ -1841,7 +1772,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'groupBookingHost',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '团长拼团',
 							icon: '',
 							noCache: true
@@ -1855,7 +1786,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'CrosstownAllianceCard',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '同城联盟卡',
 					icon: '',
 					noCache: true
@@ -1866,7 +1797,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'tkb',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '拓客宝',
 					icon: '',
 					noCache: true
@@ -1878,7 +1809,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'regionalAgency',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '区域代理',
 					icon: '',
 					noCache: true
@@ -1889,7 +1820,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'regionalAgencyRewards',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '区域分红',
 							icon: '',
 							noCache: true
@@ -1900,7 +1831,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/errorPage/developing'),
 						name: 'selectAgent',
 						meta: {
-							// perms: [],
+							perms: [ '/admin/developing' ],
 							title: '代理选择',
 							icon: '',
 							noCache: true
@@ -1914,7 +1845,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'flashSale',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '限时抢购',
 					icon: '',
 					noCache: true
@@ -1925,7 +1856,6 @@ export const asyncRouterMap = [
 				component: () => import('@/views/marketingManagement/memberPackage'),
 				name: 'MemberPackage',
 				meta: {
-					// eslint-disable-next-line vue/max-len
 					perms: ['GET /admin/dtsPackageMember/memberList', 'POST /admin/rolePermission/add', 'POST /admin/dtsPackageMember/update', 'GET /admin/dtsPackageService/list', 'POST /admin/dtsPackageService/add', 'POST /admin/dtsPackageService/update'],
 					title: '会员套餐',
 					icon: '',
@@ -1937,7 +1867,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/marketingManagement/wiseManTask'),
 				name: 'WiseManTask',
 				meta: {
-					// perms: ['POST /admin/talentTask/upload', 'GET /admin/talentTask/list', 'GET /admin/talentTask/info', 'GET /admin/talentTask/update', 'GET /admin/talentTask/delete'],
+					perms: ['POST /admin/talentTask/upload', 'GET /admin/talentTask/list', 'GET /admin/talentTask/info', 'GET /admin/talentTask/update', 'GET /admin/talentTask/delete'],
 					title: '达人任务',
 					icon: '',
 					noCache: true
@@ -1948,7 +1878,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/marketingManagement/wiseManList'),
 				name: 'WiseManList',
 				meta: {
-					// perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],
+					perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],
 					title: '达人列表',
 					icon: '',
 					noCache: true
@@ -1961,7 +1891,6 @@ export const asyncRouterMap = [
 				name: 'mapRedEnvelope',
 				redirect: 'noredirect',
 				meta: {
-					// perms: ['POST /admin/talent/upload', 'GET /admin/talent/list', 'GET /admin/talent/info', 'GET /admin/talent/update'],
 					title: '地图红包管理',
 					icon: '',
 					noCache: true
@@ -1971,7 +1900,7 @@ export const asyncRouterMap = [
 					component: () => import('@/views/marketingManagement/mapRedEnvelope/mapRedEnvelope'),
 					name: 'mapRedEnvelope',
 					meta: {
-						// perms: [],
+						perms: ['GET /admin/adminDtsWrapRed/list', 'GET /admin/adminDtsWrapRed/redList'],
 						title: '查询红包列表',
 						icon: '',
 						noCache: true
@@ -1981,18 +1910,13 @@ export const asyncRouterMap = [
 					component: () => import('@/views/marketingManagement/mapRedEnvelope/listDiscountPapers'),
 					name: 'listDiscountPapers',
 					meta: {
-						// perms: [],
+						perms: [ 'GET /admin/adminDtsWrapRed/couponList' ],
 						title: '查询优惠卷列表',
 						icon: '',
 						noCache: true
 					}
 				}]
 			}
-			// path: 'couponManagement',
-			// alwaysShow: true,
-			// component: () => import('@/views/children'),
-			// redirect: 'noredirect',
-			// meta: { title: '代金券管理', icon: '', noCache: true },
 		]
 	},
 
@@ -2007,7 +1931,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'product',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '产品',
 					icon: '',
 					noCache: true
@@ -2018,7 +1942,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'user',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '用户',
 					icon: '',
 					noCache: true
@@ -2029,7 +1953,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'purchase',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '采购',
 					icon: '',
 					noCache: true
@@ -2040,7 +1964,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'sell',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '销售',
 					icon: '',
 					noCache: true
@@ -2051,7 +1975,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'rdg',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '收发货',
 					icon: '',
 					noCache: true
@@ -2062,7 +1986,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'inventory',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '库存',
 					icon: '',
 					noCache: true
@@ -2073,7 +1997,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'stockSellStorageForms',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '报表',
 					icon: '',
 					noCache: true
@@ -2081,7 +2005,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/financialSystem',
 		component: Layout,
@@ -2093,7 +2016,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'notesReceivable',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '应收单',
 					icon: '',
 					noCache: true
@@ -2104,7 +2027,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'notesPayable',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '应付单',
 					icon: '',
 					noCache: true
@@ -2115,7 +2038,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'receipt',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '收款单',
 					icon: '',
 					noCache: true
@@ -2126,7 +2049,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'paymentOrder',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '付款单',
 					icon: '',
 					noCache: true
@@ -2137,7 +2060,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'paymentRequest',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '付款申请',
 					icon: '',
 					noCache: true
@@ -2148,7 +2071,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'borrowMoney',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '借款',
 					icon: '',
 					noCache: true
@@ -2159,7 +2082,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'reimburse',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '报销',
 					icon: '',
 					noCache: true
@@ -2170,7 +2093,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'costBreakdown',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '费用明细',
 					icon: '',
 					noCache: true
@@ -2181,7 +2104,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'pcs',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '费用汇总',
 					icon: '',
 					noCache: true
@@ -2192,7 +2115,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'commission',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '业务员佣金',
 					icon: '',
 					noCache: true
@@ -2203,7 +2126,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'setCommission',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '业务员佣金设置',
 					icon: '',
 					noCache: true
@@ -2211,7 +2134,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/businessManagement',
 		component: Layout,
@@ -2223,7 +2145,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'InformationSentry',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '信息哨兵',
 					icon: '',
 					noCache: true
@@ -2234,7 +2156,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'ResultsSentry',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '业绩哨兵',
 					icon: '',
 					noCache: true
@@ -2250,10 +2172,9 @@ export const asyncRouterMap = [
 					{
 						path: '',
 						component: () => import('@/views/salesManagement/salesManagement'),
-
 						name: 'salesManagement',
 						meta: {
-							// perms: [],
+							perms: ['GET /admin/brandSalesman/list', 'GET /admin/user/query', 'GET /admin/brand/query', 'POST /admin/brandSalesman/delete', 'POST /admin/brandSalesman/create', 'POST /admin/brandSalesman/update'],
 							title: '业务员列表',
 							icon: '',
 							noCache: true
@@ -2264,7 +2185,7 @@ export const asyncRouterMap = [
 						component: () => import('@/views/salesManagement/subordinateManagement'),
 						name: 'subordinateManagement',
 						meta: {
-							// perms: [],
+							perms: [ 'GET /admin/brandSalesman/bidList' ],
 							title: '所属业务员',
 							icon: '',
 							noCache: true
@@ -2278,7 +2199,7 @@ export const asyncRouterMap = [
 				component: () => import('@/views/errorPage/developing'),
 				name: 'MarketingPortrait',
 				meta: {
-					// perms: [],
+					perms: [ '/admin/developing' ],
 					title: '营销画像',
 					icon: '',
 					noCache: true
@@ -2286,7 +2207,6 @@ export const asyncRouterMap = [
 			}
 		]
 	},
-
 	{
 		path: '/refuelingManagement',
 		component: Layout,

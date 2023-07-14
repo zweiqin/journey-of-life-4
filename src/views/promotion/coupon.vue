@@ -337,7 +337,7 @@ export default {
 				.then((response) => {
 					if (response.data.roles[0] === '超级管理员') {
 						this.$router.push({ name: 'brandCoupon' })
-					} else if (response.data.roles[0] === '门店') {
+					} else if (response.data.roles[0] === '会员商户') {
 						this.getList()
 					}
 				})

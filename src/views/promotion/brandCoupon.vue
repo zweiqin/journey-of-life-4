@@ -96,7 +96,7 @@ export default {
 					if (response.data.roles[0] === '超级管理员') {
 						this.getList()
 						this.init()
-					} else if (response.data.roles[0] === '门店') {
+					} else if (response.data.roles[0] === '会员商户') {
 						this.$router.push({ name: 'coupon' })
 					}
 				})

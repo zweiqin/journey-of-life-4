@@ -259,7 +259,7 @@ export default {
 				.then((response) => {
 					if (response.data.roles[0] === '超级管理员') {
 						this.$router.push({ name: 'brandCategory' })
-					} else if (response.data.roles[0] === '门店' || response.data.roles[0] === '营销策划') {
+					} else if (response.data.roles[0] === '会员商户' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
 						this.getList()
 						this.getCatL1()
 					}

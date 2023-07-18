@@ -4,28 +4,19 @@
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
 			<el-input
-				v-model="listQuery.brandId"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.brandId" clearable size="mini" class="filter-item"
 				style="width: 200px;"
 				placeholder="请输入门店ID"
 			/>
 			<el-button
-				:disabled="isAdmin"
-				size="mini"
-				class="filter-item"
-				type="primary"
+				:disabled="isAdmin" size="mini" class="filter-item" type="primary"
 				icon="el-icon-search"
 				@click="handleFilter"
 			>
 				查找
 			</el-button>
 			<el-button
-				v-show="!isAdmin"
-				size="mini"
-				class="filter-item"
-				type="primary"
+				v-show="!isAdmin" size="mini" class="filter-item" type="primary"
 				icon="el-icon-edit"
 				@click="handleCreate"
 			>
@@ -35,77 +26,31 @@
 
 		<!-- 查询结果 -->
 		<el-table
-			v-loading="listLoading"
-			:data="list"
-			size="small"
-			element-loading-text="正在查询中。。。"
-			border
-			fit
+			v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
+			border fit
 			highlight-current-row
 		>
 
-			<el-table-column
-				align="center"
-				label="编号"
-				prop="id"
-				sortable
-			/>
+			<el-table-column align="center" label="编号" prop="id" sortable />
 
-			<el-table-column
-				align="center"
-				label="门店id"
-				prop="brandId"
-			/>
+			<el-table-column align="center" label="门店id" prop="brandId" />
 
-			<el-table-column
-				align="center"
-				label="等级层级"
-				prop="levelTier"
-				sortable
-			/>
+			<el-table-column align="center" label="等级层级" prop="levelTier" sortable />
 
-			<el-table-column
-				align="center"
-				label="等级名称"
-				prop="name"
-			/>
+			<el-table-column align="center" label="等级名称" prop="name" />
 
-			<el-table-column
-				align="center"
-				label="等级折扣"
-				prop="discount"
-			/>
+			<el-table-column align="center" label="等级折扣" prop="discount" />
 
-			<el-table-column
-				align="center"
-				label="等级描述"
-				prop="description"
-			/>
+			<el-table-column align="center" label="等级描述" prop="description" />
 
-			<el-table-column
-				align="center"
-				label="等级所需充值总额"
-				prop="gradeCriterion"
-			/>
+			<el-table-column align="center" label="等级所需充值总额" prop="gradeCriterion" />
 
-			<el-table-column
-				align="center"
-				label="操作"
-				class-name="small-padding fixed-width"
-			>
+			<el-table-column align="center" label="操作" class-name="small-padding fixed-width">
 				<template slot-scope="scope">
-					<el-button
-						type="primary"
-						size="mini"
-						@click="handleUpdate(scope.row)"
-					>
+					<el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
 						编辑
 					</el-button>
-					<el-button
-						type="danger"
-						size="mini"
-						@click="handleDelete(scope.row)"
-					>
+					<el-button type="danger" size="mini" @click="handleDelete(scope.row)">
 						删除
 					</el-button>
 				</template>
@@ -113,98 +58,53 @@
 		</el-table>
 
 		<Pagination
-			v-show="total > 0"
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.limit"
+			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
 			@pagination="getList"
 		/>
 
 		<!-- 添加或修改对话框 -->
-		<el-dialog
-			:title="textMap[dialogStatus]"
-			:visible.sync="dialogFormVisible"
-		>
+		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
 			<el-form
-				ref="dataForm"
-				:rules="rules"
-				:model="dataForm"
-				status-icon
-				label-position="left"
-				label-width="140px"
+				ref="dataForm" :rules="rules" :model="dataForm" status-icon
+				label-position="left" label-width="140px"
 				style="width: 400px; margin-left:50px;"
 			>
 
-				<el-form-item
-					v-if="dialogStatus != 'create'"
-					label="编号"
-					prop="id"
-				>
+				<el-form-item v-if="dialogStatus != 'create'" label="编号" prop="id">
 					{{ dataForm.id }}
 				</el-form-item>
 
-				<el-form-item
-					v-if="dialogStatus != 'create'"
-					label="门店id"
-					prop="brandId"
-				>
+				<el-form-item v-if="dialogStatus != 'create'" label="门店id" prop="brandId">
 					{{ dataForm.brandId }}
 				</el-form-item>
 
-				<el-form-item
-					v-if="dialogStatus != 'create'"
-					label="等级层级"
-					prop="levelTier"
-				>
+				<el-form-item v-if="dialogStatus != 'create'" label="等级层级" prop="levelTier">
 					{{ dataForm.levelTier }}
 				</el-form-item>
 
-				<el-form-item
-					label="等级名称"
-					prop="name"
-				>
+				<el-form-item label="等级名称" prop="name">
 					<el-input v-model="dataForm.name" />
 				</el-form-item>
 
-				<el-form-item
-					label="等级折扣"
-					prop="discount"
-				>
+				<el-form-item label="等级折扣" prop="discount">
 					<el-input v-model="dataForm.discount" />
 				</el-form-item>
 
-				<el-form-item
-					label="等级描述"
-					prop="description"
-				>
+				<el-form-item label="等级描述" prop="description">
 					<el-input v-model="dataForm.description" />
 				</el-form-item>
 
-				<el-form-item
-					label="等级所需充值总额"
-					prop="gradeCriterion"
-				>
+				<el-form-item label="等级所需充值总额" prop="gradeCriterion">
 					<el-input v-model="dataForm.gradeCriterion" />
 				</el-form-item>
 
 			</el-form>
-			<div
-				slot="footer"
-				class="dialog-footer"
-			>
+			<div slot="footer" class="dialog-footer">
 				<el-button @click="dialogFormVisible = false">取消</el-button>
-				<el-button
-					v-if="dialogStatus == 'create'"
-					type="primary"
-					@click="createData"
-				>
+				<el-button v-if="dialogStatus == 'create'" type="primary" @click="createData">
 					确定
 				</el-button>
-				<el-button
-					v-else
-					type="primary"
-					@click="updateData"
-				>
+				<el-button v-else type="primary" @click="updateData">
 					确定
 				</el-button>
 			</div>
@@ -382,26 +282,29 @@ export default {
 
 <style>
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
+	border-color: #20a0ff;
 }
+
 .avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
+	font-size: 28px;
+	color: #8c939d;
+	width: 120px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
 }
+
 .avatar {
-  width: 145px;
-  height: 145px;
-  display: block;
+	width: 145px;
+	height: 145px;
+	display: block;
 }
 </style>

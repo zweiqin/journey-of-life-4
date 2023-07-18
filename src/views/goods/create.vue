@@ -668,7 +668,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					this.isBrand = response.data.roles[0] === '门店'
+					this.isBrand = response.data.roles[0] === '会员商户'
 				})
 				.catch()
 		},

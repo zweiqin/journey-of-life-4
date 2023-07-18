@@ -89,7 +89,7 @@
 				<el-form-item label="所属分类">
 					<el-cascader
 						v-model="categoryIds" lable="name" :options="categoryList" filterable
-						show-all-levels :props="catepropse" expandTrigger="hover"
+						show-all-levels :props="catepropse" expand-trigger="hover"
 						@change="handleCategoryChange"
 					>
 						<template slot-scope="{ node }">
@@ -506,7 +506,7 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					this.isBrand = response.data.roles[0] === '门店'
+					this.isBrand = response.data.roles[0] === '会员商户'
 				})
 				.catch()
 		},

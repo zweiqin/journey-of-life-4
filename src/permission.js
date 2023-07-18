@@ -41,7 +41,25 @@ router.beforeEach((to, from, next) => {
 		} else {
 			// 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
 			if (hasPermission(store.getters.perms, to.meta.perms)) {
-				next()
+				// console.log(store.getters.addRouters, to)
+				// 登录后的不同角色，跳转到首页的问题
+				if (to.path === '/homepage' && (store.getters.roles.includes('初级营销策划师') || store.getters.roles.includes('会员商户'))) {
+					if (store.getters.addRouters && store.getters.addRouters.length) {
+						if (store.getters.addRouters[0].children && store.getters.addRouters[0].children.length) {
+							if (store.getters.addRouters[0].children[0].children && store.getters.addRouters[0].children[0].children.length) {
+								next({ path: store.getters.addRouters[0].path + '/' + store.getters.addRouters[0].children[0].path + '/' + store.getters.addRouters[0].children[0].children[0].path })
+							} else {
+								next({ path: store.getters.addRouters[0].path + '/' + store.getters.addRouters[0].children[0].path })
+							}
+						} else {
+							next({ path: store.getters.addRouters[0].path })
+						}
+					} else {
+						next({ path: '/401', replace: true, query: { noGoBack: true } })
+					}
+				} else {
+					next()
+				}
 			} else {
 				next({ path: '/401', replace: true, query: { noGoBack: true } })
 			}

@@ -213,7 +213,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.img" :src="common.seamingImgUrl(dataForm.img)" width="145">
+						<el-image
+							v-if="dataForm.img"
+							class="avatar" :src="common.seamingImgUrl(dataForm.img)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dataForm.img) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -537,10 +541,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 /deep/ .avatar-uploader {
 	.el-upload {
-		width: 145px;
-		height: 145px;
 		border: 1px dashed #d9d9d9;
 		border-radius: 6px;
 		cursor: pointer;
@@ -559,6 +562,12 @@ export default {
 		height: 120px;
 		line-height: 120px;
 		text-align: center;
+	}
+
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
 	}
 }
 </style>

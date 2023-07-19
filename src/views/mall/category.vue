@@ -49,7 +49,8 @@
 				<el-table-column align="center" property="appIconUrl" label="H5类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.appIconUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.appIconUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.appIconUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -59,7 +60,8 @@
 				<el-table-column align="center" property="iconUrl" label="类目图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.iconUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -69,7 +71,8 @@
 				<el-table-column align="center" property="picUrl" label="类目图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:80px; height:80px" fit="cover"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)"
+							style="width:80px; height:80px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -155,7 +158,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAppIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.appIconUrl" :src="common.seamingImgUrl(dataForm.appIconUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.appIconUrl" class="avatar" :src="common.seamingImgUrl(dataForm.appIconUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.appIconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -164,7 +170,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.iconUrl" :src="common.seamingImgUrl(dataForm.iconUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.iconUrl" class="avatar" :src="common.seamingImgUrl(dataForm.iconUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.iconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -173,7 +182,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.picUrl" class="avatar" :src="common.seamingImgUrl(dataForm.picUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -268,7 +280,7 @@ export default {
 		},
 		getList() {
 			this.listLoading = true
-			listCategory(this.listQuery)
+			listCategory({ ...this.listQuery, brandId: this.$store.state.user.brandId })
 				.then((response) => {
 					this.list = response.data.items
 					this.total = response.data.total
@@ -281,13 +293,14 @@ export default {
 				})
 		},
 		getCatL1() {
-			listCatL1().then((response) => {
+			listCatL1({ brandId: this.$store.state.user.brandId }).then((response) => {
 				this.catL1 = response.data
 			})
 		},
 		getCatL2(id) {
 			listCatL2({
-				parentId: id
+				parentId: id,
+				brandId: this.$store.state.user.brandId
 			}).then((response) => {
 				this.catL2 = response.data
 			})
@@ -340,7 +353,7 @@ export default {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
 					console.log(this.dataForm)
-					createCategory(this.dataForm)
+					createCategory({ ...this.dataForm, brandId: this.$store.state.user.brandId })
 						.then((response) => {
 							this.getList()
 							// 更新L1L2目录
@@ -447,31 +460,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

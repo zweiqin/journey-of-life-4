@@ -104,7 +104,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.url" :src="common.seamingImgUrl(dataForm.url)" class="avatar">
+						<el-image
+							v-if="dataForm.url" class="avatar" :src="common.seamingImgUrl(dataForm.url)" style=""
+							fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dataForm.url) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -336,31 +340,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

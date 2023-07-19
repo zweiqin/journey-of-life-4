@@ -19,7 +19,11 @@
 						:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="goods.picUrl" :src="common.seamingImgUrl(goods.picUrl)" class="avatar">
+						<el-image
+							v-if="goods.picUrl" class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style=""
+							fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -100,7 +104,10 @@
 							:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadSpecPicUrl"
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="specForm.picUrl" :src="common.seamingImgUrl(specForm.picUrl)" class="avatar">
+							<el-image
+								v-if="specForm.picUrl" class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -158,7 +165,10 @@
 							:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadProductUrl"
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="productForm.url" :src="common.seamingImgUrl(productForm.url)" class="avatar">
+							<el-image
+								v-if="productForm.url" class="avatar" :src="common.seamingImgUrl(productForm.url)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -399,7 +409,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .el-card {
 	margin-bottom: 10px;
 }
@@ -408,38 +418,32 @@ export default {
 	margin-left: 10px;
 }
 
-.input-new-keyword {
-	width: 90px;
-	margin-left: 10px;
-	vertical-align: bottom;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload {
-	width: 145px;
-	height: 145px;
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

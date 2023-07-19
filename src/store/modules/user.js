@@ -49,7 +49,7 @@ const user = {
 			state.personId = personId
 		},
 		SET_BRANDID: (state, brandId) => {
-			state.brandId = brandId
+			state.brandId = brandId || ''
 		},
 		SET_ROLES: (state, roles) => {
 			state.roles = roles

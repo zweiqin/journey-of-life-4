@@ -8,16 +8,20 @@
 				:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadPicUrl"
 				class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 			>
-				<img v-if="url" :src="common.seamingImgUrl(url)" class="avatar">
+				<el-image
+					v-if="url" class="avatar" :src="common.seamingImgUrl(url)" style=""
+					fit="cover"
+					:preview-src-list="[ common.seamingImgUrl(url) ]"
+				/>
 				<i v-else class="el-icon-plus avatar-uploader-icon" />
 			</el-upload>
 			<!-- <el-input v-model="url" /> -->
 			<VueQr
 				id="qr" :text="qrcodeText" :correct-level="3" :size="250"
-				:margin="10"
-				:logo-src="common.seamingImgUrl(url)" :logo-scale=".2" :logo-margin="5" color-dark="#000"
-				color-light="white"
-				background-color="white" background-dimming="white" logo-background-color="white"
+				:margin="10" :logo-src="common.seamingImgUrl(url)"
+				:logo-scale=".2" :logo-margin="5" color-dark="#000" color-light="white"
+				background-color="white"
+				background-dimming="white" logo-background-color="white"
 			/>
 			<el-button type="primary" round @click="downloadImg">保存二维码</el-button>
 			<!-- <h2>请用微信扫码支付</h2>
@@ -75,7 +79,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .base {
 	width: 100%;
 	height: 100%;
@@ -94,32 +98,32 @@ export default {
 	justify-content: center;
 }
 
-.avatar-uploader .el-upload {
-	width: 145px;
-	height: 145px;
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

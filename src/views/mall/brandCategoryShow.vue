@@ -155,7 +155,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAppIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.appIconUrl" :src="common.seamingImgUrl(dataForm.appIconUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.appIconUrl" class="avatar" :src="common.seamingImgUrl(dataForm.appIconUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.appIconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -164,7 +167,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIconUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.iconUrl" :src="common.seamingImgUrl(dataForm.iconUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.iconUrl" class="avatar" :src="common.seamingImgUrl(dataForm.iconUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.iconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -173,7 +179,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.picUrl" class="avatar" :src="common.seamingImgUrl(dataForm.picUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -279,13 +288,14 @@ export default {
 				})
 		},
 		getCatL1() {
-			listCatL1().then((response) => {
+			listCatL1({ brandId: this.$route.query.id }).then((response) => {
 				this.catL1 = response.data
 			})
 		},
 		getCatL2(id) {
 			listCatL2({
-				parentId: id
+				parentId: id,
+				brandId: this.$route.query.id
 			}).then((response) => {
 				this.catL2 = response.data
 			})
@@ -416,31 +426,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

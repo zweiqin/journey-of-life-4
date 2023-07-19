@@ -63,28 +63,22 @@
 
 				<el-form-item label="商品图片">
 					<el-upload
-						:action="uploadPath"
-						:show-file-list="false"
-						:headers="headers"
-						:on-success="uploadPicUrl"
-						class="avatar-uploader"
-						accept=".jpg,.jpeg,.png,.gif"
+						:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadPicUrl"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="goods.picUrl" :src="common.seamingImgUrl(goods.picUrl)" class="avatar">
+						<el-image
+							v-if="goods.picUrl" class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style=""
+							fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
 
 				<el-form-item label="宣传画廊">
 					<el-upload
-						:action="uploadPath"
-						:limit="5"
-						:headers="headers"
-						:on-exceed="uploadOverrun"
-						:on-success="handleGalleryUrl"
-						:on-remove="handleRemove"
-						multiple
-						accept=".jpg,.jpeg,.png,.gif"
+						:action="uploadPath" :limit="5" :headers="headers" :on-exceed="uploadOverrun"
+						:on-success="handleGalleryUrl" :on-remove="handleRemove" multiple accept=".jpg,.jpeg,.png,.gif"
 						list-type="picture-card"
 					>
 						<i class="el-icon-plus" />
@@ -100,22 +94,23 @@
 						{{ tag }}
 					</el-tag>
 					<el-input
-						v-if="newKeywordVisible"
-						ref="newKeywordInput"
-						v-model="newKeyword"
-						class="input-new-keyword"
-						size="small"
-						@keyup.enter.native="handleInputConfirm"
-						@blur="handleInputConfirm"
+						v-if="newKeywordVisible" ref="newKeywordInput" v-model="newKeyword" class="input-new-keyword"
+						size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"
 					/>
 					<el-button v-else class="button-new-keyword" size="small" type="primary" @click="showInput">+ 增加</el-button>
 				</el-form-item>
 
 				<el-form-item label="所属分类" prop="categoryId">
-					<el-cascader :options="categoryList" :props="{ value: 'id', label: 'name' }" expand-trigger="hover" @change="handleCategoryChange" />
+					<el-cascader
+						:options="categoryList" :props="{ value: 'id', label: 'name' }" expand-trigger="hover"
+						@change="handleCategoryChange"
+					/>
 				</el-form-item>
 
-				<el-form-item v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'" label="所属品牌商" prop="brandId">
+				<el-form-item
+					v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'"
+					label="所属品牌商" prop="brandId"
+				>
 					<el-select v-model="goods.brandId">
 						<el-option v-for="item in brandList" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
@@ -168,12 +163,8 @@
 
 			<el-dialog :visible.sync="specVisiable" title="设置规格">
 				<el-form
-					ref="specForm"
-					:rules="rules"
-					:model="specForm"
-					status-icon
-					label-position="left"
-					label-width="100px"
+					ref="specForm" :rules="rules" :model="specForm" status-icon
+					label-position="left" label-width="100px"
 					style="width: 400px; margin-left:50px;"
 				>
 					<el-form-item label="规格名" prop="specification">
@@ -184,14 +175,13 @@
 					</el-form-item>
 					<el-form-item label="规格图片" prop="picUrl">
 						<el-upload
-							:action="uploadPath"
-							:show-file-list="false"
-							:headers="headers"
-							:on-success="uploadSpecPicUrl"
-							class="avatar-uploader"
-							accept=".jpg,.jpeg,.png,.gif"
+							:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadSpecPicUrl"
+							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="specForm.picUrl" :src="common.seamingImgUrl(specForm.picUrl)" class="avatar">
+							<el-image
+								v-if="specForm.picUrl" class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -229,10 +219,7 @@
 
 			<el-dialog :visible.sync="productVisiable" title="设置货品">
 				<el-form
-					ref="productForm"
-					:model="productForm"
-					status-icon
-					label-position="left"
+					ref="productForm" :model="productForm" status-icon label-position="left"
 					label-width="100px"
 					style="width: 400px; margin-left:50px;"
 				>
@@ -249,14 +236,13 @@
 					</el-form-item>
 					<el-form-item label="货品图片" prop="url">
 						<el-upload
-							:action="uploadPath"
-							:show-file-list="false"
-							:headers="headers"
-							:on-success="uploadProductUrl"
-							class="avatar-uploader"
-							accept=".jpg,.jpeg,.png,.gif"
+							:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadProductUrl"
+							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
-							<img v-if="productForm.url" :src="common.seamingImgUrl(productForm.url)" class="avatar">
+							<el-image
+								v-if="productForm.url" class="avatar" :src="common.seamingImgUrl(productForm.url)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
+							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
 					</el-form-item>
@@ -284,10 +270,7 @@
 
 					<el-dialog :visible.sync="attributeVisiable" title="设置商品参数">
 						<el-form
-							ref="attributeForm"
-							:model="attributeForm"
-							status-icon
-							label-position="left"
+							ref="attributeForm" :model="attributeForm" status-icon label-position="left"
 							label-width="100px"
 							style="width: 400px; margin-left:50px;"
 						>
@@ -330,12 +313,8 @@
 
 					<el-dialog :visible.sync="goodsCouponsVisiable" title="设置优惠劵">
 						<el-form
-							ref="goodsCouponsForm"
-							:model="goodsCouponsForm"
-							status-icon
-							label-position="left"
-							label-width="100px"
-							style="width: 400px; margin-left:50px;"
+							ref="goodsCouponsForm" :model="goodsCouponsForm" status-icon label-position="left"
+							label-width="100px" style="width: 400px; margin-left:50px;"
 						>
 							<el-form-item label="优惠券" prop="couponId">
 								<el-select v-model="goodsCouponsForm.couponId" class="filter-item">
@@ -348,9 +327,7 @@
 							<el-form-item label="赠送类型" prop="type">
 								<el-select v-model="goodsCouponsForm.type" class="filter-item">
 									<el-option
-										v-for="item in goodsCouponsTypeList"
-										:key="item.value"
-										:label="item.label"
+										v-for="item in goodsCouponsTypeList" :key="item.value" :label="item.label"
 										:value="item.value"
 									/>
 								</el-select>
@@ -363,12 +340,8 @@
 							</el-form-item>
 							<el-form-item v-show="goodsCouponsForm.isTimeBox" label="活动时间" prop="time">
 								<el-date-picker
-									v-model="goodsCouponsForm.time"
-									value-format="yyyy-MM-dd HH:mm:ss"
-									type="daterange"
-									range-separator="至"
-									start-placeholder="开始日期"
-									end-placeholder="结束日期"
+									v-model="goodsCouponsForm.time" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
+									range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
 								/>
 							</el-form-item>
 						</el-form>
@@ -974,7 +947,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .el-card {
 	margin-bottom: 10px;
 }
@@ -989,32 +962,32 @@ export default {
 	vertical-align: bottom;
 }
 
-.avatar-uploader .el-upload {
-	width: 145px;
-	height: 145px;
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

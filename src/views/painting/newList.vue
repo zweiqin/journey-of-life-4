@@ -3,66 +3,32 @@
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
 			<el-input
-				v-model="listQuery.paint_title"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.paint_title" clearable size="mini" class="filter-item"
 				style="width: 200px"
 				placeholder="请输入画册名称"
 			/>
 			<el-input
-				v-model="listQuery.paint_id"
-				clearable
-				size="mini"
-				class="filter-item"
+				v-model="listQuery.paint_id" clearable size="mini" class="filter-item"
 				style="width: 200px"
 				placeholder="请输入画册ID"
 			/>
-			<el-button
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-search"
-				@click="handleFilter"
-			>
+			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
 				查找
 			</el-button>
-			<el-button
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-edit"
-				@click="handleCreate"
-			>
+			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">
 				添加
 			</el-button>
 		</div>
 		<div v-tableHeight>
 			<!-- 查询结果 -->
 			<el-table
-				ref="painting"
-				v-loading="listLoading"
-				:data="list"
-				size="small"
-				element-loading-text="正在查询中。。。"
-				border
-				fit
-				highlight-current-row
+				ref="painting" v-loading="listLoading" :data="list" size="small"
+				element-loading-text="正在查询中。。。" border
+				fit highlight-current-row
 			>
 				<!-- 查询结果 -->
-				<el-table-column
-					align="center"
-					min-width="30"
-					label="画册ID"
-					prop="paint_id"
-					sortable
-				/>
-				<el-table-column
-					align="center"
-					min-width="200"
-					label="画册名称"
-					prop="paint_title"
-				/>
+				<el-table-column align="center" min-width="30" label="画册ID" prop="paint_id" sortable />
+				<el-table-column align="center" min-width="200" label="画册名称" prop="paint_title" />
 
 				<el-table-column align="center" property="paint_url" label="画册封面图">
 					<template slot-scope="scope">
@@ -78,21 +44,13 @@
 
 				<el-table-column align="center" label="图片列表" prop="paint_info">
 					<template slot-scope="scope">
-						<el-button
-							type="primary"
-							@click="ViewPhotos(scope.row.paint_id)"
-						>
+						<el-button type="primary" @click="ViewPhotos(scope.row.paint_id)">
 							查看画册图片
 						</el-button>
 					</template>
 				</el-table-column>
 
-				<el-table-column
-					align="center"
-					label="操作"
-					width="400"
-					class-name="small-padding fixed-width"
-				>
+				<el-table-column align="center" label="操作" width="400" class-name="small-padding fixed-width">
 					<template slot-scope="scope">
 						<el-button type="primary" @click="addListItemImage(scope.row.paint_id)">
 							添加画册图片
@@ -107,49 +65,30 @@
 				</el-table-column>
 			</el-table>
 			<Pagination
-				v-show="total > 0"
-				:total="total"
-				:page.sync="listQuery.page"
-				:limit.sync="listQuery.limit"
+				v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
 				@pagination="getList"
 			/>
 		</div>
 		<!-- 添加画册 -->
-		<el-dialog
-			v-show="isCreatedList"
-			title="创建新画册"
-			:visible.sync="isCreatedList"
-			width="80%"
-		>
+		<el-dialog v-show="isCreatedList" title="创建新画册" :visible.sync="isCreatedList" width="80%">
 			<el-form ref="CreateList" :model="Createform">
 				<el-form-item label="画册名称" label-width="120px">
-					<el-input
-						v-model="Createform.paint_title"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="Createform.paint_title" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="画册简介" label-width="120px">
-					<el-input
-						v-model="Createform.paint_info"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="Createform.paint_info" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="用户ID(user_id)" label-width="120px">
 					<el-input v-model="Createform.user_id" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="画册封面" label-width="120px" prop="imageUrl">
 					<el-upload
-						:headers="headers"
-						:action="uploadPath"
-						:show-file-list="false"
-						:on-success="uploadLogoUrl"
-						class="avatar-uploader"
-						accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLogoUrl"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="Createform.paint_url"
-							:src="common.seamingImgUrl(Createform.paint_url)"
-							class="avatar"
+						<el-image
+							v-if="Createform.paint_url" class="avatar" :src="common.seamingImgUrl(Createform.paint_url)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(Createform.paint_url) ]"
 						/>
 						<!-- <i class="el-icon-zoom-in"></i> -->
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -164,41 +103,25 @@
 			</div>
 		</el-dialog>
 		<!-- 修改画册信息 -->
-		<el-dialog
-			v-show="isUpdataFrom"
-			title="修改画册信息"
-			:visible.sync="isUpdataFrom"
-			width="80%"
-		>
+		<el-dialog v-show="isUpdataFrom" title="修改画册信息" :visible.sync="isUpdataFrom" width="80%">
 			<el-form ref="UpdataList" :model="Updataform">
 				<el-form-item label="画册名称" label-width="120px">
-					<el-input
-						v-model="Updataform.paint_title"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="Updataform.paint_title" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="画册简介" label-width="120px">
-					<el-input
-						v-model="Updataform.paint_info"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="Updataform.paint_info" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="用户ID(user_id)" label-width="120px">
 					<el-input v-model="Updataform.user_id" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="画册封面" label-width="120px" prop="imageUrl">
 					<el-upload
-						:headers="headers"
-						:action="uploadPath"
-						:show-file-list="false"
-						:on-success="UpdataUploadLogoUrl"
-						class="avatar-uploader"
-						accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="UpdataUploadLogoUrl"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="Updataform.paint_url"
-							:src="common.seamingImgUrl(Updataform.paint_url)"
-							class="avatar"
+						<el-image
+							v-if="Updataform.paint_url" class="avatar" :src="common.seamingImgUrl(Updataform.paint_url)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(Updataform.paint_url) ]"
 						/>
 						<!-- <i class="el-icon-zoom-in"></i> -->
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -213,113 +136,58 @@
 			</div>
 		</el-dialog>
 		<!-- 画册图片展示 -->
-		<el-dialog
-			v-show="isViewPhotos"
-			title="查看画册图片"
-			:visible.sync="isViewPhotos"
-			width="80%"
-		>
+		<el-dialog v-show="isViewPhotos" title="查看画册图片" :visible.sync="isViewPhotos" width="80%">
 			<el-table
-				height="420px"
-				:data="ListItemImgArr"
-				size="small"
-				element-loading-text="正在查询中。。。"
-				border
-				fit
+				height="420px" :data="ListItemImgArr" size="small" element-loading-text="正在查询中。。。"
+				border fit
 				highlight-current-row
 			>
-				<el-table-column
-					align="center"
-					label="图片ID"
-					prop="img_id"
-					sortable
-				/>
-				<el-table-column
-					align="center"
-					label="照片title"
-					prop="img_title"
-					sortable
-				/>
-				<el-table-column
-					align="center"
-					label="照片简介"
-					prop="img_info"
-					sortable
-				/>
+				<el-table-column align="center" label="图片ID" prop="img_id" sortable />
+				<el-table-column align="center" label="照片title" prop="img_title" sortable />
+				<el-table-column align="center" label="照片简介" prop="img_info" sortable />
 				<el-table-column align="center" property="avatar" label="照片详情">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.img_url"
-							:src="common.seamingImgUrl(scope.row.img_url)"
-							style="width: 40px; height: 40px"
-							fit="cover"
+							v-if="scope.row.img_url" :src="common.seamingImgUrl(scope.row.img_url)"
+							style="width: 40px; height: 40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.img_url) ]"
 						/>
 						<span v-else>--</span>
 					</template>
 				</el-table-column>
-				<el-table-column
-					align="center"
-					label="操作"
-					class-name="small-padding fixed-width"
-					width="250"
-				>
+				<el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="250">
 					<template slot-scope="scope">
-						<el-button
-							type="primary"
-							size="mini"
-							@click="upDateImage(scope.row)"
-						>
+						<el-button type="primary" size="mini" @click="upDateImage(scope.row)">
 							修改
 						</el-button>
-						<el-button
-							type="danger"
-							size="mini"
-							@click="deleteImage(scope.row.img_id)"
-						>
+						<el-button type="danger" size="mini" @click="deleteImage(scope.row.img_id)">
 							删除
 						</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 			<Pagination
-				v-show="imgTotals > 0" :total="imgTotals" :page.sync="listQueryImg.page" :limit.sync="listQueryImg.limit"
-				@pagination="getListItemImage"
+				v-show="imgTotals > 0" :total="imgTotals" :page.sync="listQueryImg.page"
+				:limit.sync="listQueryImg.limit" @pagination="getListItemImage"
 			/>
 		</el-dialog>
 		<!-- 添加画册图片及信息 -->
-		<el-dialog
-			v-show="isCreatedListItemImage"
-			title="创建新画册"
-			:visible.sync="isCreatedListItemImage"
-			width="80%"
-		>
+		<el-dialog v-show="isCreatedListItemImage" title="创建新画册" :visible.sync="isCreatedListItemImage" width="80%">
 			<el-form ref="CreateListImg" :model="ImageCreateform">
 				<el-form-item label="图片名称" label-width="120px">
-					<el-input
-						v-model="ImageCreateform.img_title"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="ImageCreateform.img_title" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="图片简介" label-width="120px">
-					<el-input
-						v-model="ImageCreateform.img_info"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="ImageCreateform.img_info" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="画册图片" label-width="120px" prop="imageUrl">
 					<el-upload
-						:headers="headers"
-						:action="uploadPath"
-						:show-file-list="false"
-						:on-success="uploadImgUrl"
-						class="avatar-uploader"
-						accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadImgUrl"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="ImageCreateform.img_url"
-							:src="common.seamingImgUrl(ImageCreateform.img_url)"
-							class="avatar"
+						<el-image
+							v-if="ImageCreateform.img_url" class="avatar" :src="common.seamingImgUrl(ImageCreateform.img_url)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(ImageCreateform.img_url) ]"
 						/>
 						<!-- <i class="el-icon-zoom-in"></i> -->
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -334,38 +202,22 @@
 			</div>
 		</el-dialog>
 		<!-- 修改画册图片信息 -->
-		<el-dialog
-			v-show="isUpdataImage"
-			title="修改图片信息"
-			:visible.sync="isUpdataImage"
-			width="80%"
-		>
+		<el-dialog v-show="isUpdataImage" title="修改图片信息" :visible.sync="isUpdataImage" width="80%">
 			<el-form ref="UpdataImage" :model="ImageUpdataform">
 				<el-form-item label="图片名称" label-width="120px">
-					<el-input
-						v-model="ImageUpdataform.img_title"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="ImageUpdataform.img_title" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="图片简介" label-width="120px">
-					<el-input
-						v-model="ImageUpdataform.img_info"
-						autocomplete="off"
-					></el-input>
+					<el-input v-model="ImageUpdataform.img_info" autocomplete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="修改图片" label-width="120px" prop="imageUrl">
 					<el-upload
-						:headers="headers"
-						:action="uploadPath"
-						:show-file-list="false"
-						:on-success="UpdataUploadLogoUrl"
-						class="avatar-uploader"
-						accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="UpdataUploadLogoUrl"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="ImageUpdataform.img_url"
-							:src="common.seamingImgUrl(ImageUpdataform.img_url)"
-							class="avatar"
+						<el-image
+							v-if="ImageUpdataform.img_url" class="avatar" :src="common.seamingImgUrl(ImageUpdataform.img_url)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(ImageUpdataform.img_url) ]"
 						/>
 						<!-- <i class="el-icon-zoom-in"></i> -->
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -783,65 +635,69 @@ export default {
 }
 </script>
 
-<style>
-.el-dialog {
-  width: 60%;
+<style lang="scss" scoped>
+/deep/ .app-container {
+	.el-dialog {
+		width: 60%;
+	}
+
+	.table-expand {
+		font-size: 0;
+	}
+
+	.table-expand label {
+		width: 100px;
+		color: #99a9bf;
+	}
+
+	.table-expand .el-form-item {
+		margin-right: 0;
+		margin-bottom: 0;
+	}
+
+	.gallery {
+		width: 80px;
+		margin-right: 10px;
+	}
+
+	.TXBJW {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.app-container>>>.el-table__expanded-cell {
+		padding: 0;
+	}
 }
 
-.table-expand {
-  font-size: 0;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.table-expand label {
-  width: 100px;
-  color: #99a9bf;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.gallery {
-  width: 80px;
-  margin-right: 10px;
-}
-
-.TXBJW {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.app-container >>> .el-table__expanded-cell {
-  padding: 0;
-}
-
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #20a0ff !important;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-}
-
-.avatar {
-  width: 145px;
-  height: 145px;
-  display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

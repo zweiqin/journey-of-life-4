@@ -86,7 +86,8 @@
 			<el-table-column align="center" min-width="100px" label="状态" prop="status">
 				<template slot-scope="scope">
 					{{
-						scope.row.status === -1 ? '离职' : scope.row.status === 0 ? '全职在职' : scope.row.status === 1 ? '兼职在职' : scope.row.status === 2 ? '其他' : '异常'
+						scope.row.status === -1 ? '离职' : scope.row.status === 0 ? '全职在职' : scope.row.status === 1 ? '兼职在职'
+							: scope.row.status === 2 ? '其他' : '异常'
 					}}
 				</template>
 			</el-table-column>
@@ -151,7 +152,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAvatar"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.avatar" :src="common.seamingImgUrl(dataForm.avatar)" class="avatar">
+						<el-image
+							v-if="dataForm.avatar" class="avatar" :src="common.seamingImgUrl(dataForm.avatar)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.avatar) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -228,7 +232,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardProsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardProsUrl" :src="common.seamingImgUrl(dataForm.idcardProsUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.idcardProsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardProsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardProsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -238,7 +245,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardConsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardConsUrl" :src="common.seamingImgUrl(dataForm.idcardConsUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.idcardConsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardConsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardConsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -597,31 +607,33 @@ export default {
 }
 </script>
 
-<style scoped>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

@@ -35,7 +35,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.picUrl" :src="dataForm.picUrl" class="avatar">
+						<el-image
+							v-if="dataForm.picUrl" class="avatar" :src="common.seamingImgUrl(dataForm.picUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -47,11 +50,9 @@
 				<el-form-item label="门店类型" prop="brandgenre">
 					<div v-if="typeOptions && typeOptions.length">
 						<el-cascader
-							v-model="!dataForm.brandgenreArr ? dataForm.brandgenre : dataForm.brandgenreArr"
-							:options="typeOptions"
-							:props="{ checkStrictly: true, lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+							v-model="dataForm.brandgenre" :options="typeOptions"
+							:props="{ checkStrictly: true, expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
 							style="width: 250px;"
-							@change="(value) => ((dataForm.brandgenre = value[value.length - 1]) && (dataForm.brandgenreArr = value))"
 						/>
 					</div>
 
@@ -75,7 +76,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLicenseUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.licenseUrl" :src="dataForm.licenseUrl" class="avatar">
+						<el-image
+							v-if="dataForm.licenseUrl" class="avatar" :src="common.seamingImgUrl(dataForm.licenseUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.licenseUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -85,7 +89,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardProsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardProsUrl" :src="dataForm.idcardProsUrl" class="avatar">
+						<el-image
+							v-if="dataForm.idcardProsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardProsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardProsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -95,7 +102,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardConsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardConsUrl" :src="dataForm.idcardConsUrl" class="avatar">
+						<el-image
+							v-if="dataForm.idcardConsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardConsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardConsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -138,6 +148,8 @@ import { listBrand, listCatAndAdmin, listDtsStoreType, updateBrand } from '@/api
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
+import XeUtils from 'xe-utils'
+
 export default {
 	name: 'BrandSetting',
 	data() {
@@ -220,7 +232,7 @@ export default {
 					// if (response.data.roles[0] === '超级管理员') {
 					// 	this.$router.push({ name: 'brandInfo' })
 					// } else {
-					this.getList()
+					// this.getList()
 					this.init()
 					// }
 				})
@@ -241,14 +253,23 @@ export default {
 			listBrand(this.listQuery)
 				.then((response) => {
 					this.dataForm = response.data.items[0]
+					const currentItem = XeUtils.findTree(this.typeOptions, (item) => item.id === this.dataForm.brandgenre)
+					if (currentItem && Array.isArray(currentItem.nodes)) {
+						this.dataForm.brandgenre = currentItem.nodes.map((v) => v.id)
+					}
 				})
 				.catch(() => {
 				})
 		},
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
-				console.log(response)
+				XeUtils.eachTree(response.data, (item) => {
+					if (Array.isArray(item.children) && item.children.length === 0) {
+						item.children = undefined
+					}
+				})
 				this.typeOptions = response.data
+				this.getList()
 			})
 				.catch(() => {
 					this.typeOptions = []
@@ -260,7 +281,7 @@ export default {
 		handleEdit() {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					updateBrand(this.dataForm)
+					updateBrand({ ...this.dataForm, brandgenre: Array.isArray(this.dataForm.brandgenre) && this.dataForm.brandgenre.length ? this.dataForm.brandgenre[this.dataForm.brandgenre.length - 1] : this.dataForm.brandgenre })
 						.then(() => {
 							this.getList()
 							this.$notify.success({
@@ -323,45 +344,37 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .el-card {
 	margin-bottom: 10px;
 }
 
-.el-tag+.el-tag {
-	margin-left: 10px;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.input-new-keyword {
-	width: 90px;
-	margin-left: 10px;
-	vertical-align: bottom;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

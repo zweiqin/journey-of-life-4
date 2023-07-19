@@ -95,7 +95,10 @@
 						:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadAvatarUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.avatar" :src="common.seamingImgUrl(storeDataForm.avatar)" class="avatar">
+						<el-image
+							v-if="storeDataForm.avatar" class="avatar" :src="common.seamingImgUrl(storeDataForm.avatar)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(storeDataForm.avatar) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -103,12 +106,17 @@
 					<el-input v-model="storeDataForm.brandname" />
 				</el-form-item>
 				<el-form-item label="门店类型" prop="brandgenre">
-					<el-cascader
+					<!-- <el-cascader
 						v-model="!storeDataForm.brandgenreArr ? storeDataForm.brandgenre : storeDataForm.brandgenreArr"
 						:options="TypeOptions"
-						:props="{ checkStrictly: true, lazy: 'true', lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						:props="{ checkStrictly: true, lazy: 'true', lazyLoad: (node, resolve) => resolve(node.data.children.map((item) => ({ value: item.id, label: item.storeName, leaf: !node.data.children.children || node.data.children.children.length === 0 }))), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
 						style="width: 250px;"
 						@change="(value) => ((storeDataForm.brandgenre = value[value.length - 1]) && (storeDataForm.brandgenreArr = value))"
+						/> -->
+					<el-cascader
+						v-model="storeDataForm.brandgenre" :options="TypeOptions"
+						:props="{ checkStrictly: true, expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						style="width: 250px;"
 					/>
 				</el-form-item>
 				<el-form-item label="门店联系电话" prop="brandPhone">
@@ -128,7 +136,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.picUrl" :src="common.seamingImgUrl(storeDataForm.picUrl)" class="avatar">
+						<el-image
+							v-if="storeDataForm.picUrl" class="avatar" :src="common.seamingImgUrl(storeDataForm.picUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(storeDataForm.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -140,7 +151,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLicenseUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="storeDataForm.licenseUrl" :src="common.seamingImgUrl(storeDataForm.licenseUrl)" class="avatar">
+						<el-image
+							v-if="storeDataForm.licenseUrl" class="avatar" :src="common.seamingImgUrl(storeDataForm.licenseUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(storeDataForm.licenseUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -150,10 +164,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false"
 						:on-success="uploadBrandIdcardProsUrl" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="storeDataForm.brandIdcardProsUrl" :src="common.seamingImgUrl(storeDataForm.brandIdcardProsUrl)"
-							class="avatar"
-						>
+						<el-image
+							v-if="storeDataForm.brandIdcardProsUrl" class="avatar"
+							:src="common.seamingImgUrl(storeDataForm.brandIdcardProsUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(storeDataForm.brandIdcardProsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -163,10 +178,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false"
 						:on-success="uploadBrandIdcardConsUrl" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="storeDataForm.brandIdcardConsUrl" :src="common.seamingImgUrl(storeDataForm.brandIdcardConsUrl)"
-							class="avatar"
-						>
+						<el-image
+							v-if="storeDataForm.brandIdcardConsUrl" class="avatar"
+							:src="common.seamingImgUrl(storeDataForm.brandIdcardConsUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(storeDataForm.brandIdcardConsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -257,10 +273,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardProsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="marketDataForm.idcardProsUrl" :src="common.seamingImgUrl(marketDataForm.idcardProsUrl)"
-							class="avatar"
-						>
+						<el-image
+							v-if="marketDataForm.idcardProsUrl" class="avatar"
+							:src="common.seamingImgUrl(marketDataForm.idcardProsUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(marketDataForm.idcardProsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -270,10 +287,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardConsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img
-							v-if="marketDataForm.idcardConsUrl" :src="common.seamingImgUrl(marketDataForm.idcardConsUrl)"
-							class="avatar"
-						>
+						<el-image
+							v-if="marketDataForm.idcardConsUrl" class="avatar"
+							:src="common.seamingImgUrl(marketDataForm.idcardConsUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(marketDataForm.idcardConsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -300,6 +318,7 @@ import { uploadPath } from '@/api/business/storage'
 import { regionData, CodeToText } from 'element-china-area-data'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'ShopUpCreate',
@@ -437,6 +456,11 @@ export default {
 		getStoreTypeList() {
 			listDtsStoreType()
 				.then((response) => {
+					XeUtils.eachTree(response.data, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
+					})
 					this.TypeOptions = response.data
 				})
 				.catch((error) => {
@@ -496,7 +520,7 @@ export default {
 			})
 		},
 		storeSaveData() {
-			listAdd(false, this.storeDataForm)
+			listAdd(false, { ...this.storeDataForm, brandgenre: Array.isArray(this.storeDataForm.brandgenre) && this.storeDataForm.brandgenre.length ? this.storeDataForm.brandgenre[this.storeDataForm.brandgenre.length - 1] : this.storeDataForm.brandgenre })
 				.then(() => {
 					this.storeDialogFormVisible = false
 					this.$notify.success({
@@ -514,7 +538,7 @@ export default {
 		storeUpdateData() {
 			this.$refs.storeDataForm.validate((valid) => {
 				if (valid) {
-					listAdd(true, this.storeDataForm)
+					listAdd(true, { ...this.storeDataForm, brandgenre: Array.isArray(this.storeDataForm.brandgenre) && this.storeDataForm.brandgenre.length ? this.storeDataForm.brandgenre[this.storeDataForm.brandgenre.length - 1] : this.storeDataForm.brandgenre })
 						.then(() => {
 							this.storeDialogFormVisible = false
 							this.$notify.success({
@@ -671,31 +695,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

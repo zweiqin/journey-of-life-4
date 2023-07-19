@@ -53,8 +53,8 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<el-image
-							v-if="goods.picUrl"
-							class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style="" fit="cover"
+							v-if="goods.picUrl" class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style=""
+							fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -89,8 +89,8 @@
 				<el-form-item label="所属分类">
 					<el-cascader
 						v-model="categoryIds" lable="name" :options="categoryList" filterable
-						show-all-levels :props="catepropse" expand-trigger="hover"
-						@change="handleCategoryChange"
+						show-all-levels
+						:props="catepropse" expand-trigger="hover" @change="handleCategoryChange"
 					>
 						<template slot-scope="{ node }">
 							<span :class="{ 'is-disabled': node.level === 1 }">
@@ -135,7 +135,8 @@
 				<el-table-column property="picUrl" label="规格图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -166,9 +167,8 @@
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
 							<el-image
-								v-if="specForm.picUrl"
-								class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style="" fit="cover"
-								:preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
+								v-if="specForm.picUrl" class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -196,8 +196,8 @@
 				<el-table-column property="url" width="100" label="货品图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.url" :src="common.seamingImgUrl(scope.row.url)" style="width:40px; height:40px" fit="cover"
-							:preview-src-list="[ common.seamingImgUrl(scope.row.url) ]"
+							v-if="scope.row.url" :src="common.seamingImgUrl(scope.row.url)" style="width:40px; height:40px"
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(scope.row.url) ]"
 						/>
 						<span v-else>--</span>
 					</template>
@@ -233,9 +233,8 @@
 						>
 							<img v-if="productForm.url" :src="common.seamingImgUrl(productForm.url)" class="avatar">
 							<el-image
-								v-if="productForm.url"
-								class="avatar" :src="common.seamingImgUrl(productForm.url)" style="" fit="cover"
-								:preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
+								v-if="productForm.url" class="avatar" :src="common.seamingImgUrl(productForm.url)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -849,12 +848,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .is-disabled {
-  color: #ccc;
-  pointer-events: none !important;
-  cursor: not-allowed !important;
+	color: #ccc;
+	pointer-events: none !important;
+	cursor: not-allowed !important;
 }
+
 .el-card {
 	margin-bottom: 10px;
 }
@@ -869,30 +869,32 @@ export default {
 	vertical-align: bottom;
 }
 
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

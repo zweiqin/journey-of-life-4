@@ -8,18 +8,19 @@ export function listCategory(query) {
 	})
 }
 
-export function listCatL1() {
+export function listCatL1(params) {
 	return request({
 		url: '/category/l1',
-		method: 'get'
+		method: 'get',
+		params
 	})
 }
 
-export function listCatL2(query) {
+export function listCatL2(params) {
 	return request({
 		url: '/category/l2',
 		method: 'get',
-		params: query
+		params
 	})
 }
 

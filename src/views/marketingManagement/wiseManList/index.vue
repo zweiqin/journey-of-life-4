@@ -224,7 +224,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataForm.avatar = response.data.url"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.avatar" :src="common.seamingImgUrl(dataForm.avatar)" width="145">
+						<el-image
+							v-if="dataForm.avatar"
+							class="avatar" :src="common.seamingImgUrl(dataForm.avatar)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dataForm.avatar) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -376,7 +380,11 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataFormCase.logoUrl = response.data.url"
 						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataFormCase.logoUrl" :src="common.seamingImgUrl(dataFormCase.logoUrl)" width="145">
+						<el-image
+							v-if="dataFormCase.logoUrl"
+							class="avatar" :src="common.seamingImgUrl(dataFormCase.logoUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dataFormCase.logoUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -914,7 +922,7 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-				if (this.dataFormCase.caseUrl[i] === url) {
+				if (this.common.seamingImgUrl(this.dataFormCase.caseUrl[i]) === url) {
 					this.dataFormCase.caseUrl.splice(i, 1)
 				}
 			}
@@ -931,7 +939,7 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-				if (this.dataFormCase.productUrl[i] === url) {
+				if (this.common.seamingImgUrl(this.dataFormCase.productUrl[i]) === url) {
 					this.dataFormCase.productUrl.splice(i, 1)
 				}
 			}
@@ -972,10 +980,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 /deep/ .avatar-uploader {
 	.el-upload {
-		width: 145px;
-		height: 145px;
 		border: 1px dashed #d9d9d9;
 		border-radius: 6px;
 		cursor: pointer;
@@ -994,6 +1001,12 @@ export default {
 		height: 120px;
 		line-height: 120px;
 		text-align: center;
+	}
+
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
 	}
 }
 </style>

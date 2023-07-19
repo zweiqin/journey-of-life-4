@@ -86,7 +86,10 @@
 				</div>
 
 				<el-form-item label="门店类型层级" prop="level">
-					<el-select v-model="dataForm.level" :disabled="disabledLevel" clearable placeholder="请选择门店类型层级" @change="(e) => ((dataForm.tempL1 = '') || (dataForm.tempL2 = '') || (typeLevel2Change = []))">
+					<el-select
+						v-model="dataForm.level" :disabled="disabledLevel" clearable placeholder="请选择门店类型层级"
+						@change="(e) => ((dataForm.tempL1 = '') || (dataForm.tempL2 = '') || (typeLevel2Change = []))"
+					>
 						<el-option label="一级" value="1" />
 						<el-option label="二级" value="2" />
 						<el-option label="三级" value="3" />
@@ -103,7 +106,10 @@
 
 				<div v-if="dataForm.level === '3' && dataForm.tempL1">
 					<el-form-item label="所属二级门店类型" prop="tempL2">
-						<el-select v-model="dataForm.tempL2" clearable placeholder="请选择所属二级门店类型" @change="(e) => dataForm.id = typeLevel2Change.find(item => item.id === e).children[0].id">
+						<el-select
+							v-model="dataForm.tempL2" clearable placeholder="请选择所属二级门店类型"
+							@change="(e) => dataForm.id = typeLevel2Change.find(item => item.id === e).children[0].id"
+						>
 							<el-option v-for="item in typeLevel2Change" :key="item.id" :label="item.storeName" :value="item.id" />
 						</el-select>
 					</el-form-item>
@@ -115,10 +121,15 @@
 
 				<el-form-item label="门店类型图片" prop="storeType.picUrl">
 					<el-upload
-						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataForm.storeType.picUrl = response.data.url"
-						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false"
+						:on-success="(response) => dataForm.storeType.picUrl = response.data.url" class="avatar-uploader"
+						accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.storeType.picUrl" :src="common.seamingImgUrl(dataForm.storeType.picUrl)" width="145">
+						<el-image
+							v-if="dataForm.storeType.picUrl" class="avatar"
+							:src="common.seamingImgUrl(dataForm.storeType.picUrl)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(dataForm.storeType.picUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -456,31 +467,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

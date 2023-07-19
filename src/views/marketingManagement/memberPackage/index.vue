@@ -4,8 +4,8 @@
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
 			<el-button
-				v-permission="[ 'GET /admin/dtsPackageMember/memberList' ]" size="mini" class="filter-item" type="primary"
-				icon="el-icon-search" @click="listQuery.page = 1 && getList()"
+				v-permission="[ 'GET /admin/dtsPackageMember/memberList' ]" size="mini" class="filter-item"
+				type="primary" icon="el-icon-search" @click="listQuery.page = 1 && getList()"
 			>
 				查找
 			</el-button>
@@ -28,7 +28,8 @@
 		<div v-tableHeight>
 			<el-table
 				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
-				border fit height="100%" highlight-current-row
+				border fit height="100%"
+				highlight-current-row
 			>
 				<el-table-column align="center" min-width="100px" label="会员套餐ID" prop="id" />
 				<el-table-column align="center" min-width="100px" label="标题" prop="title" />
@@ -36,7 +37,8 @@
 				<el-table-column align="center" min-width="100px" property="avatar" label="会员套餐图标">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
 						/>
 						<span v-else>--</span>
@@ -74,7 +76,10 @@
 		/>
 
 		<!-- 新增修改会员套餐对话框 -->
-		<el-dialog :title="{ update: '编辑会员套餐', create: '创建会员套餐' }[dialogStatus]" :visible.sync="dialogFormVisible" width="800px">
+		<el-dialog
+			:title="{ update: '编辑会员套餐', create: '创建会员套餐' }[dialogStatus]" :visible.sync="dialogFormVisible"
+			width="800px"
+		>
 			<el-form
 				ref="dataForm" :rules="rules" :model="dataForm" status-icon
 				label-position="right" label-width="120px"
@@ -93,10 +98,14 @@
 				</el-form-item>
 				<el-form-item label="会员套餐图标">
 					<el-upload
-						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataForm.iconUrl = response.data.url"
-						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false"
+						:on-success="(response) => dataForm.iconUrl = response.data.url" class="avatar-uploader"
+						accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.iconUrl" :src="common.seamingImgUrl(dataForm.iconUrl)" width="145">
+						<el-image
+							v-if="dataForm.iconUrl" class="avatar" :src="common.seamingImgUrl(dataForm.iconUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.iconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -111,24 +120,19 @@
 		<!-- 查看服务套餐信息 -->
 		<el-dialog title="服务套餐" :visible.sync="dialogFormVisibleService" width="800px">
 			<div>
-				<el-button
-					size="mini" class="filter-item" type="primary"
-					icon="el-icon-edit" @click="handleCreateServe"
-				>
+				<el-button size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreateServe">
 					新增
 				</el-button>
 				<div style="height: 60vh;">
-					<el-table
-						:data="dataFormService.serviceList" size="small" border fit
-						height="100%" highlight-current-row
-					>
+					<el-table :data="dataFormService.serviceList" size="small" border fit height="100%" highlight-current-row>
 						<el-table-column align="center" min-width="100px" label="服务ID" prop="id" />
 						<el-table-column align="center" min-width="100px" label="服务标题" prop="title" />
 						<el-table-column align="center" min-width="120px" label="服务描述" prop="describe" />
 						<el-table-column align="center" min-width="100px" property="iconUrl" label="服务图标">
 							<template slot-scope="scope">
 								<el-image
-									v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)" style="width:40px; height:40px" fit="cover"
+									v-if="scope.row.iconUrl" :src="common.seamingImgUrl(scope.row.iconUrl)"
+									style="width:40px; height:40px" fit="cover"
 									:preview-src-list="[ common.seamingImgUrl(scope.row.iconUrl) ]"
 								/>
 								<span v-else>--</span>
@@ -136,18 +140,15 @@
 						</el-table-column>
 						<el-table-column align="center" min-width="120px" label="所属会员套餐ID" prop="memberId" />
 						<el-table-column align="center" min-width="120px" label="创建时间" prop="creatTime" />
-						<el-table-column align="center" label="操作" min-width="150px" class-name="small-padding fixed-width" fixed="right">
+						<el-table-column
+							align="center" label="操作" min-width="150px" class-name="small-padding fixed-width"
+							fixed="right"
+						>
 							<template slot-scope="scope">
-								<el-button
-									type="primary" size="mini"
-									@click="handleUpdateServe(scope.row)"
-								>
+								<el-button type="primary" size="mini" @click="handleUpdateServe(scope.row)">
 									编辑
 								</el-button>
-								<el-button
-									type="danger" size="mini"
-									@click="handleDeleteServe(scope.row)"
-								>
+								<el-button type="danger" size="mini" @click="handleDeleteServe(scope.row)">
 									删除
 								</el-button>
 							</template>
@@ -155,18 +156,21 @@
 					</el-table>
 				</div>
 				<Pagination
-					v-show="serviceTotal > 0" :total="serviceTotal" :page.sync="serviceQuery.page" :limit.sync="serviceQuery.size"
-					@pagination="getServiceList"
+					v-show="serviceTotal > 0" :total="serviceTotal" :page.sync="serviceQuery.page"
+					:limit.sync="serviceQuery.size" @pagination="getServiceList"
 				/>
 			</div>
 		</el-dialog>
 
 		<!-- 新增或编辑服务 -->
-		<el-dialog :title="{ update: '编辑服务', create: '新增服务' }[dialogStatus]" :visible.sync="dialogFormVisibleServe" width="800px">
+		<el-dialog
+			:title="{ update: '编辑服务', create: '新增服务' }[dialogStatus]" :visible.sync="dialogFormVisibleServe"
+			width="800px"
+		>
 			<el-form
 				ref="dataFormServe" :rules="rulesServe" :model="dataFormServe" status-icon
-				label-position="left" label-width="100px"
-				style="width: 400px; margin-left:50px;"
+				label-position="left"
+				label-width="100px" style="width: 400px; margin-left:50px;"
 			>
 				<!-- <el-form-item label="ID" prop="id">
 					<el-input v-model="dataFormServe.id" disabled />
@@ -175,14 +179,21 @@
 					<el-input v-model="dataFormServe.title" placeholder="请输入服务标题" />
 				</el-form-item>
 				<el-form-item label="服务描述" prop="describe">
-					<el-input v-model="dataFormServe.describe" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea" maxlength="120" show-word-limit placeholder="请输入企业描述" />
+					<el-input
+						v-model="dataFormServe.describe" :autosize="{ minRows: 4, maxRows: 8 }" type="textarea"
+						maxlength="120" show-word-limit placeholder="请输入企业描述"
+					/>
 				</el-form-item>
 				<el-form-item label="服务图标" prop="iconUrl">
 					<el-upload
-						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="(response) => dataFormServe.iconUrl = response.data.url"
-						:on-error="() => $message.error('上传失败')" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+						:headers="headers" :action="uploadPath" :show-file-list="false"
+						:on-success="(response) => dataFormServe.iconUrl = response.data.url" :on-error="() => $message.error('上传失败')"
+						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataFormServe.iconUrl" :src="common.seamingImgUrl(dataFormServe.iconUrl)" width="145">
+						<el-image
+							v-if="dataFormServe.iconUrl" class="avatar" :src="common.seamingImgUrl(dataFormServe.iconUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataFormServe.iconUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -550,8 +561,6 @@ export default {
 <style lang="scss" scoped>
 /deep/ .avatar-uploader {
 	.el-upload {
-		width: 145px;
-		height: 145px;
 		border: 1px dashed #d9d9d9;
 		border-radius: 6px;
 		cursor: pointer;
@@ -570,6 +579,12 @@ export default {
 		height: 120px;
 		line-height: 120px;
 		text-align: center;
+	}
+
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
 	}
 }
 </style>

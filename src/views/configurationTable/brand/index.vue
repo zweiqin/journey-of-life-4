@@ -43,7 +43,8 @@
 				<el-table-column align="center" min-width="100px" property="picUrl" label="门店图片">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -65,7 +66,8 @@
 				<el-table-column align="center" min-width="100px" property="licenseUrl" label="营业执照">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.licenseUrl" :src="common.seamingImgUrl(scope.row.licenseUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.licenseUrl" :src="common.seamingImgUrl(scope.row.licenseUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.licenseUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -75,7 +77,8 @@
 				<el-table-column align="center" min-width="100px" property="idcardProsUrl" label="法人身份证正面">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.idcardProsUrl" :src="common.seamingImgUrl(scope.row.idcardProsUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.idcardProsUrl" :src="common.seamingImgUrl(scope.row.idcardProsUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.idcardProsUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -85,7 +88,8 @@
 				<el-table-column align="center" min-width="100px" property="idcardConsUrl" label="法人身份证反面">
 					<template slot-scope="scope">
 						<el-image
-							v-if="scope.row.idcardConsUrl" :src="common.seamingImgUrl(scope.row.idcardConsUrl)" style="width:40px; height:40px" fit="cover"
+							v-if="scope.row.idcardConsUrl" :src="common.seamingImgUrl(scope.row.idcardConsUrl)"
+							style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.idcardConsUrl) ]"
 						/>
 						<span v-else>--</span>
@@ -128,7 +132,8 @@
 			<el-form :data="dataForm" label-position="left">
 				<el-form-item label="推广二维码">
 					<el-image
-						v-if="dataForm.shareUrl" :src="common.seamingImgUrl(dataForm.shareUrl)" style="width:300px; height:300px" fit="cover"
+						v-if="dataForm.shareUrl" :src="common.seamingImgUrl(dataForm.shareUrl)"
+						style="width:300px; height:300px" fit="cover"
 						:preview-src-list="[ common.seamingImgUrl(dataForm.shareUrl) ]"
 					/>
 					<span v-else>--</span>
@@ -149,8 +154,8 @@
 				</el-form-item>
 				<el-form-item label="主营类目">
 					<el-cascader
-						v-model="dataForm.categoryIds" :options="categoryList" expand-trigger="hover"
-						placeholder="请选择主营类目" @change="handleCategoryChange"
+						v-model="dataForm.categoryIds" :options="categoryList" expand-trigger="hover" placeholder="请选择主营类目"
+						@change="handleCategoryChange"
 					/>
 				</el-form-item>
 				<el-form-item label="管理员">
@@ -173,7 +178,8 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<el-image
-							v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)" style="width:146px; height:146px" fit="contain"
+							v-if="dataForm.picUrl" :src="common.seamingImgUrl(dataForm.picUrl)"
+							style="width:146px; height:146px" fit="contain"
 							:preview-src-list="[ common.seamingImgUrl(dataForm.picUrl) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -182,16 +188,10 @@
 
 				<el-form-item label="门店详情图片" prop="bgUrl">
 					<el-upload
-						:action="uploadPath"
-						:limit="5"
-						:file-list="bgUrlList"
-						:headers="headers"
+						:action="uploadPath" :limit="5" :file-list="bgUrlList" :headers="headers"
 						:on-exceed="() => $message({ type: 'error', message: '上传文件个数超出限制!最多上传5张图片!' })"
 						:on-success="(response, file, fileList) => response.errno === 0 && dataForm.bgUrl.push(response.data.url)"
-						:on-remove="handleRemoveBgUrl"
-						multiple
-						accept=".jpg,.jpeg,.png,.gif"
-						list-type="picture-card"
+						:on-remove="handleRemoveBgUrl" multiple accept=".jpg,.jpeg,.png,.gif" list-type="picture-card"
 					>
 						<i class="el-icon-plus" />
 					</el-upload>
@@ -202,7 +202,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLogoUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.logoUrl" :src="common.seamingImgUrl(dataForm.logoUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.logoUrl" class="avatar" :src="common.seamingImgUrl(dataForm.logoUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.logoUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -213,11 +216,9 @@
 
 				<el-form-item label="门店类型" prop="brandgenre">
 					<el-cascader
-						v-model="!dataForm.brandgenreArr ? dataForm.brandgenre : dataForm.brandgenreArr"
-						:options="typeOptions"
-						:props="{ checkStrictly: true, lazy: true, lazyLoad: (node, resolve) => resolve({ value: node.data.id, label: node.data.storeName, leaf: !node.data.children || node.data.children.length === 0 }), expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
+						v-model="dataForm.brandgenre" :options="typeOptions"
+						:props="{ checkStrictly: true, expandTrigger: 'hover', label: 'storeName', value: 'id', children: 'children' }"
 						style="width: 250px;"
-						@change="(value) => ((dataForm.brandgenre = value[value.length - 1]) && (dataForm.brandgenreArr = value))"
 					/>
 				</el-form-item>
 
@@ -254,7 +255,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadLicenseUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.licenseUrl" :src="common.seamingImgUrl(dataForm.licenseUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.licenseUrl" class="avatar" :src="common.seamingImgUrl(dataForm.licenseUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.licenseUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -264,7 +268,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardProsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardProsUrl" :src="common.seamingImgUrl(dataForm.idcardProsUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.idcardProsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardProsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardProsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -274,7 +281,10 @@
 						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadIdcardConsUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="dataForm.idcardConsUrl" :src="common.seamingImgUrl(dataForm.idcardConsUrl)" class="avatar">
+						<el-image
+							v-if="dataForm.idcardConsUrl" class="avatar" :src="common.seamingImgUrl(dataForm.idcardConsUrl)"
+							style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.idcardConsUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -330,6 +340,7 @@ import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'Brand',
@@ -476,9 +487,15 @@ export default {
 				})
 		},
 		getTypeOption() {
-			listDtsStoreType().then((response) => {
-				this.typeOptions = response.data
-			})
+			listDtsStoreType()
+				.then((response) => {
+					XeUtils.eachTree(response.data, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
+					})
+					this.typeOptions = response.data
+				})
 				.catch(() => {
 					this.typeOptions = []
 				})
@@ -573,6 +590,10 @@ export default {
 					.map((section) => section.substring(1, section.length - 1)) : []
 			})
 			this.bgUrlList = JSON.parse(JSON.stringify(this.dataForm.bgUrl)).map((item) => ({ name: this.common.seamingImgUrl(item), url: this.common.seamingImgUrl(item) }))
+			const currentItem = XeUtils.findTree(this.typeOptions, (item) => item.id === row.brandgenre)
+			if (currentItem && Array.isArray(currentItem.nodes)) {
+				this.dataForm.brandgenre = currentItem.nodes.map((v) => v.id)
+			}
 			this.dialogStatus = 'update'
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
@@ -596,7 +617,7 @@ export default {
 			this.dataForm.address = this.stadiumData.addr
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					createBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl) })
+					createBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl), brandgenre: Array.isArray(this.dataForm.brandgenre) && this.dataForm.brandgenre.length ? this.dataForm.brandgenre[this.dataForm.brandgenre.length - 1] : this.dataForm.brandgenre })
 						.then((response) => {
 							this.getList()
 							this.dialogFormVisible = false
@@ -622,7 +643,7 @@ export default {
 		updateData() {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					updateBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl) })
+					updateBrand({ ...this.dataForm, bgUrl: JSON.stringify(this.dataForm.bgUrl), brandgenre: Array.isArray(this.dataForm.brandgenre) && this.dataForm.brandgenre.length ? this.dataForm.brandgenre[this.dataForm.brandgenre.length - 1] : this.dataForm.brandgenre })
 						.then(() => {
 							this.getList()
 							this.dialogFormVisible = false
@@ -714,31 +735,33 @@ export default {
 }
 </script>
 
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+<style lang="scss" scoped>
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

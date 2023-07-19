@@ -26,7 +26,10 @@
 						:action="uploadPath" :show-file-list="false" :headers="headers" :on-success="uploadPicUrl"
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
-						<img v-if="article.imgUrl" :src="common.seamingImgUrl(article.imgUrl)" class="avatar">
+						<el-image
+							v-if="article.imgUrl" class="avatar" :src="common.seamingImgUrl(article.imgUrl)" style=""
+							fit="cover" :preview-src-list="[ common.seamingImgUrl(article.imgUrl) ]"
+						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
 				</el-form-item>
@@ -155,47 +158,37 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .el-card {
 	margin-bottom: 10px;
 }
 
-.el-tag+.el-tag {
-	margin-left: 10px;
-}
+/deep/ .avatar-uploader {
+	.el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
 
-.input-new-keyword {
-	width: 90px;
-	margin-left: 10px;
-	vertical-align: bottom;
-}
+	.el-upload:hover {
+		border-color: #20a0ff;
+	}
 
-.avatar-uploader .el-upload {
-	width: 145px;
-	height: 145px;
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 120px;
+		height: 120px;
+		line-height: 120px;
+		text-align: center;
+	}
 
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
+	.avatar {
+		width: 145px;
+		height: 145px;
+		display: block;
+	}
 }
 </style>

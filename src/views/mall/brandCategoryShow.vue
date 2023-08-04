@@ -349,16 +349,14 @@ export default {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
 					createCategory(this.dataForm)
-						.then((response) => {
-							this.getList()
-							// 更新L1L2目录
-							this.getCatL1()
-							this.getCatL2()
+						.then((res) => {
 							this.dialogFormVisible = false
 							this.$notify.success({
 								title: '成功',
 								message: '创建成功'
 							})
+							this.getList()
+							this.getCatL1()
 						})
 						.catch((response) => {
 							this.$notify.error({
@@ -382,14 +380,13 @@ export default {
 				if (valid) {
 					updateCategory(this.dataForm)
 						.then(() => {
-							this.getList()
-							// 更新L1目录
-							this.getCatL1()
 							this.dialogFormVisible = false
 							this.$notify.success({
 								title: '成功',
 								message: '更新成功'
 							})
+							this.getList()
+							this.getCatL1()
 						})
 						.catch((response) => {
 							this.$notify.error({
@@ -402,15 +399,13 @@ export default {
 		},
 		handleDelete(row) {
 			deleteCategory(row)
-				.then((response) => {
-					// 更新L1目录
-					this.getCatL1()
+				.then((res) => {
 					this.$notify.success({
 						title: '成功',
 						message: '删除成功'
 					})
-					const index = this.list.indexOf(row)
-					this.list.splice(index, 1)
+					this.getList()
+					this.getCatL1()
 				})
 				.catch((response) => {
 					this.$notify.error({

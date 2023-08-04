@@ -529,7 +529,7 @@ export const asyncRouterMap = [
 				name: 'marketingToolsDashboard',
 				meta: {
 					perms: [ '/admin/developing' ],
-					title: '营销看板',
+					title: '营销画像',
 					icon: ''
 				}
 			},
@@ -947,6 +947,41 @@ export const asyncRouterMap = [
 		},
 		children: [
 			{
+				path: 'customerServiceSystem',
+				component: () => import('@/views/children'),
+				redirect: 'noredirect',
+				alwaysShow: true,
+				meta: {
+					title: '客服系统',
+					icon: '',
+					noCache: true
+				},
+				children: [
+					{
+						path: 'problemClassificationList',
+						component: () => import('@/views/customerServiceSystem/problemClassificationList'),
+						name: 'ProblemClassificationList',
+						meta: {
+							title: '问题分类',
+							icon: '',
+							noCache: true,
+							perms: ['GET /admin/dtsCustomerCategory/singleStage', 'GET /admin/dtsCustomerCategory/categoryTree', 'POST /admin/dtsCustomerCategory/addCategory', 'POST /admin/dtsCustomerCategory/updateCategory']
+						}
+					},
+					{
+						path: 'suggestionsList',
+						component: () => import('@/views/customerServiceSystem/suggestionsList'),
+						name: 'SuggestionsList',
+						meta: {
+							title: '建议列表',
+							icon: '',
+							noCache: true,
+							perms: ['GET /admin/dtsCustomerFeedback/customerList', 'GET /admin/dtsCustomerFeedback/updateStatus']
+						}
+					}
+				]
+			},
+			{
 				path: 'iconManagement',
 				component: () => import('@/views/children'),
 				redirect: 'noredirect',
@@ -1220,6 +1255,17 @@ export const asyncRouterMap = [
 					icon: '',
 					noCache: true
 				}
+			},
+			{
+				path: 'distributionSetting',
+				component: () => import('@/views/configurationTable/distributionSetting'),
+				name: 'DistributionSetting',
+				meta: {
+					perms: ['GET /admin/dtsSettingController/get/DISTRIBUTION_SETTING', 'POST /admin/dtsSettingController/put/WECHAT_CONNECT'],
+					title: '分销设置',
+					icon: '',
+					noCache: true
+				}
 			}
 		]
 	},
@@ -1270,6 +1316,16 @@ export const asyncRouterMap = [
 				meta: {
 					perms: ['GET /admin/dtsUpgradeRequest/list', 'POST /admin/dtsUpgradeRequest/regionalAgent'],
 					title: '区域审核申请',
+					noCache: true
+				}
+			},
+			{
+				path: 'distributorReviewed',
+				component: () => import('@/views/applicationManagement/distributorReviewed'),
+				name: 'DistributorReviewed',
+				meta: {
+					perms: [ 'GET /admin/dtsDistribution/getByPage' ],
+					title: '分销员审核',
 					noCache: true
 				}
 			},
@@ -2141,28 +2197,6 @@ export const asyncRouterMap = [
 		meta: { title: '业务管理', icon: 'log', noCache: true },
 		children: [
 			{
-				path: 'InformationSentry',
-				component: () => import('@/views/errorPage/developing'),
-				name: 'InformationSentry',
-				meta: {
-					perms: [ '/admin/developing' ],
-					title: '信息哨兵',
-					icon: '',
-					noCache: true
-				}
-			},
-			{
-				path: 'ResultsSentry',
-				component: () => import('@/views/errorPage/developing'),
-				name: 'ResultsSentry',
-				meta: {
-					perms: [ '/admin/developing' ],
-					title: '业绩哨兵',
-					icon: '',
-					noCache: true
-				}
-			},
-			{
 				path: 'salesManagement',
 				component: () => import('@/views/children'),
 				redirect: 'noredirect',
@@ -2193,17 +2227,6 @@ export const asyncRouterMap = [
 						hidden: true
 					}
 				]
-			},
-			{
-				path: 'MarketingPortrait',
-				component: () => import('@/views/errorPage/developing'),
-				name: 'MarketingPortrait',
-				meta: {
-					perms: [ '/admin/developing' ],
-					title: '营销画像',
-					icon: '',
-					noCache: true
-				}
 			}
 		]
 	},

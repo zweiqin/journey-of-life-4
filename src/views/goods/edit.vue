@@ -88,16 +88,9 @@
 
 				<el-form-item label="所属分类">
 					<el-cascader
-						v-model="categoryIds" lable="name" :options="categoryList" filterable
-						show-all-levels
-						:props="catepropse" expand-trigger="hover" @change="handleCategoryChange"
-					>
-						<template slot-scope="{ node }">
-							<span :class="{ 'is-disabled': node.level === 1 }">
-								{{ node.label }}
-							</span>
-						</template>
-					</el-cascader>
+						v-model="categoryIds" :options="categoryList"
+						:props="{ label: 'name', value: 'id' }" expand-trigger="hover" @change="handleCategoryChange"
+					/>
 				</el-form-item>
 
 				<el-form-item
@@ -433,19 +426,13 @@ import { getUserInfo } from '@/api/login'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'GoodsEdit',
 	components: { Editor },
 	data() {
 		return {
-			catepropse: {
-				label: 'name',
-				value: 'id',
-				children: 'children',
-				checkStrictly: true,
-				emitPath: false
-			},
 			server: process.env.BASE_API,
 			uploadPath,
 			isBrand: undefined,
@@ -520,7 +507,7 @@ export default {
 				this.products = response.data.products
 				this.attributes = response.data.attributes
 				this.goodsCoupons = response.data.goodsCoupons
-				this.categoryIds = response.data.categoryIds
+				this.categoryIds = response.data.categoryIds && response.data.categoryIds.length ? response.data.categoryIds[response.data.categoryIds.length - 1] : ''
 
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
@@ -536,15 +523,12 @@ export default {
 
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				getCatAndBrandCategory(this.$route.query.brandId).then((response) => {
-					this.categoryList = response.data.categoryList
-					// 遍历子集，将空的children变为unll
-					this.categoryList.forEach((item) => {
-						// item.isdasbale = false
-						this.setEmptyChildrenToNull(item)
+					XeUtils.eachTree(response.data.categoryList, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
 					})
-					this.disableFirstLevel()
-					// this.categoryList = response.data.categoryList
-					// this.brandList = response.data.brandList
+					this.categoryList = response.data.categoryList
 				})
 				listCoupon({ brandId: this.$route.query.brandId, type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -556,9 +540,12 @@ export default {
 				})
 			} else {
 				getCatAndBrandCategory().then((response) => {
+					XeUtils.eachTree(response.data.categoryList, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
+					})
 					this.categoryList = response.data.categoryList
-					// this.categoryList = response.data.categoryList
-					// this.brandList = response.data.brandList
 				})
 				listCoupon({ type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -572,7 +559,7 @@ export default {
 		},
 		handleCategoryChange(value) {
 			console.log(value)
-			this.goods.categoryId = value
+			this.goods.categoryId = value[value.length - 1]
 		},
 		handleCancel() {
 			if (this.$route.query.lastRouter === 'brandListShow') {
@@ -825,36 +812,12 @@ export default {
 		handleGoodsCouponsDelete(row) {
 			const index = this.goodsCoupons.indexOf(row)
 			this.goodsCoupons.splice(index, 1)
-		},
-		setEmptyChildrenToNull(obj) {
-			if (Array.isArray(obj.children)) {
-				if (obj.children.length === 0) {
-					obj.children = null // 或者设置为 undefined 阻止children为空的值渲染
-				} else {
-					obj.children.forEach((child) => {
-						this.setEmptyChildrenToNull(child)
-					})
-				}
-			}
-		},
-		disableFirstLevel() {
-			const firstLevelRadioGroup = document.querySelectorAll('.el-cascader-menu__list> .el-radio')
-			// console.log(firstLevelRadioGroup)
-			firstLevelRadioGroup.forEach((radio) => {
-				radio.disabled = true
-			})
 		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-.is-disabled {
-	color: #ccc;
-	pointer-events: none !important;
-	cursor: not-allowed !important;
-}
-
 .el-card {
 	margin-bottom: 10px;
 }

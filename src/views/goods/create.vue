@@ -582,6 +582,7 @@ import { getUserInfo } from '@/api/login'
 import Editor from '@tinymce/tinymce-vue'
 import { MessageBox } from 'element-ui'
 import { getToken } from '@/utils/auth'
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'GoodsCreate',
@@ -649,15 +650,12 @@ export default {
 			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
 				this.goods.brandId = this.$route.query.brandId
 				getCatAndBrandCategory(this.goods.brandId).then((response) => {
-					// console.log(response)
-					this.categoryList = response.data.categoryList
-					this.categoryList.forEach((item) => {
-						this.setEmptyChildrenToNull(item)
+					XeUtils.eachTree(response.data.categoryList, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
 					})
-					// console.log(this.categoryList)
-					this.setEmptyChildrenToNull()
-					// this.categoryList = response.data.categoryList
-					// this.brandList = response.data.brandList
+					this.categoryList = response.data.categoryList
 				})
 				listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -669,9 +667,12 @@ export default {
 				})
 			} else {
 				getCatAndBrandCategory().then((response) => {
+					XeUtils.eachTree(response.data.categoryList, (item) => {
+						if (Array.isArray(item.children) && item.children.length === 0) {
+							item.children = undefined
+						}
+					})
 					this.categoryList = response.data.categoryList
-					// this.categoryList = response.data.categoryList
-					// this.brandList = response.data.brandList
 				})
 				listCoupon({ type: 3, status: 0 }).then((response) => {
 					this.goodsCouponsList = response.data.items.map((item) => ({
@@ -686,8 +687,6 @@ export default {
 		handleCategoryChange(value) {
 			console.log(value)
 			this.goods.categoryId = value[value.length - 1]
-			this.goods.goodsType = value[0]
-			console.log(this.goods)
 		},
 		handleCancel() {
 			if (this.$route.query.lastRouter === 'brandListShow') {
@@ -931,17 +930,6 @@ export default {
 		handleGoodsCouponsDelete(row) {
 			const index = this.goodsCoupons.indexOf(row)
 			this.goodsCoupons.splice(index, 1)
-		},
-		setEmptyChildrenToNull(obj) {
-			if (Array.isArray(obj.children)) {
-				if (obj.children.length === 0) {
-					obj.children = null // 或者设置为 undefined 阻止children为空的值渲染
-				} else {
-					obj.children.forEach((child) => {
-						this.setEmptyChildrenToNull(child)
-					})
-				}
-			}
 		}
 	}
 }

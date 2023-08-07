@@ -140,6 +140,10 @@ const user = {
 					resolve()
 				})
 					.catch((error) => {
+						commit('SET_TOKEN', '')
+						commit('SET_ROLES', [])
+						commit('SET_PERMS', [])
+						removeToken()
 						reject(error)
 					})
 			})

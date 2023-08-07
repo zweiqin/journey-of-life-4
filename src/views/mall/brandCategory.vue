@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { listBrand, listCatAndAdmin } from '@/api/business/brand'
+import { listBrand } from '@/api/business/brand'
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
@@ -93,7 +93,6 @@ export default {
 	created() {
 		this.getRoles()
 		// this.getList()
-		// this.init()
 	},
 	methods: {
 		getRoles() {
@@ -101,7 +100,6 @@ export default {
 				.then((response) => {
 					if (response.data.roles[0] === '超级管理员') {
 						this.getList()
-						this.init()
 					} else if (response.data.roles[0] === '会员商户' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
 						this.$router.push({ name: 'category' })
 					}
@@ -121,13 +119,6 @@ export default {
 					this.total = 0
 					this.listLoading = false
 				})
-		},
-
-		init() {
-			listCatAndAdmin().then((response) => {
-				this.categoryList = response.data.categoryList
-				this.adminList = response.data.adminList
-			})
 		},
 
 		handleFilter() {

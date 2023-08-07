@@ -53,8 +53,8 @@
 						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 					>
 						<el-image
-							v-if="goods.picUrl"
-							class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style="" fit="cover"
+							v-if="goods.picUrl" class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style=""
+							fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -152,9 +152,8 @@
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
 							<el-image
-								v-if="specForm.picUrl"
-								class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style="" fit="cover"
-								:preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
+								v-if="specForm.picUrl" class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -214,9 +213,8 @@
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
 							<el-image
-								v-if="productForm.url"
-								class="avatar" :src="common.seamingImgUrl(productForm.url)" style="" fit="cover"
-								:preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
+								v-if="productForm.url" class="avatar" :src="common.seamingImgUrl(productForm.url)" style=""
+								fit="cover" :preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
 						</el-upload>
@@ -429,7 +427,7 @@ export default {
 			categoryList: [],
 			brandList: [],
 			categoryIds: [],
-			goods: { gallery: [] },
+			goods: { gallery: [], categoryId: '' },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			specifications: [ { specification: '规格', value: '标准', picUrl: '' } ],
@@ -488,7 +486,7 @@ export default {
 				this.products = response.data.products
 				this.attributes = response.data.attributes
 				this.goodsCoupons = response.data.goodsCoupons
-				this.categoryIds = response.data.categoryIds
+				this.categoryIds = response.data.categoryIds && response.data.categoryIds.length ? response.data.categoryIds[response.data.categoryIds.length - 1] : ''
 
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
@@ -511,9 +509,12 @@ export default {
 			})
 
 			getCatAndBrandCategory().then((response) => {
-				this.categoryList = response.data
-				// this.categoryList = response.data.categoryList
-				// this.brandList = response.data.brandList
+				XeUtils.eachTree(response.data.categoryList, (item) => {
+					if (Array.isArray(item.children) && item.children.length === 0) {
+						item.children = undefined
+					}
+				})
+				this.categoryList = response.data.categoryList
 			})
 		},
 		handleCategoryChange(value) {

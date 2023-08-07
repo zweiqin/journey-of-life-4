@@ -14,10 +14,7 @@
 					style="width: 200px;"
 					placeholder="请输入商品名称"
 				/>
-				<el-button
-					size="mini" class="filter-item" type="primary" icon="el-icon-search"
-					@click="handleFilter"
-				>
+				<el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
 					查找
 				</el-button>
 			</div>
@@ -199,8 +196,8 @@
 							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 						>
 							<el-image
-								v-if="goods.picUrl"
-								class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style="" fit="cover"
+								v-if="goods.picUrl" class="avatar" :src="common.seamingImgUrl(goods.picUrl)" style=""
+								fit="cover"
 								:preview-src-list="[ common.seamingImgUrl(goods.picUrl) ]"
 							/>
 							<i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -233,7 +230,10 @@
 					</el-form-item>
 
 					<el-form-item label="所属分类">
-						<el-cascader v-model="categoryIds" :props="{ value: 'id', label: 'name' }" :options="categoryList" expand-trigger="hover" @change="handleCategoryChange" />
+						<el-cascader
+							v-model="categoryIds" :props="{ value: 'id', label: 'name' }" :options="categoryList"
+							expand-trigger="hover" @change="handleCategoryChange"
+						/>
 					</el-form-item>
 
 					<el-form-item label="所属品牌商">
@@ -308,9 +308,8 @@
 								class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 							>
 								<el-image
-									v-if="specForm.picUrl"
-									class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style="" fit="cover"
-									:preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
+									v-if="specForm.picUrl" class="avatar" :src="common.seamingImgUrl(specForm.picUrl)" style=""
+									fit="cover" :preview-src-list="[ common.seamingImgUrl(specForm.picUrl) ]"
 								/>
 								<i v-else class="el-icon-plus avatar-uploader-icon" />
 							</el-upload>
@@ -370,9 +369,8 @@
 								class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
 							>
 								<el-image
-									v-if="productForm.url"
-									class="avatar" :src="common.seamingImgUrl(productForm.url)" style="" fit="cover"
-									:preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
+									v-if="productForm.url" class="avatar" :src="common.seamingImgUrl(productForm.url)" style=""
+									fit="cover" :preview-src-list="[ common.seamingImgUrl(productForm.url) ]"
 								/>
 								<i v-else class="el-icon-plus avatar-uploader-icon" />
 							</el-upload>
@@ -576,6 +574,7 @@ import { getToken } from '@/utils/auth'
 import { listGoods, detailGoods, getCatAndBrandCategory } from '@/api/business/goods'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import XeUtils from 'xe-utils'
 
 export default {
 	name: 'GoodsCreate',
@@ -604,7 +603,7 @@ export default {
 			categoryList: [],
 			brandList: [],
 			categoryIds: [],
-			goods: { picUrl: '', gallery: [], isAppoint: true, endTime: null, startTime: null, timeType: 0 },
+			goods: { picUrl: '', gallery: [], isAppoint: true, endTime: null, startTime: null, timeType: 0, categoryId: '' },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			multipleSpec: false,
@@ -647,10 +646,13 @@ export default {
 	methods: {
 		init() {
 			getCatAndBrandCategory().then((response) => {
+				XeUtils.eachTree(response.data.categoryList, (item) => {
+					if (Array.isArray(item.children) && item.children.length === 0) {
+						item.children = undefined
+					}
+				})
+				this.categoryList = response.data.categoryList
 				this.getList()
-				this.categoryList = response.data
-				// this.categoryList = response.data.categoryList
-				// this.brandList = response.data.brandList
 			})
 		},
 		getList() {
@@ -684,13 +686,7 @@ export default {
 				this.specifications = response.data.specifications
 				this.products = response.data.products
 				this.attributes = response.data.attributes
-				this.categoryIds = response.data.categoryIds
-				this.galleryFileList = []
-				for (var i = 0; i < this.goods.gallery.length; i++) {
-					this.galleryFileList.push({
-						url: this.common.seamingImgUrl(this.goods.gallery[i])
-					})
-				}
+				this.categoryIds = response.data.categoryIds && response.data.categoryIds.length ? response.data.categoryIds[response.data.categoryIds.length - 1] : ''
 				const keywords = response.data.goods.keywords
 				if (keywords !== null) {
 					this.keywords = keywords.split(',')
@@ -707,10 +703,8 @@ export default {
 			this.selectedGood = true
 		},
 		handleCategoryChange(value) {
-			// console.log(value)
+			console.log(value)
 			this.goods.categoryId = value[value.length - 1]
-			this.goods.goodsType = value[0]
-			console.log(this.goods)
 		},
 		handleCancel() {
 			this.$router.push({ name: 'bookGoodsList' })

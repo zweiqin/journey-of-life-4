@@ -40,8 +40,7 @@
 
 					<template slot-scope="scope">
 						<el-tag :type="scope.row.level == '1' ? 'primary' : 'info'">
-							{{ scope.row.level == '1' ? '一级分类'
-								: scope.row.level == '2' ? '二级分类' : scope.row.level == '3' ? '三级分类' : '--' }}
+							{{ scope.row.level == '1' ? '一级分类' : scope.row.level == '2' ? '二级分类' : '--' }}
 						</el-tag>
 					</template>
 				</el-table-column>
@@ -91,10 +90,9 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="级别" prop="level">
-					<el-select v-model="dataForm.level" @change="dataForm.parentIdOne = ''">
+					<el-select v-model="dataForm.level" @change="dataForm.parentId = ''">
 						<el-option label="一级分类" :value="1" />
 						<el-option label="二级分类" :value="2" />
-						<el-option label="三级分类" :value="3" />
 					</el-select>
 				</el-form-item>
 				<el-form-item v-if="dataForm.level == 2" label="父类目" prop="parentId">
@@ -102,41 +100,29 @@
 						<el-option v-for="item in catL1" :key="item.id" :label="item.name" :value="item.id" />
 					</el-select>
 				</el-form-item>
-				<el-form-item v-if="dataForm.level == 3" label="所属一级类目" prop="parentIdOne">
-					<el-select v-model="dataForm.parentIdOne" @change="onLevel1Change">
-						<el-option v-for="item in catL1" :key="item.id" :label="item.name" :value="item.id" />
-					</el-select>
-				</el-form-item>
-				<el-form-item v-if="((dialogStatus === 'update') && (dataForm.level == 3)) || ((dialogStatus === 'create') && (dataForm.level == 3) && dataForm.parentIdOne)" label="所属二级类目" prop="parentId">
-					<el-select v-model="dataForm.parentId">
-						<el-option v-for="item in catL2" :key="item.id" :label="item.name" :value="item.id" />
-					</el-select>
-				</el-form-item>
 				<el-form-item label="排序" prop="sortOrder">
 					<el-input v-model="dataForm.sortOrder" placeholder="请输入排序数字" />
 				</el-form-item>
-				<el-form-item label="回答描述" prop="answer.describe">
-					<el-input
-						v-model="dataForm.answer.describe"
-						type="textarea"
-						:autosize="{ minRows: 3, maxRows: 5 }"
-						maxlength="520"
-						show-word-limit
-						placeholder="请输入回答描述"
-					/>
-				</el-form-item>
-				<el-form-item label="回答图片" prop="answer.picUrl">
-					<el-upload
-						:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAnswerUrl"
-						class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
-					>
-						<el-image
-							v-if="dataForm.answer.picUrl" class="avatar" :src="common.seamingImgUrl(dataForm.answer.picUrl)" style=""
-							fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.answer.picUrl) ]"
+				<div v-if="dataForm.level == 2">
+					<el-form-item label="回答描述" prop="answer.describe">
+						<el-input
+							v-model="dataForm.answer.describe" type="textarea" :autosize="{ minRows: 3, maxRows: 5 }"
+							maxlength="520" show-word-limit placeholder="请输入回答描述"
 						/>
-						<i v-else class="el-icon-plus avatar-uploader-icon" />
-					</el-upload>
-				</el-form-item>
+					</el-form-item>
+					<el-form-item label="回答图片" prop="answer.picUrl">
+						<el-upload
+							:headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadAnswerUrl"
+							class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+						>
+							<el-image
+								v-if="dataForm.answer.picUrl" class="avatar" :src="common.seamingImgUrl(dataForm.answer.picUrl)"
+								style="" fit="cover" :preview-src-list="[ common.seamingImgUrl(dataForm.answer.picUrl) ]"
+							/>
+							<i v-else class="el-icon-plus avatar-uploader-icon" />
+						</el-upload>
+					</el-form-item>
+				</div>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="dialogFormVisible = false">取消</el-button>
@@ -162,10 +148,9 @@ export default {
 			list: [],
 			listLoading: true,
 			catL1: [],
-			catL2: [],
+			// catL2: [],
 			dataForm: {
 				id: '',
-				parentIdOne: '',
 				parentId: '',
 				name: '',
 				picUrl: '',
@@ -186,10 +171,7 @@ export default {
 			},
 			rules: {
 				'name': [ { required: true, message: '分类名称不能为空', trigger: 'blur' } ],
-				'picUrl': [ { required: true, message: '请上传分类图标', trigger: 'blur' } ],
-				'level': [ { required: true, message: '请选择分类级别', trigger: 'blur' } ],
-				'answer.describe': [ { required: true, message: '请输入回答描述', trigger: 'blur' } ],
-				'answer.picUrl': [ { required: true, message: '请上传回答图片', trigger: 'blur' } ]
+				'level': [ { required: true, message: '请选择分类级别', trigger: 'blur' } ]
 			},
 			downloadLoading: false
 		}
@@ -227,23 +209,18 @@ export default {
 				})
 		},
 		getCatL1() {
-			customerCategorySingleStage({ pid: '' }).then((res) => {
+			customerCategorySingleStage({ pid: 0 }).then((res) => {
 				this.catL1 = res.data || []
 			})
 		},
-		getCatL2(id) {
-			customerCategorySingleStage({ pid: id }).then((res) => {
-				this.catL2 = res.data || []
-			})
-		},
-		onLevel1Change() {
-			this.dataForm.parentId = ''
-			this.getCatL2(this.dataForm.parentIdOne)
-		},
+		// getCatL2(id) {
+		// 	customerCategorySingleStage({ pid: id }).then((res) => {
+		// 		this.catL2 = res.data || []
+		// 	})
+		// },
 		resetForm() {
 			this.dataForm = {
 				id: '',
-				parentIdOne: '',
 				parentId: '',
 				name: '',
 				picUrl: '',
@@ -274,28 +251,21 @@ export default {
 		createData() {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					if (this.dataForm.level == 1) {
-						return this.$notify.error({
-							title: '失败',
-							message: '禁止创建一级层级'
-						})
-					} else if (this.dataForm.level == 2) {
+					if (this.dataForm.level == 2) {
 						if (!this.dataForm.parentId) {
 							return this.$notify.error({
 								title: '失败',
 								message: '请填写所属父分类'
 							})
-						}
-					} else if (this.dataForm.level == 3) {
-						if (!this.dataForm.parentIdOne) {
+						} else if (!this.dataForm.answer.describe) {
 							return this.$notify.error({
 								title: '失败',
-								message: '请填写所属一级类目'
+								message: '请输入回答描述'
 							})
-						} else if (!this.dataForm.parentId) {
+						} else if (!this.dataForm.answer.picUrl) {
 							return this.$notify.error({
 								title: '失败',
-								message: '请填写所属二级类目'
+								message: '请上传回答图片'
 							})
 						}
 					}
@@ -319,6 +289,7 @@ export default {
 			})
 		},
 		handleUpdate(row) {
+			console.log(row)
 			const loading = this.$elLoading('加载中')
 			// const res = { data: {} }
 			customerCategorySelectId({ id: row.id })
@@ -351,23 +322,21 @@ export default {
 		updateData() {
 			this.$refs.dataForm.validate((valid) => {
 				if (valid) {
-					if (this.dataForm.level == 1) {
-						return this.$notify.error({
-							title: '失败',
-							message: '禁止创建一级层级'
-						})
-					} else if (this.dataForm.level == 2) {
+					if (this.dataForm.level == 2) {
 						if (!this.dataForm.parentId) {
 							return this.$notify.error({
 								title: '失败',
 								message: '请填写所属父分类'
 							})
-						}
-					} else if (this.dataForm.level == 3) {
-						if (!this.dataForm.parentId) {
+						} else if (!this.dataForm.answer.describe) {
 							return this.$notify.error({
 								title: '失败',
-								message: '请填写所属二级类目'
+								message: '请输入回答描述'
+							})
+						} else if (!this.dataForm.answer.picUrl) {
+							return this.$notify.error({
+								title: '失败',
+								message: '请上传回答图片'
 							})
 						}
 					}

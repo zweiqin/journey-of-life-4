@@ -197,7 +197,7 @@ import { listAdd, listDelete, listGet, idGet, listedit } from '@/api/configurati
 // import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Admin',
@@ -249,7 +249,6 @@ export default {
 	},
 	created() {
 		this.getList()
-
 		// roleOptions()
 		//   .then(response => {
 		//     this.roleOptions = response.data

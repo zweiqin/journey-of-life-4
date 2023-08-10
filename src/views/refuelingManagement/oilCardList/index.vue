@@ -105,7 +105,7 @@
 
 <script>
 import { queryyoukalist, querycompanyaccountamount, changeoilcardamount } from '@/api/refuelingManagement/oilCardList'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { regFloat } from '@/utils/reg'
 
 export default {

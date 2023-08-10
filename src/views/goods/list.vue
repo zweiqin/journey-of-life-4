@@ -13,6 +13,13 @@
 				style="width: 200px;"
 				placeholder="请输入商品名称"
 			/>
+			<el-select v-model="listQuery.approveStatus" size="mini" class="filter-item" clearable placeholder="请选择审批状态">
+				<el-option label="全部" value="" />
+				<el-option label="未提交" :value="4" />
+				<el-option label="待审批" :value="0" />
+				<el-option label="审批通过" :value="1" />
+				<el-option label="审批拒绝" :value="2" />
+			</el-select>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
 			<el-button
@@ -36,7 +43,6 @@
 					<el-form label-position="left" class="table-expand">
 						<el-form-item label="宣传画廊">
 							<img v-for="pic in props.row.gallery" :key="pic" :src="common.seamingImgUrl(pic)" class="gallery">
-							<!-- <img v-for="pic in props.row.gallery" :key="pic" :src="pic" class="gallery"> -->
 						</el-form-item>
 						<el-form-item label="商品介绍">
 							<span>{{ props.row.brief }}</span>
@@ -59,12 +65,19 @@
 
 			<el-table-column align="center" min-width="110" label="商品编号" prop="goodsSn" />
 
+			<el-table-column align="center" label="商品归属" prop="brandType">
+				<template slot-scope="scope">
+					<span v-if="scope.row.brandType === 0">商城商品</span>
+					<span v-else-if="scope.row.brandType === 1">本地生活商品</span>
+					<span v-else>--</span>
+				</template>
+			</el-table-column>
+
 			<el-table-column align="center" min-width="150" label="名称" prop="name" sortable />
 
 			<el-table-column align="center" property="iconUrl" label="图片">
 				<template slot-scope="scope">
 					<img :src="common.seamingImgUrl(scope.row.picUrl)" width="40">
-					<!-- <img :src="scope.row.picUrl" width="40"> -->
 				</template>
 			</el-table-column>
 
@@ -105,7 +118,17 @@
 				</template>
 				</el-table-column> -->
 
-			<el-table-column align="center" label="操作" width="150" class-name="small-padding fixed-width">
+			<el-table-column align="center" label="审核状态" prop="approveStatus">
+				<template slot-scope="scope">
+					<el-tag v-if="scope.row.approveStatus === 4" type="info">未提交</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 0" type="warning">待审批</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 1" type="success">审批通过</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 2" type="danger">审批拒绝</el-tag>
+					<div v-else>--</div>
+				</template>
+			</el-table-column>
+
+			<el-table-column align="center" label="操作" fixed="right" width="150" class-name="small-padding fixed-width">
 				<template slot-scope="scope">
 					<el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
 					<el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
@@ -118,23 +141,18 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 	</div>
 </template>
 
 <script>
 import { listGoods, deleteGoods } from '@/api/business/goods'
-import BackToTop from '@/components/BackToTop'
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'GoodsList',
-	components: { BackToTop, Pagination },
+	components: { Pagination },
 	data() {
 		return {
 			list: [],
@@ -148,7 +166,8 @@ export default {
 				cateId: undefined,
 				brandId: this.$store.state.user.brandId,
 				sort: 'add_time',
-				order: 'desc'
+				order: 'desc',
+				approveStatus: ''
 			},
 			goodsDetail: '',
 			detailDialogVisible: false,

@@ -42,7 +42,7 @@
 
 <script>
 import { listAddress } from '@/api/business/user'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'UserAddress',

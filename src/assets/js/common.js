@@ -30,10 +30,10 @@ export default {
 
 	// 拼接展示图片url
 	splicingImgUrl() {
-		return process.env.BASE_API + '/storage/fetch/'
+		return process.env.BASE_PIC_API
 	},
 	seamingImgUrl(url) {
 		if (!url) return ''
-		return url.startsWith('https://') ? url : process.env.BASE_API + '/storage/fetch/' + url
+		return url.startsWith('https://') ? url : process.env.BASE_PIC_API + url
 	}
 }

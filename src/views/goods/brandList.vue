@@ -127,7 +127,7 @@ export default {
 		},
 
 		chooseBrand(row) {
-			this.$router.push({ name: 'brandGoodsListShow', query: { id: row.id } })
+			this.$router.push({ name: 'BrandGoodsListShow', query: { id: row.id } })
 		}
 	}
 }

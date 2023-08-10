@@ -451,7 +451,7 @@ import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUp
 import { fetchList } from '@/api/business/user'
 import { uploadPath } from '@/api/business/storage'
 import { listSubRegion } from '@/api/business/region'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -544,7 +544,7 @@ export default {
 			},
 			rulesExamine: {
 				id: [ { required: true, message: '达人ID不能为空', trigger: 'blur' } ],
-				avatar: [ { required: true, message: '审核状态不能为空', trigger: 'blur' } ]
+				status: [ { required: true, message: '审核状态不能为空', trigger: 'blur' } ]
 			},
 
 			// 查看案例对话框
@@ -733,7 +733,7 @@ export default {
 		},
 
 		handleExamine(row) {
-			this.resetForm()
+			this.resetFormExamine()
 			this.dataFormExamine = Object.assign(this.dataFormExamine, {
 				id: row.id || '',
 				status: row.status

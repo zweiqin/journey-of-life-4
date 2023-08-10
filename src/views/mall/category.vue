@@ -208,7 +208,7 @@ import { listCategory, listCatL1, listCatL2, createCategory, updateCategory, del
 import { uploadPath } from '@/api/business/storage'
 import { getUserInfo } from '@/api/login'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Category',

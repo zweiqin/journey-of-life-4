@@ -57,21 +57,7 @@
 						}}
 					</template>
 				</el-table-column>
-				<!-- <el-table-column align="center" label="申请类型" prop="applicationType">
-					<template slot-scope="scope">
-					<el-tag>
-					{{
-					scope.row.applicationType == 1
-					? '普通业务员'
-					: scope.row.applicationType == 2
-					? '高级业务员'
-					: '其他'
-					}}
-					</el-tag>
-					</template>
-					</el-table-column> -->
 				<el-table-column align="center" label="申请时间" prop="updateTime" />
-				<!-- <el-table-column align="center" label="更新时间" prop="updatetime" /> -->
 				<el-table-column align="center" label="状态" prop="status">
 					<template slot-scope="scope">
 						<el-tag>
@@ -208,9 +194,6 @@
 				<el-descriptions-item label="申请类型">
 					{{ dialogFormitem.methods }}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="开门时间">
-					{{ dialogFormitem.createTime }}
-					</el-descriptions-item> -->
 				<el-descriptions-item label="信息更改修改时间">
 					{{ dialogFormitem.updateTime }}
 				</el-descriptions-item>
@@ -238,16 +221,6 @@
 				>
 					退回
 				</el-button>
-				<!-- <el-button
-					v-if="
-					scope.row.status == 5 ||
-					scope.row.status == 3 ||
-					scope.row.status == 2
-					"
-					type="success"
-					@click="sign(dialogFormitem, '注册')"
-					>注册</el-button
-					> -->
 			</div>
 		</el-dialog>
 	</div>
@@ -258,10 +231,9 @@ import {
 	upgradeRequestList,
 	UpgradeRequestMarketing
 } from '@/api/applicationManagement/merchantSettlement'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'MerchantSettlement',
 	components: { Pagination },
 	data() {

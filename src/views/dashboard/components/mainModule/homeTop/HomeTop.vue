@@ -63,15 +63,13 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { renderData } from './'
 import TableHeader from '../../statisticalArea/headerButton'
 import { getStatisticsMemberCount, getStatisticsOrderCount, getStatisticsFinanceCount, getSVoucherCount, getCommissionCount, getSCBusinessCount } from '@/api/dashboard'
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'HomeTop',
 	components: { TableHeader, Pagination },
-	// eslint-disable-next-line vue/require-prop-types
 	props: [],
 	data() {
 		return {
@@ -109,14 +107,12 @@ export default {
 			}
 		}
 	},
-	// eslint-disable-next-line no-empty-function
 	created() {
 		try {
 			Promise.all(this.everyRequest).then((res) => {
 				res.forEach((item, index) => {
 					this.$set(this.renderData, index, { ...this.renderData[index], data: item.data })
 				})
-				// console.log(this.renderData)
 			})
 				.catch((err) => {
 					throw new Error(err)
@@ -124,7 +120,6 @@ export default {
 			this.getVoucherRankings()
 			getSCBusinessCount().then((res) => {
 				this.VoucherRankingsTop = res.data.limit.slice(0, 3)
-				// window.console.log(this.VoucherRankings)
 			})
 		} catch (error) {
 			this.$notify.error({
@@ -135,7 +130,6 @@ export default {
 	},
 	methods: {
 		getVoucherRankings(index = null, ev = null) {
-			// eslint-disable-next-line no-unused-vars
 			index === 0 ? this.openRaking = true : false
 			getSCBusinessCount(this.querList).then((res) => {
 				// console.log(res)

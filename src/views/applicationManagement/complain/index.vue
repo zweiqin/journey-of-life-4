@@ -78,13 +78,6 @@
 						>
 							回复
 						</el-button>
-						<!-- <el-button
-							v-if="scope.row.finalHandleStatus < 1"
-							type="danger"
-							@click="passComplain(scope.row)"
-							>
-							拒绝
-							</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>
@@ -139,10 +132,8 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { getListData, complaintReview } from '@/api/applicationManagement/complain'
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'Complain',
 	data() {
 		return {

@@ -92,7 +92,7 @@
 
 <script>
 import { listIssue, createIssue, updateIssue, deleteIssue } from '@/api/business/issue'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Issue',

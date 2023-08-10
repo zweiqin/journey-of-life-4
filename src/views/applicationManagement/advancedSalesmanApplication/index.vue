@@ -2,38 +2,6 @@
 	<div class="app-container">
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<!-- <el-input
-				v-model="listQuery.username"
-				clearable
-				size="mini"
-				class="filter-item"
-				style="width: 200px;"
-				placeholder="请输入管理员名称"
-				/>
-				<el-button
-				v-permission="['GET /admin/admin/list']"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-search"
-				@click="handleFilter"
-				>查找</el-button> -->
-			<!-- <el-button
-				v-permission="['POST /admin/admin/create']"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-edit"
-				@click="handleCreate"
-				>添加</el-button> -->
-			<!-- <el-button
-				:loading="downloadLoading"
-				size="mini"
-				class="filter-item"
-				type="warning"
-				icon="el-icon-download"
-				@click="handleDownload"
-				>导出</el-button> -->
 		</div>
 
 		<!-- 查询结果 -->
@@ -50,21 +18,7 @@
 					}}
 				</template>
 			</el-table-column>
-			<!-- <el-table-column align="center" label="申请类型" prop="applicationType">
-				<template slot-scope="scope">
-				<el-tag>
-				{{
-				scope.row.applicationType == 1
-				? '普通业务员'
-				: scope.row.applicationType == 2
-				? '高级业务员'
-				: '其他'
-				}}
-				</el-tag>
-				</template>
-				</el-table-column> -->
 			<el-table-column align="center" label="申请时间" prop="createtime" />
-			<!-- <el-table-column align="center" label="更新时间" prop="updatetime" /> -->
 			<el-table-column align="center" label="状态" prop="status">
 				<template slot-scope="scope">
 					<el-tag>
@@ -131,26 +85,6 @@
 					>
 						退回
 					</el-button>
-					<!-- <el-button
-						v-permission="['POST /admin/applicationManagement/update']"
-						v-if="
-						scope.row.status == 5 ||
-						scope.row.status == 3 ||
-						scope.row.status == 2
-						? true
-						: false
-						"
-						type="success"
-						size="mini"
-						@click="sign(scope.row, '注册')"
-						>注册</el-button
-						> -->
-					<!-- <el-button
-						v-permission="['POST /admin/admin/delete']"
-						type="danger"
-						size="mini"
-						@click="handleDelete(scope.row)"
-						>删除</el-button> -->
 				</template>
 			</el-table-column>
 		</el-table>
@@ -192,9 +126,6 @@
 							: dialogFormitem.phone
 					}}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="系统账户头像">
-					<img v-if="dialogFormitem.avatar" :src="dialogFormitem.avatar" width="40" />
-					</el-descriptions-item> -->
 
 				<!-- 业务员信息 -->
 				<el-descriptions-item label="姓名">
@@ -241,40 +172,8 @@
 				>
 					退回
 				</el-button>
-				<!-- <el-button
-					v-if="
-					scope.row.status == 5 ||
-					scope.row.status == 3 ||
-					scope.row.status == 2
-					"
-					type="success"
-					@click="sign(dialogFormitem, '注册')"
-					>注册</el-button
-					> -->
 			</div>
 		</el-dialog>
-		<!-- <el-dialog
-			:visible.sync="dialogphoneFormVisible"
-			title="是否致电?"
-			>
-			<el-radio
-			v-model="radio"
-			:label="checked"
-			>否</el-radio>
-			<el-radio
-			v-model="radio"
-			:label="phonechecked"
-			>是</el-radio>
-			<div
-			slot="footer"
-			class="dialog-footer"
-			>
-			<el-button
-			type="success"
-			@click="updateData(dialogFormitem, radio, '审核通过')"
-			>确定</el-button>
-			</div>
-			</el-dialog> -->
 	</div>
 </template>
 
@@ -286,7 +185,7 @@ import {
 import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Admin',
@@ -357,7 +256,6 @@ export default {
 				]
 			},
 			downloadLoading: false,
-			// dialogFormitem: null,
 			dialogphoneFormVisible: false,
 			radio: 6
 		}
@@ -395,11 +293,6 @@ export default {
 				this.listQuery.applicationType
 			listGet(url, queryInfo)
 				.then((response) => {
-					// this.$message({
-					//   showClose: true,
-					//   message: '查询成功',
-					//   type: 'success'
-					// })
 					this.list = response.data.items
 					console.log(this.list)
 					this.total = response.data.total
@@ -444,60 +337,6 @@ export default {
 		uploadAvatar(response) {
 			this.dataForm.avatar = response.data.url
 		},
-		// handleCreate () {
-		//   this.resetForm()
-		//   this.dialogStatus = 'create'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
-		// createData () {
-		//   this.$refs['dataForm'].validate(valid => {
-		//     if (valid) {
-		//       var data = {}
-		//       data.dtsAdmin = this.dataForm
-		//       data.dtsSalesman = this.salesmanDataForm
-		//       listAdd(data)
-		//         .then(response => {
-		//           // this.list.unshift(response.data.dtsAdmin)
-		//           this.getList()
-		//           this.dialogFormVisible = false
-		//           this.$notify.success({
-		//             title: '成功',
-		//             message: '添加管理员成功'
-		//           })
-		//         })
-		//         .catch(response => {
-		//           this.$notify.error({
-		//             title: '失败',
-		//             message: response.data.errmsg
-		//           })
-		//         })
-		//     }
-		//   })
-		// },
-		// handleUpdate (row) {
-		//   idGet(row.username)
-		//     .then(response => {
-		//       this.resetForm()
-		//       this.dataForm = Object.assign({}, row)
-		//       if (response.data !== '未找到对应业务员') {
-		//         this.salesmanDataForm = response.data
-		//       }
-		//     })
-		//     .catch(response => {
-		//       this.$notify.error({
-		//         title: '失败',
-		//         message: response.data.errmsg
-		//       })
-		//     })
-		//   this.dialogStatus = 'update'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
 		checking(row) {
 			this.dialogFormitem = row
 			this.dialogFormVisible = true

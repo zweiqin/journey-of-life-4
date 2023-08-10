@@ -107,17 +107,14 @@
 
 <script>
 import { listAdd, listGet, idGet, listedit } from '@/api/configurationTable/userLevel'
-// import { roleOptions } from '@/api/business/role'
-import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Admin',
 	components: { Pagination },
 	data() {
 		return {
-			uploadPath,
 			list: null,
 			total: 0,
 			roleOptions: null,
@@ -158,21 +155,8 @@ export default {
 	},
 	created() {
 		this.getList()
-
-		// roleOptions()
-		//   .then(response => {
-		//     this.roleOptions = response.data
-		//   })
 	},
 	methods: {
-		formatRole(roleId) {
-			for (let i = 0; i < this.roleOptions.length; i++) {
-				if (roleId === this.roleOptions[i].value) {
-					return this.roleOptions[i].label
-				}
-			}
-			return ''
-		},
 		getList() {
 			this.listLoading = true
 			listGet(this.listQuery)
@@ -198,9 +182,6 @@ export default {
 				fatherId: 0
 			}
 		},
-		// uploadAvatar: function (response) {
-		//   this.dataForm.avatar = response.data.url
-		// },
 		handleCreate() {
 			this.resetForm()
 			this.dialogStatus = 'create'
@@ -214,7 +195,6 @@ export default {
 				if (valid) {
 					listAdd(this.dataForm)
 						.then((response) => {
-							// this.list.unshift(response.data.dtsAdmin)
 							this.getList()
 							this.dialogFormVisible = false
 							this.$notify.success({
@@ -313,32 +293,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
-}
-</style>

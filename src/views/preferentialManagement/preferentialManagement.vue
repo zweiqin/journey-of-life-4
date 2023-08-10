@@ -343,7 +343,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import {
 	SelectMerchantPreferential,
 	SelectUserPreferential,
@@ -353,8 +353,7 @@ import {
 	DeletePreferential
 } from '@/api/preferentialManagement'
 export default {
-	// eslint-disable-next-line vue/match-component-file-name, vue/component-definition-name-casing
-	name: 'preferentialManagement',
+	name: 'PreferentialManagement',
 	components: { Pagination },
 	data() {
 		return {

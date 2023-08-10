@@ -42,19 +42,6 @@
 						}}
 					</template>
 				</el-table-column>
-				<!-- <el-table-column align="center" label="申请类型" prop="applicationType">
-					<template slot-scope="scope">
-					<el-tag>
-					{{
-					scope.row.applicationType == 1
-					? '普通业务员'
-					: scope.row.applicationType == 2
-					? '高级业务员'
-					: '其他'
-					}}
-					</el-tag>
-					</template>
-					</el-table-column> -->
 				<el-table-column align="center" label="申请时间" prop="addTime" />
 				<el-table-column
 					align="center"
@@ -138,14 +125,13 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import {
 	getDtsAdminList,
 	getUserList
 } from '@/api/relationChain/administrativeBranch'
 export default {
-	// eslint-disable-next-line vue/component-definition-name-casing, vue/match-component-file-name
-	name: 'administrativeBranch',
+	name: 'AdministrativeBranch',
 	components: { Pagination },
 	data() {
 		return {

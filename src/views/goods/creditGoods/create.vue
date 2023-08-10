@@ -223,9 +223,6 @@ export default {
 			}
 		}
 	},
-	created() {
-
-	},
 
 	methods: {
 		handleCancel() {

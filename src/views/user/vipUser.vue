@@ -127,7 +127,7 @@
 
 <script>
 import { fetchList, approveAgency, detailApprove } from '@/api/business/vipUser'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'User',
@@ -191,7 +191,6 @@ export default {
 		},
 		handleApproveAgency(row) {
 			this.approveForm.userId = row.id
-
 			this.approveDialogVisible = true
 			this.$nextTick(() => {
 				this.$refs.approveForm.clearValidate()

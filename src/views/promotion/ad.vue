@@ -141,7 +141,7 @@
 import { listAd, createAd, updateAd, deleteAd } from '@/api/business/ad'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Ad',

@@ -107,10 +107,9 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getRedEnvelopeListData, getSmallRedList } from '@/api/marketingManagement/mapRedEnvelope'
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'MapRedEnvelope',
 	components: { Pagination },
 	data() {
@@ -130,24 +129,6 @@ export default {
 		}
 	},
 	created() {
-		// getRedEnvelopeListData().then((res) => {
-		// 	window.console.log(res)
-		// })
-		// 	.catch((err) => {
-		// 		window.console.log(err)
-		// 	})
-		// getSmallRedList({ redId: '2875041159792643963' }).then((res) => {
-		// 	window.console.log(res)
-		// })
-		// 	.catch((err) => {
-		// 		window.console.log(err)
-		// 	})
-		// getCouponList({ redId: '2875041159792643963' }).then((res) => {
-		// 	window.console.log(res)
-		// })
-		// 	.catch((err) => {
-		// 		window.console.log(err)
-		// 	})
 		this.getDataList()
 	},
 	methods: {

@@ -3,15 +3,33 @@
 
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<el-input v-model="listQuery.name" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入行政区域名称" />
-			<el-input v-model="listQuery.code" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入行政区域编码" />
+			<el-input
+				v-model="listQuery.name" clearable size="mini" class="filter-item"
+				style="width: 200px;"
+				placeholder="请输入行政区域名称"
+			/>
+			<el-input
+				v-model="listQuery.code" clearable size="mini" class="filter-item"
+				style="width: 200px;"
+				placeholder="请输入行政区域编码"
+			/>
 			<el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-			<el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
+			<el-button
+				:loading="downloadLoading" size="mini" class="filter-item" type="warning"
+				icon="el-icon-download"
+				@click="handleDownload"
+			>
+				导出
+			</el-button>
 		</div>
 
 		<!-- 查询结果 -->
 		<div v-tableHeight>
-			<el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row height="100%">
+			<el-table
+				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
+				border fit
+				highlight-current-row height="100%"
+			>
 
 				<el-table-column align="center" width="100px" label="区域ID" prop="id" sortable />
 
@@ -30,14 +48,17 @@
 			</el-table>
 		</div>
 
-		<Pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+		<Pagination
+			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+			@pagination="getList"
+		/>
 
 	</div>
 </template>
 
 <script>
 import { listRegion } from '@/api/business/region'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Region',

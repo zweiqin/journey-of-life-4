@@ -21,12 +21,6 @@
 					>
 						编辑
 					</el-button>
-					<!-- <el-button
-						v-permission="['POST /admin/admin/delete']"
-						type="danger"
-						size="mini"
-						@click="handleDelete(scope.row)"
-						>删除</el-button> -->
 				</template>
 			</el-table-column>
 		</el-table>
@@ -73,7 +67,7 @@
 <script>
 import { listGet, listEdit } from '@/api/configurationTable/coupon'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Coupon',
@@ -143,7 +137,6 @@ export default {
 			this.dialogStatus = 'update'
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
-				// 消除表单校验
 				this.$refs.dataForm.clearValidate()
 			})
 		},

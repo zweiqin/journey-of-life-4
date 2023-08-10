@@ -56,21 +56,16 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 	</div>
 </template>
 
 <script>
 import { listArticle, deleteArticle } from '@/api/business/article'
-import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'ArticleList',
-	components: { BackToTop, Pagination },
+	components: { Pagination },
 	data() {
 		return {
 			list: [],
@@ -131,24 +126,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-.table-expand {
-	font-size: 0;
-}
-
-.table-expand label {
-	width: 100px;
-	color: #99a9bf;
-}
-
-.table-expand .el-form-item {
-	margin-right: 0;
-	margin-bottom: 0;
-}
-
-.gallery {
-	width: 80px;
-	margin-right: 10px;
-}
-</style>

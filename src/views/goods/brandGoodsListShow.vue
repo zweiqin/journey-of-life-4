@@ -16,6 +16,13 @@
 			<el-select v-model="listQuery.goodType" size="mini" class="filter-item" clearable placeholder="请选择商品类型">
 				<el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
+			<el-select v-model="listQuery.approveStatus" size="mini" class="filter-item" clearable placeholder="请选择审批状态">
+				<el-option label="全部" value="" />
+				<el-option label="未提交" :value="4" />
+				<el-option label="待审批" :value="0" />
+				<el-option label="审批通过" :value="1" />
+				<el-option label="审批拒绝" :value="2" />
+			</el-select>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
 			<el-button
@@ -59,6 +66,14 @@
 			</el-table-column>
 
 			<el-table-column align="center" min-width="110" label="商品编号" prop="goodsSn" />
+
+			<el-table-column align="center" label="商品归属" prop="brandType">
+				<template slot-scope="scope">
+					<span v-if="scope.row.brandType === 0">商城商品</span>
+					<span v-else-if="scope.row.brandType === 1">本地生活商品</span>
+					<span v-else>--</span>
+				</template>
+			</el-table-column>
 
 			<el-table-column align="center" min-width="150" label="名称" prop="name" sortable />
 
@@ -115,8 +130,19 @@
 				</template>
 				</el-table-column> -->
 
-			<el-table-column align="center" label="操作" width="150" class-name="small-padding fixed-width">
+			<el-table-column align="center" label="审核状态" prop="approveStatus">
 				<template slot-scope="scope">
+					<el-tag v-if="scope.row.approveStatus === 4" type="info">未提交</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 0" type="warning">待审批</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 1" type="success">审批通过</el-tag>
+					<el-tag v-else-if="scope.row.approveStatus === 2" type="danger">审批拒绝</el-tag>
+					<div v-else>--</div>
+				</template>
+			</el-table-column>
+
+			<el-table-column align="center" label="操作" fixed="right" width="200" class-name="small-padding fixed-width">
+				<template slot-scope="scope">
+					<el-button :disabled="scope.row.approveStatus !== 0" type="warning" size="mini" @click="handleExamine(scope.row)">审核</el-button>
 					<el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
 					<el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
 				</template>
@@ -128,21 +154,39 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
+		<!-- 商品审核对话框 -->
+		<el-dialog title="商品审核" :visible.sync="dialogFormVisibleExamine" width="800px">
+			<el-form
+				ref="dataFormExamine" :rules="rulesExamine" :model="dataFormExamine" status-icon
+				label-position="left" label-width="80px"
+				style="width: 100%; padding:0 35px;"
+			>
+				<el-form-item label="审核状态" prop="status">
+					<el-select
+						v-model="dataFormExamine.status"
+						class="filter-item"
+					>
+						<el-option label="审批通过" :value="1" />
+						<el-option label="审批拒绝" :value="2" />
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="dialogFormVisibleExamine = false">取消</el-button>
+				<el-button type="primary" @click="confirmExamine">确定</el-button>
+			</div>
+		</el-dialog>
 
 	</div>
 </template>
 
 <script>
-import { listGoods, deleteGoods } from '@/api/business/goods'
-import BackToTop from '@/components/BackToTop'
+import { listGoods, deleteGoods, goodsApprove } from '@/api/business/goods'
 import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'BrandGoodsListShow',
-	components: { BackToTop, Pagination },
+	components: { Pagination },
 	data() {
 		return {
 			typeList: [{
@@ -165,11 +209,23 @@ export default {
 				cateId: undefined,
 				brandId: undefined,
 				sort: 'add_time',
-				order: 'desc'
+				order: 'desc',
+				approveStatus: ''
 			},
 			goodsDetail: '',
 			detailDialogVisible: false,
-			downloadLoading: false
+			downloadLoading: false,
+
+			// 商品审核对话框
+			dialogFormVisibleExamine: false,
+			dataFormExamine: {
+				gid: '',
+				status: ''
+			},
+			rulesExamine: {
+				id: [ { required: true, message: '审核商品ID不能为空', trigger: 'blur' } ],
+				status: [ { required: true, message: '审核状态不能为空', trigger: 'blur' } ]
+			}
 		}
 	},
 	created() {
@@ -195,22 +251,21 @@ export default {
 		},
 		handleFilter() {
 			this.listQuery.page = 1
-			console.log(this.listQuery)
 			this.getList()
 		},
 		handleCreate() {
-			this.$router.push({ name: 'goodsCreate', query: { lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
+			this.$router.push({ name: 'goodsCreate', query: { lastRouter: 'BrandGoodsListShow', brandId: this.listQuery.brandId } })
 		},
 
 		handleUpdate(row) {
-			this.$router.push({ name: 'goodsEdit', query: { id: row.id, lastRouter: 'brandListShow', brandId: this.listQuery.brandId } })
+			this.$router.push({ name: 'goodsEdit', query: { id: row.id, lastRouter: 'BrandGoodsListShow', brandId: this.listQuery.brandId } })
 		},
 		showDetail(detail) {
 			this.goodsDetail = detail
 			this.detailDialogVisible = true
 		},
 		handleDelete(row) {
-			deleteGoods(row).then((response) => {
+			deleteGoods(row).then((res) => {
 				this.$notify.success({
 					title: '成功',
 					message: '删除成功'
@@ -218,15 +273,54 @@ export default {
 				const index = this.list.indexOf(row)
 				this.list.splice(index, 1)
 			})
-				.catch((response) => {
+				.catch((err) => {
 					this.$notify.error({
 						title: '失败',
-						message: response.data.errmsg
+						message: err.data.errmsg
 					})
 				})
 		},
 		handleCancel() {
 			this.$router.push({ name: 'brandGoodsList' })
+		},
+
+		handleExamine(row) {
+			this.resetFormExamine()
+			this.dataFormExamine = Object.assign(this.dataFormExamine, {
+				gid: row.id || '',
+				status: ''
+			})
+			this.dialogFormVisibleExamine = true
+			this.$nextTick(() => {
+				this.$refs.dataFormExamine.clearValidate()
+			})
+		},
+		resetFormExamine() {
+			this.dataFormExamine = {
+				gid: '',
+				status: ''
+			}
+		},
+		confirmExamine() {
+			this.$refs.dataFormExamine.validate((valid) => {
+				if (valid) {
+					goodsApprove(this.dataFormExamine)
+						.then((res) => {
+							this.dialogFormVisibleExamine = false
+							this.$notify.success({
+								title: '成功',
+								message: '操作成功'
+							})
+							this.getList()
+						})
+						.catch((err) => {
+							this.$notify.error({
+								title: '操作失败',
+								message: err.data.errmsg
+							})
+						})
+				}
+			})
 		}
 	}
 }

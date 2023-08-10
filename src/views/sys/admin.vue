@@ -129,7 +129,7 @@ import { listAdmin, createAdmin, updateAdmin, deleteAdmin, detailAdmin } from '@
 import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Admin',

@@ -82,7 +82,7 @@
 <script>
 import { listComment, deleteComment } from '@/api/business/comment'
 import { replyComment } from '@/api/business/order'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Comment',

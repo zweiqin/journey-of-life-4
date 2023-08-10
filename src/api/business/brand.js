@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-// import requestWX from '@/utils/request2'
 
 export function listBrand(query) {
 	return request({

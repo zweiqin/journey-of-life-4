@@ -266,7 +266,7 @@ import { listBrand } from '@/api/business/brand'
 import { talentTaskList, talentTaskDelete, dtsTalentTaskList, dtsTalentTaskUpdateBox, dtsTalentTaskSubmitBox } from '@/api/marketingManagement/wiseManTask'
 import { uploadPath } from '@/api/business/storage'
 import { listSubRegion } from '@/api/business/region'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 
 export default {

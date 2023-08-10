@@ -42,12 +42,11 @@
 				border fit height="100%"
 				highlight-current-row
 			>
-
 				<el-table-column align="center" min-width="100" label="订单编号" prop="orderSn" sortable />
 
 				<el-table-column align="center" min-width="100px" label="用户ID" prop="userId" />
 
-				<el-table-column align="center" min-width="100px" label="订单状态" prop="orderStatus">
+				<el-table-column align="center" min-width="160px" label="订单状态" prop="orderStatus">
 					<template slot-scope="scope">
 						<el-tag>{{ scope.row.orderStatus | orderStatusFilter }}</el-tag>
 					</template>
@@ -125,7 +124,8 @@
 						<el-table-column align="center" label="货品图片" prop="picUrl">
 							<template slot-scope="scope">
 								<el-image
-									v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)" style="width:40px; height:40px" fit="cover"
+									v-if="scope.row.picUrl" :src="common.seamingImgUrl(scope.row.picUrl)"
+									style="width:40px; height:40px" fit="cover"
 									:preview-src-list="[ common.seamingImgUrl(scope.row.picUrl) ]"
 								/>
 								<span v-else>--</span>
@@ -201,8 +201,7 @@
 
 <script>
 import { listOrder, shipOrder, refundOrder, detailOrder, listShipChannel } from '@/api/business/order'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import checkPermission from '@/utils/permission' // 权限判断函数
+import Pagination from '@/components/Pagination'
 
 const statusMap = {
 	101: '未付款',
@@ -213,7 +212,11 @@ const statusMap = {
 	203: '已退款',
 	301: '已发货',
 	401: '用户收货',
-	402: '系统收货'
+	402: '系统收货',
+	403: '已核销',
+	404: '已过期',
+	405: '待核销（已付款）',
+	406: '待核销（未付款）'
 }
 
 export default {
@@ -265,12 +268,11 @@ export default {
 		this.getListShipChannel()
 	},
 	methods: {
-		checkPermission,
 		getList() {
 			this.listLoading = true
-			listOrder(this.listQuery).then((response) => {
-				this.list = response.data.items
-				this.total = response.data.total
+			listOrder(this.listQuery).then((res) => {
+				this.list = res.data.items
+				this.total = res.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -280,8 +282,8 @@ export default {
 				})
 		},
 		getListShipChannel() {
-			listShipChannel().then((response) => {
-				this.shipChannelList = response.data.shipChannelList
+			listShipChannel().then((res) => {
+				this.shipChannelList = res.data.shipChannelList
 			})
 		},
 		handleFilter() {
@@ -289,8 +291,8 @@ export default {
 			this.getList()
 		},
 		handleDetail(row) {
-			detailOrder(row.id).then((response) => {
-				this.orderDetail = response.data
+			detailOrder(row.id).then((res) => {
+				this.orderDetail = res.data
 			})
 			this.orderDialogVisible = true
 		},
@@ -307,7 +309,7 @@ export default {
 		confirmShip() {
 			this.$refs.shipForm.validate((valid) => {
 				if (valid) {
-					shipOrder(this.shipForm).then((response) => {
+					shipOrder(this.shipForm).then((res) => {
 						this.shipDialogVisible = false
 						this.$notify.success({
 							title: '成功',
@@ -315,10 +317,10 @@ export default {
 						})
 						this.getList()
 					})
-						.catch((response) => {
+						.catch((err) => {
 							this.$notify.error({
 								title: '失败',
-								message: response.data.errmsg
+								message: err.data.errmsg
 							})
 						})
 				}
@@ -336,7 +338,7 @@ export default {
 		confirmRefund() {
 			this.$refs.refundForm.validate((valid) => {
 				if (valid) {
-					refundOrder(this.refundForm).then((response) => {
+					refundOrder(this.refundForm).then((res) => {
 						this.refundDialogVisible = false
 						this.$notify.success({
 							title: '成功',
@@ -344,10 +346,10 @@ export default {
 						})
 						this.getList()
 					})
-						.catch((response) => {
+						.catch((err) => {
 							this.$notify.error({
 								title: '失败',
-								message: response.data.errmsg
+								message: err.data.errmsg
 							})
 						})
 				}

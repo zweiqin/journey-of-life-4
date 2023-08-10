@@ -55,3 +55,11 @@ export function getCatAndBrandCategory(brandId) {
 		params: { brandId }
 	})
 }
+
+export function goodsApprove(data) {
+	return request({
+		url: '/goods/approve',
+		method: 'post',
+		data
+	})
+}

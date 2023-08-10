@@ -6,7 +6,6 @@ const user = {
 		user: '',
 		status: '',
 		code: '',
-		token: getToken(),
 		name: '',
 		avatar: '',
 		userId: '',
@@ -23,9 +22,6 @@ const user = {
 	mutations: {
 		SET_CODE: (state, code) => {
 			state.code = code
-		},
-		SET_TOKEN: (state, token) => {
-			state.token = token
 		},
 		SET_INTRODUCTION: (state, introduction) => {
 			state.introduction = introduction
@@ -69,7 +65,6 @@ const user = {
 			return new Promise((resolve, reject) => {
 				loginByUsername(username, password, code, uuid).then((response) => {
 					const token = response.data
-					commit('SET_TOKEN', token)
 					setToken(token)
 					resolve()
 				})
@@ -82,16 +77,16 @@ const user = {
 		// 获取用户信息
 		GetUserInfo({ commit, state }) {
 			return new Promise((resolve, reject) => {
-				getUserInfo(state.token).then((response) => {
+				getUserInfo(getToken()).then((response) => {
 				// const response = { data: { data: {
 				// 	'roles': [
 				// 		'超级管理员'
 				// 	],
-				// 	'name': 'Tuanfeng',
+				// 	'name': 'xxx',
 				// 	'perms': [
 				// 		'*'
 				// 	],
-				// 	'avatar': 'http://bus.deyisoft.cn:11111/dts-admin-api/admin/storage/fetch/28frxec24ilpqbgq4fgy.png',
+				// 	'avatar': 'xxx/28frxec24ilpqbgq4fgy.png',
 				// 	'userId': null
 				// } } }
 					const data = response.data
@@ -120,7 +115,6 @@ const user = {
 		//   return new Promise((resolve, reject) => {
 		//     commit('SET_CODE', code)
 		//     loginByThirdparty(state.status, state.email, state.code).then(response => {
-		//       commit('SET_TOKEN', response.data.token)
 		//       setToken(response.data.token)
 		//       resolve()
 		//     }).catch(error => {
@@ -132,18 +126,13 @@ const user = {
 		// 登出
 		LogOut({ commit, state }) {
 			return new Promise((resolve, reject) => {
-				logout(state.token).then(() => {
-					commit('SET_TOKEN', '')
-					commit('SET_ROLES', [])
-					commit('SET_PERMS', [])
+				logout(state.token).then((res) => {
+					// commit('SET_ROLES', [])
+					// commit('SET_PERMS', [])
 					removeToken()
 					resolve()
 				})
 					.catch((error) => {
-						commit('SET_TOKEN', '')
-						commit('SET_ROLES', [])
-						commit('SET_PERMS', [])
-						removeToken()
 						reject(error)
 					})
 			})
@@ -152,18 +141,16 @@ const user = {
 		// 前端 登出
 		FedLogOut({ commit }) {
 			return new Promise((resolve) => {
-				commit('SET_TOKEN', '')
 				removeToken()
 				resolve()
 			})
 		},
 
 		// 动态修改权限
-		ChangeRoles({ commit, dispatch }, role) {
+		ChangeRoles({ commit, dispatch }, token) {
 			return new Promise((resolve) => {
-				commit('SET_TOKEN', role)
-				setToken(role)
-				getUserInfo(role).then((response) => {
+				setToken(token)
+				getUserInfo(token).then((response) => {
 					const data = response.data
 					commit('SET_ROLES', data.roles)
 					commit('SET_PERMS', data.perms)

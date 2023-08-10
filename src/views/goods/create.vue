@@ -4,6 +4,12 @@
 		<el-card class="box-card">
 			<h3>商品介绍</h3>
 			<el-form ref="goods" :rules="rules" :model="goods" status-icon label-width="150px">
+				<el-form-item v-if="goods.brandId != '1001079'" label="商品归属" prop="brandType">
+					<el-radio-group v-model="goods.brandType" @input="handleBrandTypeRadioChange">
+						<el-radio :label="0">商城商品</el-radio>
+						<el-radio :label="1">本地生活商品</el-radio>
+					</el-radio-group>
+				</el-form-item>
 				<el-form-item label="商品编号" prop="goodsSn">
 					<el-input v-model="goods.goodsSn" />
 				</el-form-item>
@@ -102,13 +108,13 @@
 
 				<el-form-item label="所属分类" prop="categoryId">
 					<el-cascader
-						:options="categoryList" :props="{ value: 'id', label: 'name' }" expand-trigger="hover"
-						@change="handleCategoryChange"
+						v-model="categoryIds" :options="categoryList" :props="{ value: 'id', label: 'name' }"
+						expand-trigger="hover" @change="handleCategoryChange"
 					/>
 				</el-form-item>
 
 				<el-form-item
-					v-show="!isBrand && $route.query.lastRouter !== 'brandListShow' && $route.query.lastRouter !== 'list'"
+					v-show="!isBrand && $route.query.lastRouter !== 'BrandGoodsListShow' && $route.query.lastRouter !== 'list'"
 					label="所属品牌商" prop="brandId"
 				>
 					<el-select v-model="goods.brandId">
@@ -354,218 +360,6 @@
 			</el-tabs>
 		</el-card>
 
-		<!-- <el-card class="box-card">
-			<h3>商品参数</h3>
-			<el-button
-			:plain="true"
-			type="primary"
-			@click="handleAttributeShow"
-			>添加</el-button>
-			<el-table :data="attributes">
-			<el-table-column
-			property="attribute"
-			label="商品参数名称"
-			/>
-			<el-table-column
-			property="value"
-			label="商品参数值"
-			/>
-			<el-table-column
-			align="center"
-			label="操作"
-			width="100"
-			class-name="small-padding fixed-width"
-			>
-			<template slot-scope="scope">
-			<el-button
-			type="danger"
-			size="mini"
-			@click="handleAttributeDelete(scope.row)"
-			>删除</el-button>
-			</template>
-			</el-table-column>
-			</el-table>
-
-			<el-dialog
-			:visible.sync="attributeVisiable"
-			title="设置商品参数"
-			>
-			<el-form
-			ref="attributeForm"
-			:model="attributeForm"
-			status-icon
-			label-position="left"
-			label-width="100px"
-			style="width: 400px; margin-left:50px;"
-			>
-			<el-form-item
-			label="商品参数名称"
-			prop="attribute"
-			>
-			<el-input v-model="attributeForm.attribute" />
-			</el-form-item>
-			<el-form-item
-			label="商品参数值"
-			prop="value"
-			>
-			<el-input v-model="attributeForm.value" />
-			</el-form-item>
-			</el-form>
-			<div
-			slot="footer"
-			class="dialog-footer"
-			>
-			<el-button @click="attributeVisiable = false">取消</el-button>
-			<el-button
-			type="primary"
-			@click="handleAttributeAdd"
-			>确定</el-button>
-			</div>
-			</el-dialog>
-			</el-card>
-
-			<el-card class="box-card">
-			<h3>优惠劵</h3>
-			<el-button
-			:plain="true"
-			type="primary"
-			@click="handleGoodsCouponsShow"
-			>添加</el-button>
-			<el-table :data="goodsCoupons">
-			<el-table-column
-			property="couponId"
-			label="优惠券id"
-			/>
-			<el-table-column
-			property="buyNumber"
-			label="需购物数"
-			/>
-			<el-table-column
-			property="type"
-			label="赠送类型"
-			>
-			<template slot-scope="scope">
-			{{ goodsCouponsTypeList[scope.row.type] ? goodsCouponsTypeList[scope.row.type].label : '' }}
-			</template>
-			</el-table-column>
-			<el-table-column
-			property="isTimeBox"
-			label="是否有时限"
-			>
-			<template slot-scope="scope">
-			{{ scope.row.isTimeBox ? '是' : '否' }}
-			</template>
-			</el-table-column>
-			<el-table-column
-			property="startTime"
-			label="活动开始时间"
-			/>
-			<el-table-column
-			property="endTime"
-			label="活动结束时间"
-			/>
-			<el-table-column
-			align="center"
-			label="操作"
-			width="100"
-			class-name="small-padding fixed-width"
-			>
-			<template slot-scope="scope">
-			<el-button
-			type="danger"
-			size="mini"
-			@click="handleGoodsCouponsDelete(scope.row)"
-			>删除</el-button>
-			</template>
-			</el-table-column>
-			</el-table>
-
-			<el-dialog
-			:visible.sync="goodsCouponsVisiable"
-			title="设置优惠劵"
-			>
-			<el-form
-			ref="goodsCouponsForm"
-			:model="goodsCouponsForm"
-			status-icon
-			label-position="left"
-			label-width="100px"
-			style="width: 400px; margin-left:50px;"
-			>
-			<el-form-item
-			label="优惠券"
-			prop="couponId"
-			>
-			<el-select
-			v-model="goodsCouponsForm.couponId"
-			class="filter-item"
-			>
-			<el-option
-			v-for="item in goodsCouponsList"
-			:key="item.value"
-			:label="item.label"
-			:value="item.value"
-			/>
-			</el-select>
-			</el-form-item>
-			<el-form-item
-			label="需购物数"
-			prop="buyNumber"
-			>
-			<el-input v-model="goodsCouponsForm.buyNumber" />
-			</el-form-item>
-			<el-form-item
-			label="赠送类型"
-			prop="type"
-			>
-			<el-select
-			v-model="goodsCouponsForm.type"
-			class="filter-item"
-			>
-			<el-option
-			v-for="item in goodsCouponsTypeList"
-			:key="item.value"
-			:label="item.label"
-			:value="item.value"
-			/>
-			</el-select>
-			</el-form-item>
-			<el-form-item
-			label="是否有时限"
-			prop="isTimeBox"
-			>
-			<el-radio-group v-model="goodsCouponsForm.isTimeBox">
-			<el-radio :label="true">是</el-radio>
-			<el-radio :label="false">否</el-radio>
-			</el-radio-group>
-			</el-form-item>
-			<el-form-item
-			v-show="goodsCouponsForm.isTimeBox"
-			label="活动时间"
-			prop="time"
-			>
-			<el-date-picker
-			v-model="goodsCouponsForm.time"
-			value-format="yyyy-MM-dd HH:mm:ss"
-			type="daterange"
-			range-separator="至"
-			start-placeholder="开始日期"
-			end-placeholder="结束日期"/>
-			</el-form-item>
-			</el-form>
-			<div
-			slot="footer"
-			class="dialog-footer"
-			>
-			<el-button @click="goodsCouponsVisiable = false">取消</el-button>
-			<el-button
-			type="primary"
-			@click="handleGoodsCouponsAdd"
-			>确定</el-button>
-			</div>
-			</el-dialog>
-			</el-card> -->
-
 		<div class="op-container">
 			<el-button @click="handleCancel">取消</el-button>
 			<el-button type="primary" @click="handlePublish">上架</el-button>
@@ -597,7 +391,8 @@ export default {
 			keywords: [],
 			categoryList: [],
 			brandList: [],
-			goods: { picUrl: '', gallery: [], supportVoucher: undefined, brandId: '', timeType: 1, categoryId: '' },
+			categoryIds: [],
+			goods: { brandType: '', brandId: '', picUrl: '', gallery: [], supportVoucher: undefined, timeType: 1, categoryId: '' },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			multipleSpec: false,
@@ -647,50 +442,70 @@ export default {
 				.catch()
 		},
 		init() {
-			if (this.$route.query.lastRouter === 'brandListShow' || this.$route.query.lastRouter === 'list') {
+			if (this.$route.query.lastRouter === 'BrandGoodsListShow' || this.$route.query.lastRouter === 'list') {
 				this.goods.brandId = this.$route.query.brandId
-				getCatAndBrandCategory(this.goods.brandId).then((response) => {
-					XeUtils.eachTree(response.data.categoryList, (item) => {
-						if (Array.isArray(item.children) && item.children.length === 0) {
-							item.children = undefined
-						}
-					})
-					this.categoryList = response.data.categoryList
-				})
-				listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
-					this.goodsCouponsList = response.data.items.map((item) => ({
-						value: item.id,
-						label: item.name,
-						startTime: item.startTime,
-						endTime: item.endTime
-					}))
-				})
-			} else {
-				getCatAndBrandCategory().then((response) => {
-					XeUtils.eachTree(response.data.categoryList, (item) => {
-						if (Array.isArray(item.children) && item.children.length === 0) {
-							item.children = undefined
-						}
-					})
-					this.categoryList = response.data.categoryList
-				})
-				listCoupon({ type: 3, status: 0 }).then((response) => {
-					this.goodsCouponsList = response.data.items.map((item) => ({
-						value: item.id,
-						label: item.name,
-						startTime: item.startTime,
-						endTime: item.endTime
-					}))
-				})
+				if (this.goods.brandId == '1001079') {
+					this.goods.brandType = 0
+				} else {
+					this.goods.brandType = 1
+					this.rules = { ...this.rules, brandType: [ { required: true, message: '商品归属不能为空', trigger: 'change' } ] }
+				}
+				this.handleBrandTypeRadioChange(this.goods.brandType)
 			}
+		},
+		handleBrandTypeRadioChange(value) {
+			console.log(value)
+			this.categoryIds = []
+			this.$nextTick(() => {
+				this.categoryList = []
+				this.goods.categoryId = ''
+				this.goodsCouponsList = []
+				this.goodsCoupons = []
+				this.goodsCouponsForm = { couponId: '', buyNumber: '', type: '', isTimeBox: '', time: '', startTime: '', endTime: '' }
+				if (this.goods.brandType === 0) {
+					getCatAndBrandCategory(1001079).then((response) => {
+						XeUtils.eachTree(response.data.categoryList, (item) => {
+							if (Array.isArray(item.children) && item.children.length === 0) {
+								item.children = undefined
+							}
+						})
+						this.categoryList = response.data.categoryList
+					})
+					listCoupon({ brandId: 1001079, type: 3, status: 0 }).then((response) => {
+						this.goodsCouponsList = response.data.items.map((item) => ({
+							value: item.id,
+							label: item.name,
+							startTime: item.startTime,
+							endTime: item.endTime
+						}))
+					})
+				} else if (this.goods.brandType === 1) {
+					getCatAndBrandCategory(this.goods.brandId).then((response) => {
+						XeUtils.eachTree(response.data.categoryList, (item) => {
+							if (Array.isArray(item.children) && item.children.length === 0) {
+								item.children = undefined
+							}
+						})
+						this.categoryList = response.data.categoryList
+					})
+					listCoupon({ brandId: this.goods.brandId, type: 3, status: 0 }).then((response) => {
+						this.goodsCouponsList = response.data.items.map((item) => ({
+							value: item.id,
+							label: item.name,
+							startTime: item.startTime,
+							endTime: item.endTime
+						}))
+					})
+				}
+			})
 		},
 		handleCategoryChange(value) {
 			console.log(value)
 			this.goods.categoryId = value[value.length - 1]
 		},
 		handleCancel() {
-			if (this.$route.query.lastRouter === 'brandListShow') {
-				this.$router.push({ name: 'brandGoodsListShow', query: { id: this.$route.query.brandId } })
+			if (this.$route.query.lastRouter === 'BrandGoodsListShow') {
+				this.$router.push({ name: 'BrandGoodsListShow', query: { id: this.$route.query.brandId } })
 			} else {
 				this.$router.push({ name: 'goodsList' })
 			}
@@ -711,8 +526,8 @@ export default {
 							title: '成功',
 							message: '创建成功'
 						})
-						if (this.$route.query.lastRouter === 'brandListShow') {
-							this.$router.push({ name: 'brandGoodsListShow', query: { id: this.$route.query.brandId } })
+						if (this.$route.query.lastRouter === 'BrandGoodsListShow') {
+							this.$router.push({ name: 'BrandGoodsListShow', query: { id: this.$route.query.brandId } })
 						} else {
 							this.$router.push({ name: 'goodsList' })
 						}
@@ -912,7 +727,7 @@ export default {
 			this.attributes.splice(index, 1)
 		},
 		handleGoodsCouponsShow() {
-			this.goodsCouponsForm = {}
+			this.goodsCouponsForm = { couponId: '', buyNumber: '', type: '', isTimeBox: '', time: '', startTime: '', endTime: '' }
 			this.goodsCouponsVisiable = true
 		},
 		handleGoodsCouponsAdd() {

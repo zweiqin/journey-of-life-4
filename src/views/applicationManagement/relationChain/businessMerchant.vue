@@ -35,19 +35,6 @@
 						}}
 					</template>
 				</el-table-column>
-				<!-- <el-table-column align="center" label="申请类型" prop="applicationType">
-					<template slot-scope="scope">
-					<el-tag>
-					{{
-					scope.row.applicationType == 1
-					? '普通业务员'
-					: scope.row.applicationType == 2
-					? '高级业务员'
-					: '其他'
-					}}
-					</el-tag>
-					</template>
-					</el-table-column> -->
 				<el-table-column align="center" label="申请时间" prop="addTime" />
 				<el-table-column
 					align="center"
@@ -91,8 +78,7 @@ import {
 	getBusinessList
 } from '@/api/relationChain/businessList'
 export default {
-	// eslint-disable-next-line vue/component-definition-name-casing, vue/match-component-file-name
-	name: 'administrativeBranch',
+	name: 'AdministrativeBranch',
 	data() {
 		return {
 			list: [],

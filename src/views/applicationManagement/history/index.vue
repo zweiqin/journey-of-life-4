@@ -29,14 +29,6 @@
 				查找
 			</el-button>
 			<!-- <el-button
-				v-permission="['POST /admin/admin/create']"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-edit"
-				@click="handleCreate"
-				>添加</el-button> -->
-			<!-- <el-button
 				:loading="downloadLoading"
 				size="mini"
 				class="filter-item"
@@ -297,13 +289,12 @@
 import { listGet } from '@/api/applicationManagement/history'
 import { listDtsStoreType } from '@/api/business/brand'
 import { roleOptions } from '@/api/business/role'
-import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import XeUtils from 'xe-utils'
 
 export default {
-	name: 'Admin',
+	name: 'History',
 	components: { Pagination },
 	data() {
 		return {
@@ -315,7 +306,6 @@ export default {
 			rollback: 2,
 			// 查看的当前信息
 			checkInfo: null,
-			uploadPath,
 			list: null,
 			total: 0,
 			roleOptions: null,
@@ -496,63 +486,6 @@ export default {
 				adminId: undefined
 			}
 		},
-		uploadAvatar(response) {
-			this.dataForm.avatar = response.data.url
-		},
-		// handleCreate () {
-		//   this.resetForm()
-		//   this.dialogStatus = 'create'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
-		// createData () {
-		//   this.$refs['dataForm'].validate(valid => {
-		//     if (valid) {
-		//       var data = {}
-		//       data.dtsAdmin = this.dataForm
-		//       data.dtsSalesman = this.salesmanDataForm
-		//       listAdd(data)
-		//         .then(response => {
-		//           // this.list.unshift(response.data.dtsAdmin)
-		//           this.getList()
-		//           this.dialogFormVisible = false
-		//           this.$notify.success({
-		//             title: '成功',
-		//             message: '添加管理员成功'
-		//           })
-		//         })
-		//         .catch(response => {
-		//           this.$notify.error({
-		//             title: '失败',
-		//             message: response.data.errmsg
-		//           })
-		//         })
-		//     }
-		//   })
-		// },
-		// handleUpdate (row) {
-		//   idGet(row.username)
-		//     .then(response => {
-		//       this.resetForm()
-		//       this.dataForm = Object.assign({}, row)
-		//       if (response.data !== '未找到对应业务员') {
-		//         this.salesmanDataForm = response.data
-		//       }
-		//     })
-		//     .catch(response => {
-		//       this.$notify.error({
-		//         title: '失败',
-		//         message: response.data.errmsg
-		//       })
-		//     })
-		//   this.dialogStatus = 'update'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
 		checking(row) {
 			// const StoreType = this.TypeOptions.find((p) => p.id === row.brandgenre)
 			// row.brandgenreval = StoreType === undefined ? '' : StoreType.storeName
@@ -609,32 +542,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
-}
-</style>

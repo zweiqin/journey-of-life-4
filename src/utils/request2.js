@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-	baseURL: process.env.BASE_WXAPI, // api 的 base_url
+	baseURL: process.env.BASE_API, // api 的 base_url
 	timeout: 5000 // request timeout
 })
 
@@ -13,7 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		// Do something before request is sent
-		if (store.getters.token) {
+		if (getToken()) {
 			// 让每个请求携带token-- ['X-Dts-Admin-Token']为自定义key 请根据实际情况自行修改
 			config.headers['X-Dts-Admin-Token'] = getToken()
 		}

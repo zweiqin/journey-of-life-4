@@ -88,10 +88,6 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 		<!-- 添加或修改对话框 -->
 		<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
 			<el-form
@@ -157,14 +153,13 @@
 <script>
 import { listTopic, createTopic, updateTopic, deleteTopic } from '@/api/business/topic'
 import { uploadPath } from '@/api/business/storage'
-import BackToTop from '@/components/BackToTop'
 import Editor from '@tinymce/tinymce-vue'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 
 export default {
 	name: 'Topic',
-	components: { BackToTop, Editor, Pagination },
+	components: { Editor, Pagination },
 	data() {
 		return {
 			uploadPath,

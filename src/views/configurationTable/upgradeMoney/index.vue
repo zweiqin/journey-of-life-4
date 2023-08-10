@@ -111,10 +111,9 @@
 
 <script>
 import { listAdd, listDelete, listGet, idGet, listedit } from '@/api/configurationTable/upgradeMoney'
-// import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Admin',
@@ -124,7 +123,6 @@ export default {
 			uploadPath,
 			list: null,
 			total: 0,
-			roleOptions: null,
 			listLoading: true,
 			listQuery: {
 				levelId: undefined,
@@ -166,21 +164,8 @@ export default {
 	},
 	created() {
 		this.getList()
-
-		// roleOptions()
-		//   .then(response => {
-		//     this.roleOptions = response.data
-		//   })
 	},
 	methods: {
-		formatRole(roleId) {
-			for (let i = 0; i < this.roleOptions.length; i++) {
-				if (roleId === this.roleOptions[i].value) {
-					return this.roleOptions[i].label
-				}
-			}
-			return ''
-		},
 		getList() {
 			this.listLoading = true
 			listGet(this.listQuery)

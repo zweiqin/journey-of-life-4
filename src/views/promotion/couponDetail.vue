@@ -83,7 +83,7 @@
 
 <script>
 import { readCoupon, listCouponUser } from '@/api/business/coupon'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 const defaultTypeOptions = [
 	{

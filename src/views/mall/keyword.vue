@@ -122,7 +122,7 @@
 
 <script>
 import { listKeyword, createKeyword, updateKeyword, deleteKeyword } from '@/api/business/keyword'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Keyword',

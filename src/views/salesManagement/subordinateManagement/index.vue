@@ -22,14 +22,6 @@
 			>
 				查找
 			</el-button>
-			<!-- <el-button
-				v-permission="['POST /admin/pricesView/add']"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-edit"
-				@click="handleCreate"
-				>添加</el-button> -->
 			<!-- <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button> -->
 		</div>
 
@@ -81,42 +73,7 @@
 			<el-table-column align="center" min-width="100px" label="抽佣比例" prop="commissionRate" />
 
 			<el-table-column align="center" min-width="100px" label="所属会员ID" prop="userId" />
-			<!-- <el-table-column
-				align="center"
-				min-width="100px"
-				property="picUrl"
-				label="材料图片"
-				>
-				<template slot-scope="scope">
-				<img
-				v-if="scope.row.picUrl"
-				:src="common.seamingImgUrl(scope.row.picUrl)"
-				width="80"
-				>
-				</template>
-				</el-table-column> -->
 
-			<!-- <el-table-column
-				align="center"
-				label="操作"
-				min-width="200"
-				class-name="small-padding fixed-width"
-				>
-				<template slot-scope="scope">
-				<el-button
-				v-permission="['POST /admin/pricesView/update']"
-				type="primary"
-				size="mini"
-				@click="handleUpdate(scope.row)"
-				>编辑</el-button>
-				<el-button
-				v-permission="['POST /admin/pricesView/delete']"
-				type="danger"
-				size="mini"
-				@click="handleDelete(scope.row)"
-				>删除</el-button>
-				</template>
-				</el-table-column> -->
 		</el-table>
 
 		<Pagination
@@ -133,7 +90,6 @@
 			>
 				<el-form-item v-if="dialogStatus !== 'create'" label="ID" prop="id">
 					{{ dataForm.id }}
-					<!-- <el-input v-model="dataForm.id" /> -->
 				</el-form-item>
 
 				<el-form-item label="类名" prop="materialsCategory">
@@ -181,10 +137,9 @@
 
 <script>
 import { listGet } from '@/api/salesManagement/subordinateManagement'
-import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'SubordinateManagement',
@@ -192,7 +147,6 @@ export default {
 	data() {
 		return {
 			TypeOptions: [],
-			uploadPath,
 			list: undefined,
 			total: 0,
 			categoryList: [],
@@ -277,9 +231,6 @@ export default {
 	created() {
 		this.getRoles()
 	},
-	mounted() {
-
-	},
 	methods: {
 		getRoles() {
 			getUserInfo(getToken())
@@ -292,7 +243,6 @@ export default {
 			this.listLoading = true
 			listGet(this.listQuery)
 				.then((response) => {
-					// console.log(response.data.items)
 					this.list = response.data.items
 					this.total = response.data.total
 					this.listLoading = false
@@ -306,156 +256,7 @@ export default {
 		handleFilter() {
 			this.listQuery.page = 1
 			this.getList()
-		},
-		resetForm() {
-			this.dataForm = {
-				id: undefined,
-				brandId: undefined,
-				adminId: undefined,
-				bid: undefined,
-				name: undefined,
-				username: undefined,
-				password: null,
-				avatar: undefined,
-				gender: undefined,
-				phone: undefined,
-				entryDate: undefined,
-				leaveDate: undefined,
-				status: undefined,
-				type: undefined,
-				address: undefined,
-				idcardProsUrl: undefined,
-				idcardConsUrl: undefined,
-				desc: undefined,
-				userId: undefined,
-				commissionRate: undefined,
-				nickname: undefined
-			}
-		},
-		handleCreate() {
-			this.resetForm()
-			this.dialogStatus = 'create'
-			this.dialogFormVisible = true
-			this.$nextTick(() => {
-				this.$refs.dataForm.clearValidate()
-			})
-		},
-		uploadPicUrl(response) {
-			this.dataForm.picUrl = response.data.url
-		},
-		uploadLicenseUrl(response) {
-			this.dataForm.licenseUrl = response.data.url
-		},
-		uploadIdcardProsUrl(response) {
-			this.dataForm.idcardProsUrl = response.data.url
-		},
-		uploadIdcardConsUrl(response) {
-			this.dataForm.idcardConsUrl = response.data.url
-		},
-		createData() {
-			this.$refs.dataForm.validate((valid) => {
-				if (valid) {
-					// listAdd(this.dataForm)
-					//   .then(response => {
-					//     this.list.unshift(response.data)
-					//     this.dialogFormVisible = false
-					//     this.$notify.success({
-					//       title: '成功',
-					//       message: '创建成功'
-					//     })
-					//     this.getList()
-					//   })
-					//   .catch(response => {
-					//     this.$notify.error({
-					//       title: '失败',
-					//       message: response.data.errmsg
-					//     })
-					//   })
-				}
-			})
-		},
-		handleUpdate(row) {
-			this.dataForm = Object.assign({}, row)
-			this.dialogStatus = 'update'
-			this.dialogFormVisible = true
-			this.$nextTick(() => {
-				this.$refs.dataForm.clearValidate()
-			})
-		},
-		updateData() {
-			this.$refs.dataForm.validate((valid) => {
-				if (valid) {
-					// listUpdate(this.dataForm)
-					//   .then(() => {
-					//     for (const v of this.list) {
-					//       if (v.id === this.dataForm.id) {
-					//         const index = this.list.indexOf(v)
-					//         this.list.splice(index, 1, this.dataForm)
-					//         break
-					//       }
-					//     }
-					//     this.dialogFormVisible = false
-					//     this.$notify.success({
-					//       title: '成功',
-					//       message: '更新成功'
-					//     })
-					//     this.getList()
-					//   })
-					//   .catch(response => {
-					//     this.$notify.error({
-					//       title: '失败',
-					//       message: response.data.errmsg
-					//     })
-					//   })
-				}
-			})
-		},
-		handleDelete(row) {
-			// listDelete(row)
-			//   .then(response => {
-			//     this.$notify.success({
-			//       title: '成功',
-			//       message: '删除成功'
-			//     })
-			//     const index = this.list.indexOf(row)
-			//     this.list.splice(index, 1)
-			//   })
-			//   .catch(response => {
-			//     this.$notify.error({
-			//       title: '失败',
-			//       message: response.data.errmsg
-			//     })
-			//   })
 		}
 	}
 }
 </script>
-
-<style scoped>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
-}
-</style>

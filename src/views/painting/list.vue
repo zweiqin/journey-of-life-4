@@ -3,7 +3,6 @@
 
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<!-- <el-input v-model="listQuery.paint_id" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入画册编号" /> -->
 			<el-input
 				v-model="listQuery.paint_title" clearable size="mini" class="filter-item"
 				style="width: 200px;"
@@ -122,22 +121,17 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 	</div>
 </template>
 
 <script>
 import { listGet, listDelete } from '@/api/painting/painting'
 import { listGetPicture, listDeletePicture } from '@/api/painting/picture'
-import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
-	name: 'GoodsList',
-	components: { BackToTop, Pagination },
+	name: 'PaintingList',
+	components: { Pagination },
 	data() {
 		return {
 			lookingPicture: '',
@@ -272,39 +266,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.el-dialog {
-	width: 60%;
-}
-
-.table-expand {
-	font-size: 0;
-}
-
-.table-expand label {
-	width: 100px;
-	color: #99a9bf;
-}
-
-.table-expand .el-form-item {
-	margin-right: 0;
-	margin-bottom: 0;
-}
-
-.gallery {
-	width: 80px;
-	margin-right: 10px;
-}
-
-.TXBJW {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.app-container>>>.el-table__expanded-cell {
-	padding: 0;
-}
-</style>

@@ -235,10 +235,8 @@
 </template>
 
 <script>
-// 获取token
 import { getToken } from '@/utils/auth'
-// 分页选择器
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import {
 	listGet,
 	listCreate,
@@ -250,10 +248,8 @@ import {
 	listImageUpdate,
 	listImageDelete
 } from '@/api/painting/painting'
-// Secondary package based on el-pagination
 
 export default {
-	// eslint-disable-next-line vue/match-component-file-name
 	name: 'NewList',
 	components: { Pagination },
 	data() {
@@ -636,41 +632,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .app-container {
-	.el-dialog {
-		width: 60%;
-	}
-
-	.table-expand {
-		font-size: 0;
-	}
-
-	.table-expand label {
-		width: 100px;
-		color: #99a9bf;
-	}
-
-	.table-expand .el-form-item {
-		margin-right: 0;
-		margin-bottom: 0;
-	}
-
-	.gallery {
-		width: 80px;
-		margin-right: 10px;
-	}
-
-	.TXBJW {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.app-container>>>.el-table__expanded-cell {
-		padding: 0;
-	}
-}
 
 /deep/ .avatar-uploader {
 	.el-upload {

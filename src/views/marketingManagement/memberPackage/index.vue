@@ -212,7 +212,7 @@
 import { packageMemberList, packageMemberAdd, packageMemberUpdate, packageMemberDelete, packageServiceList, packageServiceAdd, packageServiceUpdate, packageServiceDelete } from '@/api/marketingManagement/memberPackage'
 import { listRole } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 
 export default {

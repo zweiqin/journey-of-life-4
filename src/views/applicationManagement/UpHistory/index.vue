@@ -6,31 +6,6 @@
 				v-model="listqueryInfo.userId" clearable size="mini" class="filter-item"
 				style="width: 200px; margin-right: 10px; margin-bottom: 0px" placeholder="请输入完整的申请人Id"
 			/>
-			<!-- <el-select
-				v-model="listqueryInfo.applicationType"
-				size="mini"
-				placeholder="请选择申请类型"
-				style="margin-right: 10px"
-				>
-				<el-option
-				v-for="item in applicationTypeoptions"
-				:key="item.value"
-				:label="item.label"
-				:value="item.value"
-				/>
-				</el-select> -->
-			<!-- <el-select
-				v-model="value"
-				size="mini"
-				placeholder="请选择工单状态"
-				>
-				<el-option
-				v-for="item in options"
-				:key="item.value"
-				:label="item.label"
-				:value="item.value"
-				/>
-				</el-select> -->
 			<el-button
 				size="mini" class="filter-item" type="primary" icon="el-icon-search"
 				style="margin-bottom: 0px"
@@ -38,14 +13,6 @@
 			>
 				查找
 			</el-button>
-			<!-- <el-button
-				v-permission="['POST /admin/admin/create']"
-				size="mini"
-				class="filter-item"
-				type="primary"
-				icon="el-icon-edit"
-				@click="handleCreate"
-				>添加</el-button> -->
 			<!-- <el-button
 				:loading="downloadLoading"
 				size="mini"
@@ -278,7 +245,7 @@ import { listDtsStoreType } from '@/api/business/brand'
 import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import XeUtils from 'xe-utils'
 
 export default {
@@ -475,109 +442,11 @@ export default {
 		uploadAvatar(response) {
 			this.dataForm.avatar = response.data.url
 		},
-		// handleCreate () {
-		//   this.resetForm()
-		//   this.dialogStatus = 'create'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
-		// createData () {
-		//   this.$refs['dataForm'].validate(valid => {
-		//     if (valid) {
-		//       var data = {}
-		//       data.dtsAdmin = this.dataForm
-		//       data.dtsSalesman = this.salesmanDataForm
-		//       listAdd(data)
-		//         .then(response => {
-		//           // this.list.unshift(response.dat.dtsAdmin)
-		//           this.getList()
-		//           this.dialogFormVisible = false
-		//           this.$notify.success({
-		//             title: '成功',
-		//             message: '添加管理员成功'
-		//           })
-		//         })
-		//         .catch(response => {
-		//           this.$notify.error({
-		//             title: '失败',
-		//             message: response.data.errmsg
-		//           })
-		//         })
-		//     }
-		//   })
-		// },
-		// handleUpdate (row) {
-		//   idGet(row.username)
-		//     .then(response => {
-		//       this.resetForm()
-		//       this.dataForm = Object.assign({}, row)
-		//       if (response.data !== '未找到对应业务员') {
-		//         this.salesmanDataForm = response.data
-		//       }
-		//     })
-		//     .catch(response => {
-		//       this.$notify.error({
-		//         title: '失败',
-		//         message: response.data.errmsg
-		//       })
-		//     })
-		//   this.dialogStatus = 'update'
-		//   this.dialogFormVisible = true
-		//   this.$nextTick(() => {
-		//     this.$refs['dataForm'].clearValidate()
-		//   })
-		// },
 		checking(row) {
 			this.dialogFormVisible = true
 			this.scope.row = row
 			this.checkInfo = row
 		},
-		// updateData (row, status) {
-		//   listedit({
-		//     'id': row.id,
-		//     'stateEnum': status
-		//   }).then(response => {
-		//     this.getList()
-		//   }).catch(response => {
-		//     this.$notify.error({
-		//       title: '失败',
-		//       message: response.data.errmsg
-		//     })
-		//   })
-		// }
-		// handleDelete (row) {
-		//   // deleteAdmin(row)
-		//   //   .then(response => {
-		//   //     this.$notify.success({
-		//   //       title: '成功',
-		//   //       message: '删除管理员成功'
-		//   //     })
-		//   //     const index = this.list.indexOf(row)
-		//   //     this.list.splice(index, 1)
-		//   //   })
-		//   //   .catch(response => {
-		//   //     this.$notify.error({
-		//   //       title: '失败',
-		//   //       message: response.data.errmsg
-		//   //     })
-		//   //   })
-		// }
-		// handleDownload () {
-		//   this.downloadLoading = true
-		//   import('@/vendor/Export2Excel').then(excel => {
-		//     const tHeader = ['管理员ID', '管理员名称', '管理员头像']
-		//     const filterVal = ['id', 'username', 'avatar']
-		//     excel.export_json_to_excel2(
-		//       tHeader,
-		//       this.list,
-		//       filterVal,
-		//       '管理员信息'
-		//     )
-		//     this.downloadLoading = false
-		//   })
-		// }
 		expandchange(item) {
 			// const StoreType = this.listStoreType.find((p) => p.id === item.userUpgradeInfo.brandgenre)
 			// item.userUpgradeInfo.brandgenreval = StoreType === undefined ? '' : StoreType.storeName

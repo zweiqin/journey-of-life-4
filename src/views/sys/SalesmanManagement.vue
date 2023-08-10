@@ -143,7 +143,6 @@
 				</el-form-item>
 
 				<el-form-item align="left" label="地区" prop="areaname">
-					<!-- <el-input v-model="dataForm.areaname" /> -->
 					<el-cascader v-model="selectedAreaOptions" :options="areaOptions" size="large" @change="handleChange" />
 				</el-form-item>
 
@@ -195,7 +194,7 @@ import { listAdd, listDelete, listGet, listedit, listGetAdminId } from '@/api/sy
 import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
 
 export default {
@@ -454,12 +453,10 @@ export default {
 			if (row.type != null) {
 				this.selectType = row.type
 			}
-
 			this.dataForm = Object.assign({}, row)
 			if (this.dataForm.areaname != null) {
 				this.selectedAreaOptions = TextToCode[this.dataForm.areaname.split('/')[0]][this.dataForm.areaname.split('/')[1]][this.dataForm.areaname.split('/')[2]].code
 			}
-
 			// if (this.dataForm.adminId != null) {
 			//   this.dataForm.adminId = this.dataForm.adminId + ''
 			// }

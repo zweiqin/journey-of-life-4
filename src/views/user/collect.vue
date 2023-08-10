@@ -30,7 +30,7 @@
 
 <script>
 import { listCollect } from '@/api/business/user'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Collect',
@@ -71,14 +71,6 @@ export default {
 		handleFilter() {
 			this.listQuery.page = 1
 			this.getList()
-		},
-		resetForm() {
-			this.dataForm = {
-				id: undefined,
-				userId: '',
-				valueId: '',
-				addTime: undefined
-			}
 		},
 		handleDownload() {
 			this.downloadLoading = true

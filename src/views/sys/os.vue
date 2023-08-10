@@ -113,7 +113,7 @@
 
 <script>
 import { listStorage, createStorage, updateStorage, deleteStorage } from '@/api/business/storage'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'Storage',
@@ -223,7 +223,7 @@ export default {
 			})
 		},
 		handleDelete(row) {
-			deleteStorage(row).then((response) => {
+			deleteStorage(row).then((res) => {
 				this.$notify.success({
 					title: '成功',
 					message: '删除成功'
@@ -231,10 +231,10 @@ export default {
 				const index = this.list.indexOf(row)
 				this.list.splice(index, 1)
 			})
-				.catch((response) => {
+				.catch((err) => {
 					this.$notify.error({
 						title: '失败',
-						message: response.data.errmsg
+						message: err.data.errmsg
 					})
 				})
 		},

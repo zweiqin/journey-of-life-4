@@ -54,10 +54,6 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 	</div>
 </template>
 
@@ -65,12 +61,11 @@
 import { getUserInfo } from '@/api/login'
 import { idGet, listGet, listDelete } from '@/api/marketingManagement/salesmanManagement'
 import { getToken } from '@/utils/auth'
-import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'SalesmanManagement',
-	components: { BackToTop, Pagination },
+	components: { Pagination },
 	data() {
 		return {
 			lookingPicture: '',
@@ -176,39 +171,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.el-dialog {
-	width: 60%;
-}
-
-.table-expand {
-	font-size: 0;
-}
-
-.table-expand label {
-	width: 100px;
-	color: #99a9bf;
-}
-
-.table-expand .el-form-item {
-	margin-right: 0;
-	margin-bottom: 0;
-}
-
-.gallery {
-	width: 80px;
-	margin-right: 10px;
-}
-
-.TXBJW {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-}
-
-.app-container>>>.el-table__expanded-cell {
-	padding: 0;
-}
-</style>

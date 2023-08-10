@@ -70,7 +70,7 @@ export default {
 			alert('您的浏览器不支持socket')
 		} else {
 			// 实例化socket
-			// this.socket = new WebSocket(this.path, [ this.$store.getters.token ])
+			// this.socket = new WebSocket(this.path, [ getToken() ])
 			// this.$refs.chat.init(this.socket)
 			// this.$refs.chat.init(this.path)
 		}

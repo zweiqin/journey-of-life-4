@@ -266,11 +266,8 @@
 </template>
 
 <script>
-// 接口
 import { listGet, adminGet, idGet, listDelete, listAdd } from '@/api/RelationshipChainManagement/StoreMember'
-// import { getToken } from '@/utils/auth'
-// 分页组件
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 // 按需引入MessageBox，优点：不会失效，若使用this.$messageBox可能失效
 import { MessageBox } from 'element-ui'
 
@@ -618,32 +615,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.avatar-uploader .el-upload {
-	border: 1px dashed #d9d9d9;
-	border-radius: 6px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-	border-color: #20a0ff;
-}
-
-.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 120px;
-	height: 120px;
-	line-height: 120px;
-	text-align: center;
-}
-
-.avatar {
-	width: 145px;
-	height: 145px;
-	display: block;
-}
-</style>

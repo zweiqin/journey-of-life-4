@@ -14,7 +14,7 @@
 				placeholder="请输入手机号"
 			/>
 			<el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="handleFilter">查找</el-button>
-			<el-button class="filter-item" type="primary" size="mini" icon="el-icon-s-promotion" @click="push">推送</el-button>
+			<el-button class="filter-item" type="primary" size="mini" icon="el-icon-s-promotion">推送</el-button>
 		</div>
 
 		<!-- 查询结果 -->
@@ -86,7 +86,7 @@ import { getUserInfo } from '@/api/login'
 import { idGet } from '@/api/marketingManagement/salesmanManagement'
 import { adminGet, listDelete } from '@/api/StoreManagement/MemberManagement'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'MemberManagement',
@@ -183,10 +183,6 @@ export default {
 						message: '已取消删除'
 					})
 				})
-		},
-
-		push() {
-
 		}
 	}
 }

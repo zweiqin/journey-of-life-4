@@ -5,7 +5,8 @@ module.exports = {
   //巨峰
   BASE_API: '"https://admin.jfcmei.com/api/admin"',
   BASE_WS_API: '"wss://admin.jfcmei.com/api/ws"',
-  BASE_SHOWAPI: '"https://bus.deyisoft.cn:8890/jfshop"',
-  BASE_WXAPI: '"https://admin.jfcmei.com/api/wx"'
+  // BASE_PIC_API: '"https://admin.jfcmei.com/api/admin/storage/fetch/"',
+  BASE_PIC_API: '"https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/"',
+  BASE_SHOWAPI: '"https://h5.jfcmei.com/"'
 
 }

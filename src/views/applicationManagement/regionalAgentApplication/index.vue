@@ -1,50 +1,24 @@
 <template>
-	<!-- 营销策划师申请 -->
 	<div class="app-container">
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
 			<el-input
-				v-model="listQuery.name"
-				clearable
-				size="small"
-				class="filter-item"
+				v-model="listQuery.name" clearable size="small" class="filter-item"
 				style="width: 200px"
 				placeholder="请输入用户名"
 			/>
 			<el-input
-				v-model="listQuery.phone"
-				clearable
-				size="small"
-				class="filter-item"
+				v-model="listQuery.phone" clearable size="small" class="filter-item"
 				style="width: 200px"
 				placeholder="请输入手机号"
 			/>
-			<el-button
-				class="filter-item"
-				type="primary"
-				size="mini"
-				icon="el-icon-search"
-				@click="handleFilter"
-			>
+			<el-button class="filter-item" type="primary" size="mini" icon="el-icon-search" @click="handleFilter">
 				查找
 			</el-button>
 		</div>
 		<div v-tableHeight>
-			<el-table
-				height="100%"
-				:data="list"
-				size="small"
-				element-loading-text="正在查询中。。。"
-				border
-				fit
-				highlight-current-row
-			>
-				<el-table-column
-					align="center"
-					label="申请人ID"
-					prop="userId"
-					sortable
-				/>
+			<el-table height="100%" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+				<el-table-column align="center" label="申请人ID" prop="userId" sortable />
 				<el-table-column align="center" label="申请人" prop="name" sortable />
 				<el-table-column align="center" label="地址" prop="address" />
 				<el-table-column align="center" label="申请表ID" prop="id" sortable />
@@ -57,21 +31,7 @@
 						}}
 					</template>
 				</el-table-column>
-				<!-- <el-table-column align="center" label="申请类型" prop="applicationType">
-					<template slot-scope="scope">
-					<el-tag>
-					{{
-					scope.row.applicationType == 1
-					? '普通业务员'
-					: scope.row.applicationType == 2
-					? '高级业务员'
-					: '其他'
-					}}
-					</el-tag>
-					</template>
-					</el-table-column> -->
 				<el-table-column align="center" label="申请时间" prop="updateTime" />
-				<!-- <el-table-column align="center" label="更新时间" prop="updatetime" /> -->
 				<el-table-column align="center" label="状态" prop="status">
 					<template slot-scope="scope">
 						<el-tag>
@@ -103,51 +63,37 @@
 						</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column
-					align="center"
-					label="操作"
-					class-name="small-padding fixed-width"
-					width="250"
-				>
+				<el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="250">
 					<template slot-scope="scope">
 						<el-button
 							v-if="scope.row.status == 0 ? true : false"
-							v-permission="[ 'POST /admin/applicationManagement/update' ]"
-							type="primary"
+							v-permission="[ 'POST /admin/applicationManagement/update' ]" type="primary"
 							@click="updateData(scope.row, 1, '开始审核')"
 						>
 							开始审核
 						</el-button>
 						<el-button
 							v-if="scope.row.status == 1 ? true : false"
-							v-permission="[ 'POST /admin/applicationManagement/update' ]"
-							type="primary"
-							size="mini"
+							v-permission="[ 'POST /admin/applicationManagement/update' ]" type="primary" size="mini"
 							@click="checking(scope.row)"
 						>
 							查看
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 2 ? true : false"
-							type="primary"
-							size="mini"
+							v-if="scope.row.status == 2 ? true : false" type="primary" size="mini"
 							@click="updateData(scope.row, 6, '已致电')"
 						>
 							已致电
 						</el-button>
 						<el-button
-							v-if="scope.row.status == 1 ? true : false"
-							type="success"
-							size="mini"
+							v-if="scope.row.status == 1 ? true : false" type="success" size="mini"
 							@click="updateData(scope.row, 2, '通过')"
 						>
 							通过
 						</el-button>
 						<el-button
 							v-if="scope.row.status == 1 ? true : false"
-							v-permission="[ 'POST /admin/applicationManagement/update' ]"
-							type="danger"
-							size="mini"
+							v-permission="[ 'POST /admin/applicationManagement/update' ]" type="danger" size="mini"
 							@click="updateData(scope.row, 5, '退回')"
 						>
 							退回
@@ -157,16 +103,11 @@
 			</el-table>
 		</div>
 		<Pagination
-			v-show="total > 0"
-			:total="total"
-			:page.sync="listQuery.page"
-			:limit.sync="listQuery.size"
+			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size"
 			@pagination="getListData"
 		/>
 		<el-dialog
-			v-if="dialogFormitem != null"
-			:title="dialogFormitem.nickname + '-申请表内容'"
-			:visible.sync="dialogFormVisible"
+			v-if="dialogFormitem != null" :title="dialogFormitem.nickname + '-申请表内容'" :visible.sync="dialogFormVisible"
 			width="80%"
 		>
 			<el-descriptions :column="2" border>
@@ -193,12 +134,10 @@
 				</el-descriptions-item>
 				<el-descriptions-item label="申请的系统账户名  /  ID">
 					{{
-						dialogFormitem.applicationType == 1 ? dialogFormitem.userId ? dialogFormitem.userId : dialogFormitem.name : dialogFormitem.phone
+						dialogFormitem.applicationType == 1 ? dialogFormitem.userId ? dialogFormitem.userId : dialogFormitem.name
+						: dialogFormitem.phone
 					}}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="系统账户头像">
-					<img v-if="dialogFormitem.avatar" :src="dialogFormitem.avatar" width="40" />
-					</el-descriptions-item> -->
 				<!-- 门店 -->
 				<el-descriptions-item label="门店地址">
 					{{ dialogFormitem.address }}
@@ -206,23 +145,16 @@
 				<el-descriptions-item label="审核修改时间">
 					{{ dialogFormitem.updateTime }}
 				</el-descriptions-item>
-				<!-- <el-descriptions-item label="入驻说明" v-if="dialogFormitem.applicationType == 1">
-					{{ dialogFormitem.latitude }}
-					</el-descriptions-item> -->
 			</el-descriptions>
 			<div slot="footer" class="dialog-footer">
 				<el-button type="primary" @click="dialogFormVisible = false">
 					取消
 				</el-button>
-				<el-button
-					type="success"
-					@click="updateData(dialogFormitem, 2, '通过')"
-				>
+				<el-button type="success" @click="updateData(dialogFormitem, 2, '通过')">
 					通过
 				</el-button>
 				<el-button
-					v-permission="[ 'POST /admin/applicationManagement/update' ]"
-					type="danger"
+					v-permission="[ 'POST /admin/applicationManagement/update' ]" type="danger"
 					@click="updateData(dialogFormitem, 5, '退回')"
 				>
 					退回
@@ -237,7 +169,7 @@ import {
 	upgradeRequestList,
 	UpgradeRequestRegionalAgent
 } from '@/api/applicationManagement/merchantSettlement'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'MerchantSettlement',
@@ -349,29 +281,29 @@ export default {
 
 <style scoped>
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #20a0ff;
+	border-color: #20a0ff;
 }
 
 .avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
+	font-size: 28px;
+	color: #8c939d;
+	width: 120px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
 }
 
 .avatar {
-  width: 145px;
-  height: 145px;
-  display: block;
+	width: 145px;
+	height: 145px;
+	display: block;
 }
 </style>

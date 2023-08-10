@@ -130,7 +130,7 @@
 
 <script>
 import { h5IconList, h5IconAdd, h5IconUpdate, h5IconDeleted } from '@/api/iconManagement/iconList'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 

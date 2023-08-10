@@ -77,21 +77,16 @@
 			@pagination="getList"
 		/>
 
-		<el-tooltip placement="top" content="返回顶部">
-			<BackToTop :visibility-height="100" />
-		</el-tooltip>
-
 	</div>
 </template>
 
 <script>
 import { listGoods, deleteGoods } from '@/api/business/creditGoods'
-import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'CreditGoodsList',
-	components: { BackToTop, Pagination },
+	components: { Pagination },
 	data() {
 		return {
 			list: [],

@@ -148,10 +148,9 @@
 <script>
 import { listDelete, listGet, idGet, dtsStoreTypeAddType, dtsStoreTypeUpdateType } from '@/api/configurationTable/storeType'
 import { listDtsStoreType } from '@/api/business/brand'
-// import { roleOptions } from '@/api/business/role'
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import XeUtils from 'xe-utils'
 
 export default {
@@ -166,7 +165,6 @@ export default {
 			uploadPath,
 			list: null,
 			total: 0,
-			roleOptions: null,
 			listLoading: true,
 			listQuery: {
 				page: 1,
@@ -215,21 +213,8 @@ export default {
 		this.getList()
 		// 获取门店类型
 		this.getTypeOption()
-
-		// roleOptions()
-		//   .then(response => {
-		//     this.roleOptions = response.data
-		//   })
 	},
 	methods: {
-		formatRole(roleId) {
-			for (let i = 0; i < this.roleOptions.length; i++) {
-				if (roleId === this.roleOptions[i].value) {
-					return this.roleOptions[i].label
-				}
-			}
-			return ''
-		},
 		getTypeOption() {
 			listDtsStoreType().then((response) => {
 				this.typeOptions = response.data

@@ -25,7 +25,13 @@
 			>
 				添加
 			</el-button>
-			<!-- <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button> -->
+			<el-button
+				:loading="downloadLoading" size="mini" class="filter-item" type="warning"
+				icon="el-icon-download"
+				@click="handleDownload"
+			>
+				导出
+			</el-button>
 		</div>
 
 		<!-- 查询结果 -->
@@ -339,7 +345,7 @@ import { listBrand, createBrand, updateBrand, deleteBrand, listCatAndAdmin, list
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import XeUtils from 'xe-utils'
 
 export default {

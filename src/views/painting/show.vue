@@ -46,8 +46,6 @@ export default {
 	data() {
 		return {
 			banner: [],
-			img2: require('@/assets/image/tuanfeng.png'),
-			bannerimg: [require('@/assets/image/tfkj.png'), require('@/assets/image/tfkj.png'), require('@/assets/image/tfkj.png')],
 			pathstr: ['', '', ''],
 			list: [],
 			total: 0,
@@ -114,10 +112,6 @@ export default {
 			if (this.$route.name === 'paintingshow') {
 				this.$router.push({ name: 'pictureShow', query: { id } })
 			} else {
-				// 方案2 备用需配置
-				// console.log(process.env.BASE_SHOWAPI)
-				// window.open('http://bus.deyisoft.cn:8889/TFshop/#/pictureShow_out?id=' + id, '_self')
-				// 方案1 不需配置
 				this.$router.push({ name: 'pictureShow_out', query: { id } })
 			}
 		}

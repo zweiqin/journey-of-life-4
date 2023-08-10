@@ -3,14 +3,6 @@
 
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<!-- <el-input
-				v-model="listQuery.id"
-				clearable
-				size="mini"
-				class="filter-item"
-				style="width: 200px;"
-				placeholder="请输入材料ID"
-				/> -->
 			<el-input
 				v-model="listQuery.name" clearable size="mini" class="filter-item"
 				style="width: 200px;"
@@ -28,7 +20,6 @@
 			>
 				添加
 			</el-button>
-			<!-- <el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button> -->
 		</div>
 
 		<!-- 查询结果 -->
@@ -43,28 +34,6 @@
 			<el-table-column align="center" min-width="100px" label="所属门店id" prop="brandId" />
 
 			<el-table-column align="center" min-width="100px" label="系统账户id" prop="adminId" />
-
-			<!-- <el-table-column
-				align="center"
-				min-width="100px"
-				label="系统账户"
-				prop="adminId"
-				/> -->
-
-			<!-- <el-table-column
-				align="center"
-				min-width="100px"
-				property="Url"
-				label="账户头像"
-				>
-				<template slot-scope="scope">
-				<img
-				v-if="scope.row.Url"
-				:src="scope.row.Url"
-				width="80"
-				>
-				</template>
-				</el-table-column> -->
 
 			<el-table-column align="center" min-width="100px" label="上级id" prop="bid" />
 
@@ -278,7 +247,7 @@ import { listGet, listDelete, listAdd, listUpdate, userGet, brandGet } from '@/a
 import { uploadPath } from '@/api/business/storage'
 import { getToken } from '@/utils/auth'
 import { getUserInfo } from '@/api/login'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'SalesManagement',
@@ -397,8 +366,7 @@ export default {
 				commissionRate: [
 					{ required: true, message: '抽佣比例不能为空', trigger: 'blur' }
 				]
-			},
-			downloadLoading: false
+			}
 		}
 	},
 	computed: {
@@ -424,13 +392,11 @@ export default {
 						this.getList()
 					}
 				})
-				.catch()
 		},
 		getList() {
 			this.listLoading = true
 			listGet(this.listQuery)
 				.then((response) => {
-					// console.log(response.data.items)
 					this.list = response.data.items
 					this.total = response.data.total
 					this.listLoading = false

@@ -120,11 +120,10 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import { getRefundReason, addRefundReason, updataRefundReason, deleteRefundReason } from '@/api/applicationManagement/refundReason'
 export default {
-	// eslint-disable-next-line key-spacing, vue/match-component-file-name
-	name:'RefundReason',
+	name: 'RefundReason',
 	components: { Pagination },
 	data() {
 		return {
@@ -145,12 +144,6 @@ export default {
 	},
 	created() {
 		this.getDataList()
-		// getRefundReason().then((res) => {
-		// 	window.console.log(res)
-		// })
-		// updataRefundReason({ id: '5', refundOtherReason: '为啥不出现' }).then((res) => {
-		// 	console.log(res)
-		// })
 	},
 	methods: {
 		getDataList() {
@@ -166,7 +159,6 @@ export default {
 		},
 		// 搜索
 		selectList(search, searchText) {
-			// eslint-disable-next-line array-callback-return
 			return this.list.filter((item) => {
 				// 如果postList(title)包含search(输入框) => true
 				if (item.id.toString().includes(search) && (item.refundOtherReason || '').includes(searchText)) {

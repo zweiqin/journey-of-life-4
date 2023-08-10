@@ -109,8 +109,7 @@
 
 <script>
 import { fetchList, approveTrace } from '@/api/business/brokerage'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import checkPermission from '@/utils/permission' // 权限判断函数
+import Pagination from '@/components/Pagination'
 
 const statusMap = {
 	0: '提现申请',
@@ -167,7 +166,6 @@ export default {
 		this.getList()
 	},
 	methods: {
-		checkPermission,
 		getList() {
 			this.listLoading = true
 			fetchList(this.listQuery).then((response) => {

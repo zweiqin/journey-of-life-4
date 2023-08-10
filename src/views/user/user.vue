@@ -44,9 +44,6 @@
 
 				<el-table-column align="center" property="avatar" label="用户头像">
 					<template slot-scope="scope">
-						<!-- <div style="width:100%,height:100%">
-							<img :src="scope.row.avatar" :width="40 * $root.dw + 'px'">
-							</div> -->
 						<el-image
 							v-if="scope.row.avatar" :src="common.seamingImgUrl(scope.row.avatar)" style="width:40px; height:40px" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(scope.row.avatar) ]"
@@ -91,7 +88,6 @@
 					<span>{{ agencyDetail.settlementRate }}</span>
 				</el-form-item>
 				<el-form-item label="推广二维码">
-					<!-- <img :src="agencyDetail.shareUrl" width="300"> -->
 					<el-image v-if="agencyDetail.shareUrl" :src="common.seamingImgUrl(agencyDetail.shareUrl)" style="width:80px; height:80px" fit="cover" :preview-src-list="[ common.seamingImgUrl(agencyDetail.shareUrl) ]" />
 					<span v-else>--</span>
 				</el-form-item>
@@ -119,7 +115,7 @@
 
 <script>
 import { fetchList, approveAgency, detailApprove } from '@/api/business/user'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'User',
@@ -156,9 +152,9 @@ export default {
 	methods: {
 		getList() {
 			this.listLoading = true
-			fetchList(this.listQuery).then((response) => {
-				this.list = response.data.items
-				this.total = response.data.total
+			fetchList(this.listQuery).then((res) => {
+				this.list = res.data.items
+				this.total = res.data.total
 				this.listLoading = false
 			})
 				.catch(() => {
@@ -176,8 +172,8 @@ export default {
 				shareUrl: undefined,
 				settlementRate: undefined
 			}
-			detailApprove(row.id).then((response) => {
-				this.agencyDetail = response.data
+			detailApprove(row.id).then((res) => {
+				this.agencyDetail = res.data
 			})
 			this.detailDialogVisible = true
 		},
@@ -192,7 +188,7 @@ export default {
 		confirmApprove() {
 			this.$refs.approveForm.validate((valid) => {
 				if (valid) {
-					approveAgency(this.approveForm).then((response) => {
+					approveAgency(this.approveForm).then((res) => {
 						this.approveDialogVisible = false
 						this.$notify.success({
 							title: '成功',
@@ -200,10 +196,10 @@ export default {
 						})
 						this.getList()
 					})
-						.catch((response) => {
+						.catch((err) => {
 							this.$notify.error({
 								title: '审批失败',
-								message: response.data.errmsg
+								message: err.data.errmsg
 							})
 						})
 				}

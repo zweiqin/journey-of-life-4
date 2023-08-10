@@ -3,15 +3,33 @@
 
 		<!-- 查询和其他操作 -->
 		<div class="filter-container">
-			<el-input v-model="listQuery.userId" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入用户ID" />
-			<el-input v-model="listQuery.keyword" clearable size="mini" class="filter-item" style="width: 200px;" placeholder="请输入搜索历史关键字" />
+			<el-input
+				v-model="listQuery.userId" clearable size="mini" class="filter-item"
+				style="width: 200px;"
+				placeholder="请输入用户ID"
+			/>
+			<el-input
+				v-model="listQuery.keyword" clearable size="mini" class="filter-item"
+				style="width: 200px;"
+				placeholder="请输入搜索历史关键字"
+			/>
 			<el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-			<el-button :loading="downloadLoading" size="mini" class="filter-item" type="warning" icon="el-icon-download" @click="handleDownload">导出</el-button>
+			<el-button
+				:loading="downloadLoading" size="mini" class="filter-item" type="warning"
+				icon="el-icon-download"
+				@click="handleDownload"
+			>
+				导出
+			</el-button>
 		</div>
 
 		<!-- 查询结果 -->
 		<div v-tableHeight>
-			<el-table v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。" border fit highlight-current-row height="100%">
+			<el-table
+				v-loading="listLoading" :data="list" size="small" element-loading-text="正在查询中。。。"
+				border fit
+				highlight-current-row height="100%"
+			>
 				<el-table-column align="center" width="100px" label="搜索ID" prop="id" sortable />
 
 				<el-table-column align="center" min-width="80px" label="用户ID" prop="userId" />
@@ -22,14 +40,17 @@
 			</el-table>
 		</div>
 
-		<Pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+		<Pagination
+			v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+			@pagination="getList"
+		/>
 
 	</div>
 </template>
 
 <script>
 import { listHistory } from '@/api/business/user'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 
 export default {
 	name: 'History',

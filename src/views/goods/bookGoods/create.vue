@@ -27,25 +27,32 @@
 			>
 
 				<el-table-column type="expand">
-					<template slot-scope="props">
+					<template slot-scope="scope">
 						<el-form label-position="left">
 							<el-form-item label="宣传画廊">
-								<img v-for="pic in props.row.gallery" :key="pic" :src="common.seamingImgUrl(pic)" class="gallery">
+								<div v-if="scope.row.gallery && scope.row.gallery.length">
+									<el-image
+										v-for="item in scope.row.gallery" :key="item"
+										:src="common.seamingImgUrl(item)" style="width:80px;height:80px;margin-right: 10px;" fit="cover"
+										:preview-src-list="scope.row.gallery.map(i => common.seamingImgUrl(i))"
+									/>
+								</div>
+								<span v-else>--</span>
 							</el-form-item>
 							<el-form-item label="商品介绍">
-								<span>{{ props.row.brief }}</span>
+								<span>{{ scope.row.brief }}</span>
 							</el-form-item>
 							<el-form-item label="商品单位">
-								<span>{{ props.row.unit }}</span>
+								<span>{{ scope.row.unit }}</span>
 							</el-form-item>
 							<el-form-item label="关键字">
-								<span>{{ props.row.keywords }}</span>
+								<span>{{ scope.row.keywords }}</span>
 							</el-form-item>
 							<el-form-item label="类目ID">
-								<span>{{ props.row.categoryId }}</span>
+								<span>{{ scope.row.categoryId }}</span>
 							</el-form-item>
 							<el-form-item label="品牌商ID">
-								<span>{{ props.row.brandId }}</span>
+								<span>{{ scope.row.brandId }}</span>
 							</el-form-item>
 						</el-form>
 					</template>

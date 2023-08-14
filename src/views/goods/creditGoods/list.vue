@@ -20,16 +20,23 @@
 		>
 
 			<el-table-column type="expand">
-				<template slot-scope="props">
+				<template slot-scope="scope">
 					<el-form label-position="left" class="table-expand">
 						<el-form-item label="宣传画廊">
-							<img v-for="pic in props.row.gallery" :key="pic" :src="common.seamingImgUrl(pic)" class="gallery">
+							<div v-if="scope.row.gallery && scope.row.gallery.length">
+								<el-image
+									v-for="item in scope.row.gallery" :key="item"
+									:src="common.seamingImgUrl(item)" style="width:80px;height:80px;margin-right: 10px;" fit="cover"
+									:preview-src-list="scope.row.gallery.map(i => common.seamingImgUrl(i))"
+								/>
+							</div>
+							<span v-else>--</span>
 						</el-form-item>
 						<el-form-item label="商品介绍">
-							<span>{{ props.row.brief }}</span>
+							<span>{{ scope.row.brief }}</span>
 						</el-form-item>
 						<el-form-item label="商品单位">
-							<span>{{ props.row.unit }}</span>
+							<span>{{ scope.row.unit }}</span>
 						</el-form-item>
 					</el-form>
 				</template>
@@ -153,28 +160,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-.el-dialog {
-	width: 60%;
-}
-
-.table-expand {
-	font-size: 0;
-}
-
-.table-expand label {
-	width: 100px;
-	color: #99a9bf;
-}
-
-.table-expand .el-form-item {
-	margin-right: 0;
-	margin-bottom: 0;
-}
-
-.gallery {
-	width: 80px;
-	margin-right: 10px;
-}
-</style>

@@ -129,7 +129,6 @@ export default {
 							this.listQuery.id = ''
 						})
 				})
-				.catch()
 		},
 
 		getList() {

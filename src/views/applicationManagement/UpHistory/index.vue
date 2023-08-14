@@ -116,6 +116,20 @@
 								style="width: 100px; height: 100px" fit="contain"
 							/>
 						</el-descriptions-item>
+						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="食品生产许可证">
+							<el-image
+								v-if="scope.row.userUpgradeInfo.productionLicense"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.productionLicense)"
+								style="width: 100px; height: 100px" fit="contain"
+							/>
+						</el-descriptions-item>
+						<el-descriptions-item v-if="scope.row.userUpgradeInfo.applicationType == 1" label="食品经营许可证">
+							<el-image
+								v-if="scope.row.userUpgradeInfo.healthPermit"
+								:src="common.seamingImgUrl(scope.row.userUpgradeInfo.healthPermit)"
+								style="width: 100px; height: 100px" fit="contain"
+							/>
+						</el-descriptions-item>
 						<!-- <el-descriptions-item label="入驻说明" v-if="scope.row.applicationType == 1">
 							{{ scope.row.latitude }}
 							</el-descriptions-item> -->

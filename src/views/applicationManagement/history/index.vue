@@ -227,6 +227,20 @@
 						fit="contain"
 					/>
 				</el-descriptions-item>
+				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="食品生产许可证">
+					<el-image
+						v-if="dialogFormitem.productionLicense"
+						:src="common.seamingImgUrl(dialogFormitem.productionLicense)" style="width: 100px; height: 100px"
+						fit="contain"
+					/>
+				</el-descriptions-item>
+				<el-descriptions-item v-if="dialogFormitem.applicationType == 1" label="食品经营许可证">
+					<el-image
+						v-if="dialogFormitem.healthPermit"
+						:src="common.seamingImgUrl(dialogFormitem.healthPermit)" style="width: 100px; height: 100px"
+						fit="contain"
+					/>
+				</el-descriptions-item>
 				<!-- <el-descriptions-item label="入驻说明" v-if="dialogFormitem.applicationType == 1">
 					{{ dialogFormitem.latitude }}
 					</el-descriptions-item> -->

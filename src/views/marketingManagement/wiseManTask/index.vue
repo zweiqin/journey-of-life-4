@@ -265,7 +265,7 @@ import { listBrand } from '@/api/business/brand'
 // import { talentTaskUpload, talentTaskList, talentTaskInfo, talentTaskUpdate, talentTaskDelete } from '@/api/marketingManagement/wiseManTask'
 import { talentTaskList, talentTaskDelete, dtsTalentTaskList, dtsTalentTaskUpdateBox, dtsTalentTaskSubmitBox } from '@/api/marketingManagement/wiseManTask'
 import { uploadPath } from '@/api/business/storage'
-import { listSubRegion } from '@/api/business/region'
+import { listSubRegion } from '@/api/operationManagement/region'
 import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 

@@ -80,12 +80,11 @@
 </template>
 
 <script>
-import { listComment, deleteComment } from '@/api/business/comment'
-import { replyComment } from '@/api/business/order'
+import { listComment, deleteComment, replyComment } from '@/api/business/comment'
 import Pagination from '@/components/Pagination'
 
 export default {
-	name: 'Comment',
+	name: 'GoodsComment',
 	components: { Pagination },
 	data() {
 		return {

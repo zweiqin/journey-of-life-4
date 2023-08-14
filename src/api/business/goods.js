@@ -56,6 +56,14 @@ export function getCatAndBrandCategory(brandId) {
 	})
 }
 
+export function approveGoodsList(params) {
+	return request({
+		url: '/adminGoods/list',
+		method: 'get',
+		params
+	})
+}
+
 export function goodsApprove(data) {
 	return request({
 		url: '/goods/approve',

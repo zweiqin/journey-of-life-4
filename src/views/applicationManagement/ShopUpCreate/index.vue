@@ -126,10 +126,10 @@
 					<el-input v-model="storeDataForm.address" />
 				</el-form-item>
 				<el-form-item label="开始营业时间" prop="startTime">
-					<el-time-picker v-model="storeDataForm.startTime" value-format="HH:mm:ss" placeholder="营业开始时间" />
+					<el-time-picker v-model="storeDataForm.startTime" value-format="HH:mm" placeholder="营业开始时间" />
 				</el-form-item>
 				<el-form-item label="结束营业时间" prop="endTime">
-					<el-time-picker v-model="storeDataForm.endTime" value-format="HH:mm:ss" placeholder="营业结束时间" />
+					<el-time-picker v-model="storeDataForm.endTime" value-format="HH:mm" placeholder="营业结束时间" />
 				</el-form-item>
 				<el-form-item label="门店logo" prop="picUrl">
 					<el-upload
@@ -182,6 +182,34 @@
 							v-if="storeDataForm.brandIdcardConsUrl" class="avatar"
 							:src="common.seamingImgUrl(storeDataForm.brandIdcardConsUrl)" style="" fit="cover"
 							:preview-src-list="[ common.seamingImgUrl(storeDataForm.brandIdcardConsUrl) ]"
+						/>
+						<i v-else class="el-icon-plus avatar-uploader-icon" />
+					</el-upload>
+				</el-form-item>
+
+				<el-form-item label="食品生产许可证" prop="productionLicense">
+					<el-upload
+						:headers="headers" :action="uploadPath" :show-file-list="false"
+						:on-success="uploadProductionLicense" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+					>
+						<el-image
+							v-if="storeDataForm.productionLicense" class="avatar"
+							:src="common.seamingImgUrl(storeDataForm.productionLicense)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(storeDataForm.productionLicense) ]"
+						/>
+						<i v-else class="el-icon-plus avatar-uploader-icon" />
+					</el-upload>
+				</el-form-item>
+
+				<el-form-item label="食品经营许可证" prop="healthPermit">
+					<el-upload
+						:headers="headers" :action="uploadPath" :show-file-list="false"
+						:on-success="uploadHealthPermit" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif"
+					>
+						<el-image
+							v-if="storeDataForm.healthPermit" class="avatar"
+							:src="common.seamingImgUrl(storeDataForm.healthPermit)" style="" fit="cover"
+							:preview-src-list="[ common.seamingImgUrl(storeDataForm.healthPermit) ]"
 						/>
 						<i v-else class="el-icon-plus avatar-uploader-icon" />
 					</el-upload>
@@ -358,6 +386,8 @@ export default {
 				licenseUrl: undefined,
 				brandIdcardProsUrl: undefined,
 				brandIdcardConsUrl: undefined,
+				productionLicense: undefined,
+				healthPermit: undefined,
 				explain: undefined,
 				salesmanname: undefined,
 				gender: undefined,
@@ -610,6 +640,8 @@ export default {
 				licenseUrl: undefined,
 				brandIdcardProsUrl: undefined,
 				brandIdcardConsUrl: undefined,
+				productionLicense: undefined,
+				healthPermit: undefined,
 				explain: undefined,
 				salesmanname: undefined,
 				gender: undefined,
@@ -653,6 +685,12 @@ export default {
 		},
 		uploadBrandIdcardConsUrl(response) {
 			this.storeDataForm.brandIdcardConsUrl = response.data.url
+		},
+		uploadProductionLicense(response) {
+			this.storeDataForm.productionLicense = response.data.url
+		},
+		uploadHealthPermit(response) {
+			this.storeDataForm.healthPermit = response.data.url
 		},
 		uploadIdcardProsUrl(response) {
 			this.marketDataForm.idcardProsUrl = response.data.url

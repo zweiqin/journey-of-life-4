@@ -450,7 +450,7 @@
 import { dtsTalentList, dtsTalentQueryDetail, dtsTalentSubmitTalent, dtsTalentUpdateTalent, dtsTalentToExamine, dtsTalentDatailList, dtsTalentDatailAddOne, dtsTalentDatailUpdate, dtsTalentDatailDelete } from '@/api/marketingManagement/wiseManList'
 import { fetchList } from '@/api/business/user'
 import { uploadPath } from '@/api/business/storage'
-import { listSubRegion } from '@/api/business/region'
+import { listSubRegion } from '@/api/operationManagement/region'
 import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 

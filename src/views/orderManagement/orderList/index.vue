@@ -18,7 +18,7 @@
 				class="filter-item"
 				placeholder="请选择订单状态"
 			>
-				<el-option v-for="(key, value) in statusMap" :key="key" :label="key" :value="value" />
+				<el-option v-for="(item, index) in statusMap" :key="index" :label="item.label" :value="item.value" />
 			</el-select>
 			<el-button
 				v-permission="[ 'GET /admin/order/list' ]" size="mini" class="filter-item" type="primary"
@@ -33,6 +33,21 @@
 			>
 				导出
 			</el-button>
+			<el-button
+				:loading="downloadLoading" size="mini" class="filter-item" type="warning"
+				icon="el-icon-download"
+				@click="handleDownloadBatchShipment"
+			>
+				导出批量发货模板
+			</el-button>
+			<el-upload
+				:action="uploadUrl" :show-file-list="false" :headers="headers" :data="{}"
+				:file-list="fileList"
+				:before-upload="beforeUploadFile" :on-success="handleUploadSuccess" :on-error="() => $message.error('上传失败')"
+				style="display: inline;margin-left: 10px" accept=".xlsx,.xls"
+			>
+				<el-button size="mini" type="primary" class="filter-item">上传批量发货表格</el-button>
+			</el-upload>
 		</div>
 
 		<!-- 查询结果 -->
@@ -48,7 +63,7 @@
 
 				<el-table-column align="center" min-width="160px" label="订单状态" prop="orderStatus">
 					<template slot-scope="scope">
-						<el-tag>{{ scope.row.orderStatus | orderStatusFilter }}</el-tag>
+						<el-tag>{{ scope.row.orderStatus ? statusMap.find(i => i.value === scope.row.orderStatus).label : '--' }}</el-tag>
 					</template>
 				</el-table-column>
 
@@ -100,7 +115,7 @@
 				</el-form-item>
 				<el-form-item label="订单状态">
 					<template slot-scope="scope">
-						<el-tag>{{ scope.order.orderStatus | orderStatusFilter }}</el-tag>
+						<el-tag>{{ scope.order.orderStatus }}</el-tag>
 					</template>
 				</el-form-item>
 				<el-form-item label="订单用户">
@@ -202,33 +217,15 @@
 <script>
 import { listOrder, shipOrder, refundOrder, detailOrder, listShipChannel } from '@/api/orderManagement/order'
 import Pagination from '@/components/Pagination'
-
-const statusMap = {
-	101: '未付款',
-	102: '用户取消',
-	103: '系统取消',
-	201: '已付款',
-	202: '申请退款',
-	203: '已退款',
-	301: '已发货',
-	401: '用户收货',
-	402: '系统收货',
-	403: '已核销',
-	404: '已过期',
-	405: '待核销（已付款）',
-	406: '待核销（未付款）'
-}
+import { getToken } from '@/utils/auth'
 
 export default {
 	name: 'OrderList',
 	components: { Pagination },
-	filters: {
-		orderStatusFilter(status) {
-			return statusMap[status]
-		}
-	},
 	data() {
 		return {
+			fileList: [],
+			uploadUrl: process.env.BASE_API + '/adminOrder/import',
 			list: undefined,
 			total: 0,
 			listLoading: true,
@@ -238,11 +235,50 @@ export default {
 				limit: 20,
 				id: undefined,
 				name: undefined,
-				orderStatusArray: [],
+				orderStatusArray: [ 201 ],
 				sort: 'add_time',
 				order: 'desc'
 			},
-			statusMap,
+			statusMap: [{
+				value: 101,
+				label: '未付款'
+			}, {
+				value: 102,
+				label: '用户取消'
+			}, {
+				value: 103,
+				label: '系统取消'
+			}, {
+				value: 201,
+				label: '已付款'
+			}, {
+				value: 202,
+				label: '申请退款'
+			}, {
+				value: 203,
+				label: '已退款'
+			}, {
+				value: 301,
+				label: '已发货'
+			}, {
+				value: 401,
+				label: '用户收货'
+			}, {
+				value: 402,
+				label: '系统收货'
+			}, {
+				value: 403,
+				label: '已核销'
+			}, {
+				value: 404,
+				label: '已过期'
+			}, {
+				value: 405,
+				label: '待核销（已付款）'
+			}, {
+				value: 406,
+				label: '待核销（未付款）'
+			}],
 			orderDialogVisible: false,
 			orderDetail: {
 				order: {},
@@ -261,6 +297,13 @@ export default {
 			},
 			refundDialogVisible: false,
 			downloadLoading: false
+		}
+	},
+	computed: {
+		headers() {
+			return {
+				'X-Dts-Admin-Token': getToken()
+			}
 		}
 	},
 	created() {
@@ -355,12 +398,75 @@ export default {
 				}
 			})
 		},
+		// 限制上传文件类型
+		beforeUploadFile(file) {
+			const extension = file.name.substring(file.name.lastIndexOf('.') + 1)
+			const isXls = extension === 'xls'
+			const isXlsx = extension === 'xlsx'
+			if (!isXls && !isXlsx) {
+				this.$message.warning('只能上传excel的文件')
+			}
+			return isXls || isXlsx
+		},
+		handleUploadSuccess(response) {
+			if (response.data !== '导入成功') {
+				this.$notify.error({
+					title: '操作失败！',
+					message: response.data.errmsg
+				})
+			} else {
+				this.$message.success('上传成功')
+			}
+			this.getList()
+		},
+
 		handleDownload() {
 			this.downloadLoading = true
 			import('@/vendor/Export2Excel').then((excel) => {
 				const tHeader = ['订单ID', '订单编号', '用户ID', '订单状态', '是否删除', '收货人', '收货联系电话', '收货地址']
 				const filterVal = ['id', 'orderSn', 'userId', 'orderStatus', 'isDelete', 'consignee', 'mobile', 'address']
-				excel.export_json_to_excel2(tHeader, this.list, filterVal, '订单信息')
+				excel.export_json_to_excel2(tHeader, this.list.map((item) => ({ ...item, orderStatus: item.orderStatus ? this.statusMap.find((i) => i.value === item.orderStatus).label : '--' })), filterVal, '订单信息')
+				this.downloadLoading = false
+			})
+		},
+		handleDownloadBatchShipment() {
+			this.downloadLoading = true
+			import('@/vendor/Export2Excel').then((excel) => {
+				const headers = [
+					{ v: '送货日期', position: 'A1', field: 'deliverTime' },
+					{ v: '客户信息', position: 'B1', field: 'customer' },
+					{ v: '品名', position: 'C1', field: 'goodsName' },
+					{ v: '件数', position: 'D1', field: 'number' },
+					{ v: '体积', position: 'E1', field: 'volume' },
+					{ v: '重量', position: 'F1', field: 'weight' },
+					{ v: '尺寸', position: 'G1', field: 'size' },
+					{ v: '易碎品', position: 'H1', field: 'fragile' },
+					{ v: '送货要求', position: 'I1', field: 'ask' },
+					{ v: '付款方式', position: 'J1', field: 'payment' },
+					{ v: '订单编号', position: 'K1', field: 'orderSn' },
+					{ v: '物流渠道', position: 'L1', field: 'logisticsChannels' },
+					{ v: '物流单号', position: 'M1', field: 'logisticsNumber' },
+					{ v: '备注', position: 'N1', field: 'notes' }
+				]
+				excel.export_json_to_excel3(headers, {
+					data: [ {
+						deliverTime: 'x月xx日',
+						customer: 'xx省xx市xxx',
+						goodsName: 'xxx',
+						number: '9',
+						volume: '9',
+						weight: '9',
+						size: '9',
+						fragile: 'xxx',
+						ask: 'xxx',
+						payment: 'xxx',
+						orderSn: 'xxx',
+						logisticsChannels: 'xxx',
+						logisticsNumber: 'xxx',
+						notes: 'xxx'
+					} ],
+					A2: '黄色为必填项；查货网站：www.zhult.com；服务号：助力通；注册后并绑定手机号可公众号自动推送运输节点；短信通知；'
+				}, '运输表单')
 				this.downloadLoading = false
 			})
 		}

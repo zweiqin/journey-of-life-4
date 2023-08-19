@@ -148,7 +148,7 @@ export const asyncRouterMap = [
 						name: 'vipUser',
 						meta: {
 							perms: ['GET /admin/user/levelList', 'GET /admin/user/detailApprove', 'POST /admin/user/approveAgency'],
-							title: 'VIP会员管理',
+							title: 'VIP会员',
 							icon: 'people',
 							noCache: true
 						}
@@ -217,7 +217,7 @@ export const asyncRouterMap = [
 						name: 'userWithdrawalApplicationForm',
 						meta: {
 							perms: ['GET /admin/withdrawal/list', 'POST /admin/withdrawal/toExamine'],
-							title: '用户提现审核表',
+							title: '提现列表',
 							noCache: true
 						}
 					},
@@ -237,7 +237,7 @@ export const asyncRouterMap = [
 						name: 'bankCardList',
 						meta: {
 							perms: [ 'GET /admin/withdrawalBank/list' ],
-							title: '用户银行卡列表',
+							title: '用户银行卡',
 							noCache: true
 						}
 					},

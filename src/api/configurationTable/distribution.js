@@ -10,11 +10,11 @@ export function settingControllerGet(params) {
 }
 
 // 改
-export function settingControllerPut(data) {
+export function settingControllerPut(params) {
 	return request({
 		url: '/dtsSettingController/put/WECHAT_CONNECT',
 		method: 'put',
-		data
+		params
 	})
 }
 
@@ -28,10 +28,10 @@ export function distributionGetByPage(params) {
 }
 
 // 分销员审核
-export function distributionSelectedAudit(data) {
+export function distributionSelectedAudit(params) {
 	return request({
 		url: `/dtsDistributionSelectedGoods/audit/${data.id}`,
 		method: 'put',
-		data
+		params
 	})
 }

@@ -60,16 +60,18 @@
 				<el-table-column min-width="120px" align="center" label="关联银行名称" prop="settlementBankAccountName" />
 				<el-table-column min-width="180px" align="center" label="银行卡号" prop="settlementBankAccountNum" />
 				<el-table-column min-width="120px" align="center" label="支行名称" prop="settlementBankBranchName" />
-				<el-table-column align="center" label="操作" class-name="small-padding fixed-width" width="250">
+				<el-table-column align="center" fixed="right" label="操作" class-name="small-padding fixed-width" width="250">
 					<template slot-scope="scope">
 						<el-button
-							v-permission="[ 'GET /admin/dtsDistribution/getByPage' ]" type="primary"
+							v-permission="[ 'GET /admin/dtsDistribution/getByPage' ]"
+							:disabled="scope.row.distributionStatus !== 'APPLY'" type="primary"
 							@click="updateData(scope.row, 'PASS', '通过申请')"
 						>
 							同意申请
 						</el-button>
 						<el-button
-							v-permission="[ 'GET /admin/dtsDistribution/getByPage' ]" type="danger"
+							v-permission="[ 'GET /admin/dtsDistribution/getByPage' ]"
+							:disabled="scope.row.distributionStatus !== 'APPLY'" type="danger"
 							@click="updateData(scope.row, 'REFUSE', '退回申请')"
 						>
 							退回申请

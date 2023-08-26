@@ -35,7 +35,7 @@ export default {
 			dom.setAttribute('class', 'multi')
 			dom.setAttribute('style', 'display:none')
 			dom.innerHTML =
-        '<div class="multi-select"><div class="multi-title"><span">已选中：<span id="checkMessage">0</span> 条消息</span></div><div class="multi-main"><div class="btn-group"><div class="multi-icon pointer"  onClick="mergeForward()"><i class="el-icon-position"></i></div><p>合并转发</p></div><div class="btn-group"><div class="multi-icon pointer" onClick="oneByoneForward()"><i class="el-icon-position"></i></div><p>逐条转发</p></div><div class="btn-group"><div class="multi-icon pointer" onclick="multiDeleteContact()"><i class="el-icon-delete"></i></div><p >批量删除</p></div><div class="btn-group"><div class="multi-icon pointer" onClick="closeMulti()"><i class="el-icon-close" ></i></div><p >关闭</p></div></div></div>'
+				'<div class="multi-select"><div class="multi-title"><span">已选中：<span id="checkMessage">0</span> 条消息</span></div><div class="multi-main"><div class="btn-group"><div class="multi-icon pointer"  onClick="mergeForward()"><i class="el-icon-position"></i></div><p>合并转发</p></div><div class="btn-group"><div class="multi-icon pointer" onClick="oneByoneForward()"><i class="el-icon-position"></i></div><p>逐条转发</p></div><div class="btn-group"><div class="multi-icon pointer" onclick="multiDeleteContact()"><i class="el-icon-delete"></i></div><p >批量删除</p></div><div class="btn-group"><div class="multi-icon pointer" onClick="closeMulti()"><i class="el-icon-close" ></i></div><p >关闭</p></div></div></div>'
 			const that = this
 			window.closeMulti = function () {
 				that.closeMulti()
@@ -122,7 +122,7 @@ export default {
 			for (let i = 0; i < data.user_contact.length; i++) {
 				if (
 					data.user_contact[i].lastContent != '' &&
-          data.user_contact[i].lastContentType != ''
+					data.user_contact[i].lastContentType != ''
 				) {
 					data.user_contact[i].lastContent = IMUI.lastContentRender({
 						type: data.user_contact[i].lastContentType,
@@ -160,10 +160,10 @@ export default {
 				// 			"avatar": "https://shmily-album.oss-cn-shenzhen.aliyuncs.com/admin_face/face2.png",
 				// 			"level": 2
 				// 		},
-      	// 	]}
+				// 	]}
 				if (
 					data.user_group[i].lastContent != '' &&
-          data.user_group[i].lastContentType != ''
+					data.user_group[i].lastContentType != ''
 				) {
 					data.user_group[i].lastContent = IMUI.lastContentRender({
 						type: data.user_group[i].lastContentType,
@@ -201,7 +201,7 @@ export default {
 			// 判断是否显示消息通知
 			if (
 				this.settingDialogData.friendOnlineNotice &&
-        !data.message.is_reconnection
+				!data.message.is_reconnection
 			) {
 				this.$notify.warning({
 					title: '你的好友 "' + data.message.user_info.desc + '" 已上线',
@@ -214,7 +214,7 @@ export default {
 			// 播放收到信息音频
 			if (
 				this.settingDialogData.friendOnlineNoticeTone &&
-        !data.message.is_reconnection
+				!data.message.is_reconnection
 			) {
 				const messageToneType = 'friendOnlineTone.mp3'
 				const buttonAudio = document.getElementById('eventAudio')
@@ -315,30 +315,29 @@ export default {
 			})
 		},
 		oneByoneSend(data, IMUI) {
+			if (data.message.fromUser.id == this.user.id) return
 			IMUI.appendMessage(data.message, true)
-			if (data.message.fromUser.id != this.$store.getters.personId) {
-				// 判断是否显示消息通知
-				if (this.settingDialogData.messagePagePrompt) {
-					this.$notify.warning({
-						title: '你有一条新的消息',
-						duration: 2000,
-						position: 'bottom-right',
-						offset: 100,
-						message: '来自："' + data.message.fromUser.displayName + '"'
-					})
-				}
-				// 播放收到信息音频
-				if (this.settingDialogData.messageTone) {
-					const messageToneType = this.settingDialogData.messageToneType
-					const buttonAudio = document.getElementById('eventAudio')
-					buttonAudio.setAttribute('src', '../../../../../../static/audio/' + messageToneType)
-					buttonAudio.play()
-				}
+			// 判断是否显示消息通知
+			if (this.settingDialogData.messagePagePrompt) {
+				this.$notify.warning({
+					title: '你有一条新的消息',
+					duration: 2000,
+					position: 'bottom-right',
+					offset: 100,
+					message: '来自："' + data.message.fromUser.displayName + '"'
+				})
+			}
+			// 播放收到信息音频
+			if (this.settingDialogData.messageTone) {
+				const messageToneType = this.settingDialogData.messageToneType
+				const buttonAudio = document.getElementById('eventAudio')
+				buttonAudio.setAttribute('src', '../../../../../../static/audio/' + messageToneType)
+				buttonAudio.play()
 			}
 			IMUI.messageViewToBottom()
 		},
 		getSendMessage(data, IMUI) {
-			if (data.message.fromUser.id == this.$store.getters.personId) return
+			if (data.message.fromUser.id == this.user.id) return
 			IMUI.appendMessage(data.message, true)
 			// 判断是否显示消息通知
 			if (this.settingDialogData.messagePagePrompt) {
@@ -360,17 +359,6 @@ export default {
 			IMUI.messageViewToBottom()
 		},
 		handlePullMessages(contact, next) {
-			// const that = this
-			// const uri =
-			//   contact.is_group == 0 ? '/friend/pull_message' : '/group/pull_message'
-			// const data = {
-			//   message: {
-			//     contact_id: contact.id,
-			//     user_id: this.user.id
-			//   },
-			//   uri
-			// }
-			// this.socket.send(JSON.stringify(data))
 			this.next = next
 			this.initSocket(contact)
 		},
@@ -407,9 +395,9 @@ export default {
 							if (response.code == 200) {
 								message.content = response.data.url
 								const uri =
-                  typeof message.toContactId === 'number'
-                  	? '/friend/send_message'
-                  	: '/group/send_message'
+									typeof message.toContactId === 'number'
+										? '/friend/send_message'
+										: '/group/send_message'
 								this.send(message, uri)
 								next()
 							}
@@ -425,7 +413,6 @@ export default {
 				//     ? '/friend/send_message'
 				//     : '/group/send_message'
 				IMUI.setEditorValue('')
-				// this.send(message, uri)
 				this.send({
 					id: message.sendTime,
 					status: 'succeed',
@@ -440,7 +427,7 @@ export default {
 						displayName: message.fromUser.displayName,
 						avatar: message.fromUser.avatar
 					},
-					isGroup: true
+					isGroup: !!IMUI.getCurrentContact().is_group
 				}, '')
 				next()
 			}
@@ -517,7 +504,7 @@ export default {
 						}
 						this.send(message, '/group/exit_group', 'POST')
 					})
-					.catch(() => {})
+					.catch(() => { })
 			}
 			if (type == 'group_delete') {
 				this.$confirm('确认解散该聊天室，操作不可逆, 是否继续?', '提示', {
@@ -614,7 +601,7 @@ export default {
 				IMUI.updateMessage({
 					// id: res.data.messageId,
 					id: this.fileIdToMessageId[file.uid],
-					content: res.data.url,
+					content: this.messagesToBeSend[this.fileIdToMessageId[file.uid]].type === 'image' ? this.common.seamingImgUrl(res.data.url) : res.data.url,
 					fileExt: res.data.fileExt || '',
 					status: 'succeed'
 				})
@@ -771,9 +758,9 @@ export default {
 				}
 			}
 			const uri =
-        typeof message.toContactId === 'number'
-        	? '/friend/send_message'
-        	: '/group/send_message'
+				typeof message.toContactId === 'number'
+					? '/friend/send_message'
+					: '/group/send_message'
 			this.send(message, uri)
 			IMUI.appendMessage(message, true)
 			this.linkMessageDialogData.visible = false

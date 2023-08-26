@@ -31,18 +31,41 @@ export default {
 			return !this.sidebar.opened
 		},
 		menuList() {
-			const isAdmin = this.roles.includes('超级管理员')
-			const routers = XeUtils.mapTree(this.permission_routers, (item) => {
-				if (item._ROLES) {
-					if (item._ROLES.includes('USER')) {
-						item.hidden = isAdmin
+			let routers
+			if (this.roles.includes('超级管理员')) {
+				routers = XeUtils.mapTree(this.permission_routers, (item) => {
+					if (item._ROLES) {
+						if (item._ROLES.includes('ADMIN')) {
+							item.hidden = false
+						} else {
+							item.hidden = true
+						}
 					}
-					if (item._ROLES.includes('ADMIN')) {
-						item.hidden = !isAdmin
+					return item
+				})
+			} else if (this.roles.includes('初级营销策划师')) {
+				routers = XeUtils.mapTree(this.permission_routers, (item) => {
+					if (item._ROLES) {
+						if (item._ROLES.includes('PLANNER')) {
+							item.hidden = false
+						} else {
+							item.hidden = true
+						}
 					}
-				}
-				return item
-			})
+					return item
+				})
+			} else if (this.roles.includes('会员商户')) {
+				routers = XeUtils.mapTree(this.permission_routers, (item) => {
+					if (item._ROLES) {
+						if (item._ROLES.includes('USER')) {
+							item.hidden = false
+						} else {
+							item.hidden = true
+						}
+					}
+					return item
+				})
+			}
 			return routers
 		}
 	}

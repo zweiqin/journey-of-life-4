@@ -43,8 +43,7 @@ export default {
 				dialogVisible: true
 			},
 			// path: process.env.VUE_APP_WS_API,
-			path: process.env.BASE_WS_API,
-			socket: ''
+			path: process.env.BASE_WS_API
 		}
 	},
 	computed: {
@@ -69,10 +68,9 @@ export default {
 		if (typeof WebSocket === 'undefined') {
 			alert('您的浏览器不支持socket')
 		} else {
-			// 实例化socket
-			// this.socket = new WebSocket(this.path, [ getToken() ])
-			// this.$refs.chat.init(this.socket)
-			// this.$refs.chat.init(this.path)
+			this.$nextTick(() => {
+				this.$refs.chat.init(this.path)
+			})
 		}
 	},
 	methods: {

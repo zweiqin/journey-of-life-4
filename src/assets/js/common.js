@@ -35,5 +35,9 @@ export default {
 	seamingImgUrl(url) {
 		if (!url) return ''
 		return url.startsWith('https://') ? url : process.env.BASE_PIC_API + url
+	},
+	shearingImgUrl(url) {
+		if (!url) return ''
+		return url.startsWith(process.env.BASE_PIC_API) ? url.substring(process.env.BASE_PIC_API.length) : url
 	}
 }

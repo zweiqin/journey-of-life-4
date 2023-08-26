@@ -1,125 +1,125 @@
 <template>
-  <el-dialog
-    title="消息记录"
-    :visible.sync="historyMessageDialogData.visible"
-    width="600px"
-    :close-on-click-modal="true"
-    :append-to-body="true"
-    :close-on-press-escape="false"
-    class="field-dialog"
-    @close="closeDialog"
-  >
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.content"
-        style="margin-bottom:10px; width:60%"
-        size="medium"
-        placeholder="输入关键字进行过滤"
-      ></el-input>
-      <!-- value-format="timestamp" -->
-      <el-date-picker
-        v-model="listQuery.date"
-        size="medium"
-        type="date"
-        placeholder="选择日期"
-        value-format="yyyy-MM-dd"
-      ></el-date-picker>
-      <div class="selected-fields">
-        <div ref="selectedBox" class="selected-box">
-          <div class="selected-group">
-            <div v-for="(item, index) in historyMessageList" :key="index">
-              <div class="message">
-                <div class="message__avatar">
-                  <span
-                    class="avatar avatar--circle"
-                    shape="square"
-                    style="width: 36px; height: 36px; line-height: 36px; font-size: 18px;border-radius: 50%"
-                  >
-                    <img :src="item.avatar" />
-                  </span>
-                </div>
-                <div class="message__inner">
-                  <div class="message__title">
-                    <span>{{ item.displayName }}</span>
+	<el-dialog
+		title="消息记录"
+		:visible.sync="historyMessageDialogData.visible"
+		width="600px"
+		:close-on-click-modal="true"
+		:append-to-body="true"
+		:close-on-press-escape="false"
+		class="field-dialog"
+		@close="closeDialog"
+	>
+		<div class="filter-container">
+			<el-input
+				v-model="listQuery.content"
+				style="margin-bottom:10px; width:60%"
+				size="medium"
+				placeholder="输入关键字进行过滤"
+			></el-input>
+			<!-- value-format="timestamp" -->
+			<el-date-picker
+				v-model="listQuery.date"
+				size="medium"
+				type="date"
+				placeholder="选择日期"
+				value-format="yyyy-MM-dd"
+			></el-date-picker>
+			<div class="selected-fields">
+				<div ref="selectedBox" class="selected-box">
+					<div class="selected-group">
+						<div v-for="(item, index) in historyMessageList" :key="index">
+							<div class="message">
+								<div class="message__avatar">
+									<span
+										class="avatar avatar--circle"
+										shape="square"
+										style="width: 36px; height: 36px; line-height: 36px; font-size: 18px;border-radius: 50%"
+									>
+										<img :src="item.avatar" />
+									</span>
+								</div>
+								<div class="message__inner">
+									<div class="message__title">
+										<span>{{ item.displayName }}</span>
 
-                    <span class="message__time">
-                      <span>|</span>
-                      {{ item.sendTime }}
-                    </span>
-                  </div>
-                  <div
-                    v-if="item.type == 'text'"
-                    class="message__content-flex"
-                    style="background-color:#f5f5f5"
-                  >
-                    <div class="message__content" style="background-color:#f5f5f5">
-                      <span v-html="item.content"></span>
-                    </div>
-                  </div>
+										<span class="message__time">
+											<span>|</span>
+											{{ item.sendTime }}
+										</span>
+									</div>
+									<div
+										v-if="item.type == 'text'"
+										class="message__content-flex"
+										style="background-color:#f5f5f5"
+									>
+										<div class="message__content" style="background-color:#f5f5f5">
+											<span v-html="item.content"></span>
+										</div>
+									</div>
 
-                  <div
-                    v-else-if="item.type == 'link'"
-                    class="message__content-flex"
-                    style="background-color:#808080"
-                  >
-                    <div class="message__content" style="background-color:#808080">
-                      <span v-text="'链接：' + item.content"></span>
-                    </div>
-                  </div>
+									<div
+										v-else-if="item.type == 'link'"
+										class="message__content-flex"
+										style="background-color:#808080"
+									>
+										<div class="message__content" style="background-color:#808080">
+											<span v-text="'链接：' + item.content"></span>
+										</div>
+									</div>
 
-                  <div v-else class="message__content-flex">
-                    <div v-if="item.type == 'file' " class="message__content">
-                      <el-button
-                        icon="el-icon-link"
-                        @click="downLoad(item)"
-                      >
-                        {{ item.fileName }} ( {{ getfilesize(item.fileSize) }})
-                      </el-button>
-                    </div>
-                    <div v-if="item.type == 'image' " class="lemon-message__content">
-                      <img
-                        :src="item.content"
-                        alt
-                        style="cursor: pointer;"
-                        @click="clickImage(item, historyMessageList)"
-                      />
-                    </div>
-                    <div v-if="item.type == 'forward' " class="lemon-message__content">
-                      <Message :content="item.content"></Message>
-                    </div>
-                    <div v-if="item.type == 'video' " class="lemon-message__content">
-                      <VideoPreview :content="item.content"></VideoPreview>
-                    </div>
-                    <div v-else class="lemon-message__content">
-                      <span style="font-weight: 700;color: darkgray;">其它消息</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <el-image
-              ref="preview"
-              class="previewImage"
-              fit="scale-down"
-              :src="imageSrc"
-              :preview-src-list="srcList"
-              :z-index="2050"
-            ></el-image>
-          </div>
-        </div>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <Pagination
-          v-show="total > 0"
-          :total="total"
-          :page.sync="listQuery.cur_page"
-          :limit.sync="listQuery.page_size"
-          :small="true"
-          @pagination="init"
-        ></Pagination>
-      </div>
-    </div>
-  </el-dialog>
+									<div v-else class="message__content-flex">
+										<div v-if="item.type == 'file' " class="message__content">
+											<el-button
+												icon="el-icon-link"
+												@click="downLoad(item)"
+											>
+												{{ item.fileName }} ( {{ getfilesize(item.fileSize) }})
+											</el-button>
+										</div>
+										<div v-if="item.type == 'image' " class="lemon-message__content">
+											<img
+												:src="item.content"
+												alt
+												style="cursor: pointer;"
+												@click="clickImage(item, historyMessageList)"
+											/>
+										</div>
+										<div v-if="item.type == 'forward' " class="lemon-message__content">
+											<Message :content="item.content"></Message>
+										</div>
+										<div v-if="item.type == 'video' " class="lemon-message__content">
+											<VideoPreview :content="item.content"></VideoPreview>
+										</div>
+										<div v-else class="lemon-message__content">
+											<span style="font-weight: 700;color: darkgray;">其它消息</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<el-image
+							ref="preview"
+							class="previewImage"
+							fit="scale-down"
+							:src="imageSrc"
+							:preview-src-list="srcList"
+							:z-index="2050"
+						></el-image>
+					</div>
+				</div>
+			</div>
+			<div slot="footer" class="dialog-footer">
+				<Pagination
+					v-show="total > 0"
+					:total="total"
+					:page.sync="listQuery.cur_page"
+					:limit.sync="listQuery.page_size"
+					:small="true"
+					@pagination="init"
+				></Pagination>
+			</div>
+		</div>
+	</el-dialog>
 </template>
 
 <script>
@@ -131,113 +131,133 @@ import Message from '../LemonMessageForward/components/Message'
 import VideoPreview from '../LemonMessageVideo/components/VideoPreview'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 const defaultListQuery = {
-  date: '',
-  content: '',
-  cur_page: 1,
-  page_size: 20,
-  contact_id: ''
+	date: '',
+	content: '',
+	cur_page: 1,
+	page_size: 20,
+	contact_id: ''
 }
 export default {
-  name: 'HistoryMessage',
-  components: {
-    Message,
-    VideoPreview,
-    Pagination
-  },
-  props: {
-    historyMessageDialogData: {
-      type: Object,
-      default: {}
-    }
-  },
-  data() {
-    return {
-      listQuery: Object.assign({}, defaultListQuery),
-      historyMessageList: [],
-      total: 0,
-      imageSrc: '',
-      srcList: []
-    }
-  },
-  watch: {
-    'listQuery.date'(val) {
-      this.init()
-    },
-    'listQuery.content'(val) {
-      // this.init()
-      val ? this.historyMessageList = this.historyMessageList.filter((item) => item.content.includes(val)) : this.init()
-    }
-  },
-  mounted() {},
-  created() {},
-  methods: {
-    init() {
-      this.listQuery.contact_id = this.historyMessageDialogData.contact_id
-      const tempListQuery = {
-        chatId: this.listQuery.contact_id,
-        limit: this.listQuery.page_size,
-        endTime: this.listQuery.date + ' 00:00:00',
-        order: 'desc',
-        content: this.listQuery.content
-      }
-      queryChatMessage(tempListQuery).then((response) => {
-        this.historyMessageList = response.data.items.map((item) => {
-          const tempObj = JSON.parse(item.message)
-          // console.log(tempObj, tempObj.fromUser)
-          return {
-            id: tempObj.message.id,
-            status: tempObj.message.status,
-            type: tempObj.message.type,
-            fileSize: tempObj.message.fileSize,
-            fileName: tempObj.message.fileName,
-            fileExt: tempObj.message.fileExt || '',
-            sendTime: new Date(Number(tempObj.message.sendTime)).toLocaleString(),
-            content: tempObj.message.content,
-            avatar: tempObj.message.fromUser.avatar,
-            displayName: tempObj.message.fromUser.displayName,
-            fromUser: {
-              id: tempObj.message.fromUser.id,
-              avatar: tempObj.message.fromUser.avatar,
-              displayName: tempObj.message.fromUser.displayName
-            }
-          }
-        })
-        this.total = response.data.items.length
-      })
-      // if (typeof this.listQuery.contact_id === 'number') {
-      //   historyMessage(this.listQuery).then((response) => {
-      //     if (response.code == 200) {
-      //       this.historyMessageList = response.data.list
-      //       this.total = response.data.total
-      //     }
-      //   })
-      // } else {
-      //   groupHistoryMessage(this.listQuery).then((response) => {
-      //     if (response.code == 200) {
-      //       this.historyMessageList = response.data.list
-      //       this.total = response.data.total
-      //     }
-      //   })
-      // }
-    },
-    closeDialog() {
-      this.listQuery = Object.assign({}, defaultListQuery)
-    },
-    downLoad(message) {
-      const fileExtension = message.content.substring(message.content.lastIndexOf('.') + 1)
-      download(message.content, message.fileName, fileExtension, true)
-    },
-    clickImage(item, message) {
-      while (this.srcList.length > 0) {
-        this.srcList.pop()
-      }
-      for (let i = 0; i < message.length; i++) {
-        if (message[i].type == 'image') this.srcList.push(message[i].content)
-      }
-      this.imageSrc = item.content
-      this.$refs.preview.clickHandler()
-    }
-  }
+	name: 'HistoryMessage',
+	components: {
+		Message,
+		VideoPreview,
+		Pagination
+	},
+	props: {
+		historyMessageDialogData: {
+			type: Object,
+			default: {}
+		}
+	},
+	data() {
+		return {
+			listQuery: Object.assign({}, defaultListQuery),
+			historyMessageList: [],
+			total: 0,
+			imageSrc: '',
+			srcList: []
+		}
+	},
+	watch: {
+		'listQuery.date'(val) {
+			this.init()
+		},
+		'listQuery.content'(val) {
+			// this.init()
+			val ? this.historyMessageList = this.historyMessageList.filter((item) => item.content.includes(val)) : this.init()
+		}
+	},
+	mounted() {},
+	created() {},
+	methods: {
+		init() {
+			this.listQuery.contact_id = this.historyMessageDialogData.contact_id
+			const tempListQuery = {
+				foUserId: this.$parent.$parent.user.id,
+				toUserId: this.listQuery.contact_id,
+				// chatId: this.listQuery.contact_id,
+				// limit: this.listQuery.page_size,
+				// endTime: this.listQuery.date + ' 00:00:00',
+				// order: 'desc',
+				content: this.listQuery.content
+			}
+			queryChatMessage(tempListQuery).then((response) => {
+				this.historyMessageList = response.data.map((item) => ({
+					id: item.sendTime,
+					status: 'success',
+					type: item.msgType,
+					fileSize: item.fileSize,
+					fileName: item.fileName,
+					fileExt: item.exp || '',
+					sendTime: new Date(item.sendTime).toLocaleString(),
+					content: item.contentText,
+					avatar: item.fromAvatarImage,
+					displayName: item.fromUserName,
+					fromUser: {
+						id: item.fromUserId,
+						avatar: item.fromAvatarImage,
+						displayName: item.fromUserName
+					}
+				}))
+				this.total = response.data.length
+				// this.historyMessageList = response.data.items.map((item) => {
+				// 	const tempObj = JSON.parse(item.message)
+				// 	// console.log(tempObj, tempObj.fromUser)
+				// 	return {
+				// 		id: tempObj.message.id,
+				// 		status: tempObj.message.status,
+				// 		type: tempObj.message.type,
+				// 		fileSize: tempObj.message.fileSize,
+				// 		fileName: tempObj.message.fileName,
+				// 		fileExt: tempObj.message.fileExt || '',
+				// 		sendTime: new Date(Number(tempObj.message.sendTime)).toLocaleString(),
+				// 		content: tempObj.message.content,
+				// 		avatar: tempObj.message.fromUser.avatar,
+				// 		displayName: tempObj.message.fromUser.displayName,
+				// 		fromUser: {
+				// 			id: tempObj.message.fromUser.id,
+				// 			avatar: tempObj.message.fromUser.avatar,
+				// 			displayName: tempObj.message.fromUser.displayName
+				// 		}
+				// 	}
+				// })
+				// this.total = response.data.items.length
+			})
+			// if (typeof this.listQuery.contact_id === 'number') {
+			//   historyMessage(this.listQuery).then((response) => {
+			//     if (response.code == 200) {
+			//       this.historyMessageList = response.data.list
+			//       this.total = response.data.total
+			//     }
+			//   })
+			// } else {
+			//   groupHistoryMessage(this.listQuery).then((response) => {
+			//     if (response.code == 200) {
+			//       this.historyMessageList = response.data.list
+			//       this.total = response.data.total
+			//     }
+			//   })
+			// }
+		},
+		closeDialog() {
+			this.listQuery = Object.assign({}, defaultListQuery)
+		},
+		downLoad(message) {
+			const fileExtension = message.content.substring(message.content.lastIndexOf('.') + 1)
+			download(message.content, message.fileName, fileExtension, true)
+		},
+		clickImage(item, message) {
+			while (this.srcList.length > 0) {
+				this.srcList.pop()
+			}
+			for (let i = 0; i < message.length; i++) {
+				if (message[i].type == 'image') this.srcList.push(message[i].content)
+			}
+			this.imageSrc = item.content
+			this.$refs.preview.clickHandler()
+		}
+	}
 }
 </script>
 

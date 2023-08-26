@@ -1,149 +1,151 @@
 <template>
-  <el-dialog title="我的联系人" :visible.sync="forwardTool.dialogVisible" width="38%" append-to-body>
-    <div class="filter-container">
-      <div class="all-fields">
-        <div class="box-head" style="display: flex;justify-content: space-between;align-items: center;">
-          <el-input v-model="filterText" size="small" style="width:280px;margin-right:10px" placeholder="请输入搜索联系人">
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-          </el-input>
-          <el-button type="text" size="mini" @click="selectAllInvert">
-            <i class="el-icon-circle-plus-outline" style="font-size:22px;vertical-align: middle; font-weight:bold"></i>
-          </el-button>
-        </div>
-        <div style="margin-bottom: 25px;">
-          <el-checkbox
-            v-for="(item, index) in forwardTool.contactsSource" :key="index" v-model="checkedContacts"
-            :label="item" style="padding: 0 10px;margin-left:0px" class="checkItem"
-          >
-            <img class="avatar" :src="item.avatar" alt />
-            {{ item.displayName }}
-          </el-checkbox>
-          <br />
-        </div>
-      </div>
-      <div class="selected-fields">
-        <div class="box-head">
-          <el-divider content-position="left">已选择的用户列表 （{{ checkedContacts.length }}）</el-divider>
-        </div>
-        <div ref="selectedBox" class="selected-box">
-          <div v-for="(item, index) in checkedContacts" :key="index" class="selected-item">
-            <span>
-              <img class="avatar" :src="item.avatar" alt />
-              {{ item.displayName }}
-            </span>
-            <div class="cancelItemBtn" @click="deleteSelected(item, index)"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button size="medium" @click="forwardTool.dialogVisible = false">取 消</el-button>
-      <el-button type="primary" size="medium" @click="handleForwardMessage()">确 定</el-button>
-    </div>
-  </el-dialog>
+	<el-dialog title="我的联系人" :visible.sync="forwardTool.dialogVisible" width="38%" append-to-body>
+		<div class="filter-container">
+			<div class="all-fields">
+				<div class="box-head" style="display: flex;justify-content: space-between;align-items: center;">
+					<el-input v-model="filterText" size="small" style="width:280px;margin-right:10px" placeholder="请输入搜索联系人">
+						<i slot="prefix" class="el-input__icon el-icon-search"></i>
+					</el-input>
+					<el-button type="text" size="mini" @click="selectAllInvert">
+						<i class="el-icon-circle-plus-outline" style="font-size:22px;vertical-align: middle; font-weight:bold"></i>
+					</el-button>
+				</div>
+				<div style="margin-bottom: 25px;">
+					<el-checkbox
+						v-for="(item, index) in forwardTool.contactsSource" :key="index" v-model="checkedContacts"
+						:label="item" style="padding: 0 10px;margin-left:0px" class="checkItem"
+					>
+						<img class="avatar" :src="item.avatar" alt />
+						{{ item.displayName }}
+					</el-checkbox>
+					<br />
+				</div>
+			</div>
+			<div class="selected-fields">
+				<div class="box-head">
+					<el-divider content-position="left">已选择的用户列表 （{{ checkedContacts.length }}）</el-divider>
+				</div>
+				<div ref="selectedBox" class="selected-box">
+					<div v-for="(item, index) in checkedContacts" :key="index" class="selected-item">
+						<span>
+							<img class="avatar" :src="item.avatar" alt />
+							{{ item.displayName }}
+						</span>
+						<div class="cancelItemBtn" @click="deleteSelected(item, index)"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div slot="footer" class="dialog-footer">
+			<el-button size="medium" @click="forwardTool.dialogVisible = false">取 消</el-button>
+			<el-button type="primary" size="medium" @click="handleForwardMessage()">确 定</el-button>
+		</div>
+	</el-dialog>
 </template>
 
 <script>
 const defaultListQuery = {
-  contact_id: ''
+	contact_id: ''
 }
 export default {
-  name: 'ForwardTool',
-  props: {
-    forwardTool: {
-      type: Object,
-      default: {}
-    }
-  },
-  data() {
-    return {
-      filterText: '',
-      checkedContacts: []
-    }
-  },
-  watch: {
-    filterText(queryString) {
-      var contacts = this.forwardTool.contact
-      var results = queryString
-        ? contacts.filter(this.createFilter(queryString))
-        : contacts
-      // 调用 callback 返回建议列表的数据
-      this.forwardTool.contactsSource = results
-    }
-  },
-  mounted() { },
-  created() { },
-  methods: {
-    init() { },
-    handleForwardMessage() {
-      const contact = []
-      for (let i = 0; i < this.checkedContacts.length; i++) {
-        contact.push({
-          id: this.checkedContacts[i].id,
-          is_group: this.checkedContacts[i].is_group,
-          displayName: this.checkedContacts[i].displayName
-        })
-      }
+	name: 'ForwardTool',
+	props: {
+		forwardTool: {
+			type: Object,
+			default: {}
+		}
+	},
+	data() {
+		return {
+			filterText: '',
+			checkedContacts: []
+		}
+	},
+	watch: {
+		filterText(queryString) {
+			var contacts = this.forwardTool.contact
+			var results = queryString
+				? contacts.filter(this.createFilter(queryString))
+				: contacts
+			// 调用 callback 返回建议列表的数据
+			this.forwardTool.contactsSource = results
+		}
+	},
+	mounted() { },
+	created() { },
+	methods: {
+		init() { },
+		handleForwardMessage() {
+			const contact = []
+			for (let i = 0; i < this.checkedContacts.length; i++) {
+				contact.push({
+					id: this.checkedContacts[i].id,
+					is_group: this.checkedContacts[i].is_group,
+					displayName: this.checkedContacts[i].displayName
+				})
+			}
 
-      // const message = []
-      // for (let i = 0; i < this.forwardTool.multiMessage.length; i++) {
-      //   message.push({
-      //     id: this.forwardTool.multiMessage[i].id,
-      //     is_group: this.forwardTool.multiMessage[i].isGroup
-      //   })
-      // }
-      // this.$parent.$parent.send(
-      //   {
-      //     message,
-      //     contact,
-      //     user: this.forwardTool.user
-      //   },
-      //   this.forwardTool.type == 'mergeForward'
-      //     ? '/message/merge_forward_message'
-      //     : '/message/forward_message',
-      //   'POST'
-      // )
-      if (this.forwardTool.type == 'mergeForward') { } else {
-        let tempDate = Date.now()
-        contact.forEach((contactItem, count) => {
-          this.forwardTool.multiMessage.forEach((item, index) => {
-            this.$parent.$parent.send({
-              id: tempDate,
-              status: 'succeed',
-              type: item.type,
-              sendTime: tempDate,
-              content: item.content,
-              toContactId: contactItem.id,
-              fileSize: item.fileSize,
-              fileName: item.fileName,
-              fromUser: {
-                id: this.$store.getters.personId,
-                displayName: this.$store.getters.name,
-                avatar: this.$store.getters.avatar
-              },
-              isGroup: true
-            }, 'oneByoneSend', contactItem)
-            tempDate = tempDate + 1
-          })
-        })
-      }
-      this.checkedContacts = []
-      this.forwardTool.dialogVisible = false
-      this.$parent.$parent.closeMulti()
-    },
-    deleteSelected(data, index) {
-      this.checkedContacts.splice(index, 1)
-    },
-    selectAllInvert() {
-      const arr = [ ...this.forwardTool.contact ].filter((x) => [ ...this.checkedContacts ].every((y) => y.id !== x.id))
-      this.checkedContacts = arr
-    },
-    createFilter(queryString) {
-      return (contacts) => contacts.displayName
-        .toLowerCase()
-        .indexOf(queryString.toLowerCase()) > -1
-    }
-  }
+			// const message = []
+			// for (let i = 0; i < this.forwardTool.multiMessage.length; i++) {
+			//   message.push({
+			//     id: this.forwardTool.multiMessage[i].id,
+			//     is_group: this.forwardTool.multiMessage[i].isGroup
+			//   })
+			// }
+			// this.$parent.$parent.send(
+			//   {
+			//     message,
+			//     contact,
+			//     user: this.forwardTool.user
+			//   },
+			//   this.forwardTool.type == 'mergeForward'
+			//     ? '/message/merge_forward_message'
+			//     : '/message/forward_message',
+			//   'POST'
+			// )
+			if (this.forwardTool.type == 'mergeForward') { } else {
+				let tempDate = Date.now()
+				contact.forEach((contactItem, count) => {
+					this.forwardTool.multiMessage.forEach(async (item, index) => {
+						const message = {
+							id: tempDate,
+							status: 'succeed',
+							type: item.type,
+							sendTime: tempDate,
+							content: item.content,
+							toContactId: contactItem.id,
+							fileSize: item.fileSize,
+							fileName: item.fileName,
+							fromUser: {
+								id: this.$parent.$parent.user.id,
+								displayName: this.$parent.$parent.user.displayName,
+								avatar: this.$parent.$parent.user.avatar
+							},
+							isGroup: !!contactItem.is_group
+						}
+						tempDate = tempDate + 1
+						await this.$parent.$parent.send(message, 'oneByoneSend', contactItem)
+						this.$parent.$parent.$refs.IMUI.appendMessage(message, true)
+					})
+				})
+			}
+			this.checkedContacts = []
+			this.forwardTool.dialogVisible = false
+			this.$parent.$parent.closeMulti()
+		},
+		deleteSelected(data, index) {
+			this.checkedContacts.splice(index, 1)
+		},
+		selectAllInvert() {
+			const arr = [ ...this.forwardTool.contact ].filter((x) => [ ...this.checkedContacts ].every((y) => y.id !== x.id))
+			this.checkedContacts = arr
+		},
+		createFilter(queryString) {
+			return (contacts) => contacts.displayName
+				.toLowerCase()
+				.indexOf(queryString.toLowerCase()) > -1
+		}
+	}
 }
 </script>
 

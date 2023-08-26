@@ -44,16 +44,9 @@ router.beforeEach((to, from, next) => {
 				// console.log(store.getters.addRouters, to)
 				// 登录后的不同角色，跳转到首页的问题
 				if (to.path === '/homepage' && (store.getters.roles.includes('初级营销策划师') || store.getters.roles.includes('会员商户'))) {
-					if (store.getters.addRouters && store.getters.addRouters.length) {
-						if (store.getters.addRouters[0].children && store.getters.addRouters[0].children.length) {
-							if (store.getters.addRouters[0].children[0].children && store.getters.addRouters[0].children[0].children.length) {
-								next({ path: store.getters.addRouters[0].path + '/' + store.getters.addRouters[0].children[0].path + '/' + store.getters.addRouters[0].children[0].children[0].path })
-							} else {
-								next({ path: store.getters.addRouters[0].path + '/' + store.getters.addRouters[0].children[0].path })
-							}
-						} else {
-							next({ path: store.getters.addRouters[0].path })
-						}
+					const routeMatch = XeUtils.findTree(store.getters.addRouters, (item) => !item.children && (!item._ROLES || item._ROLES.includes(store.getters.roles[0])))
+					if (routeMatch && Array.isArray(routeMatch.nodes)) {
+						next({ path: routeMatch.nodes.map((v) => v.path).join('/') })
 					} else {
 						next({ path: '/401', replace: true, query: { noGoBack: true } })
 					}

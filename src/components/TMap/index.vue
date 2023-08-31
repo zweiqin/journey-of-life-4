@@ -6,25 +6,29 @@
 			:close-on-click-modal="false" :append-to-body="true" title="填写门店地址" width="828px"
 		>
 			<el-card header="选择地址">
-				<div class="address">{{ addrContent.address }}</div>
-				<div id="map-container"></div>
+				<div style="display: flex;justify-content: space-between;">
+					<div>
+						<div class="address">{{ addrContent.address }}</div>
+						<div id="map-container"></div>
+					</div>
 
-				<div class="search-con">
-					<el-input
-						id="input-map"
-						v-model="mapSearch"
-						placeholder="输入关键字搜索"
-					/>
-					<ul>
-						<li
-							v-for="(tip, index) in tips"
-							:key="index"
-							@click="selectAddr(tip.location)"
-						>
-							<p>{{ tip.name }}</p>
-							<p>{{ tip.district + tip.address }}</p>
-						</li>
-					</ul>
+					<div class="search-con">
+						<el-input
+							id="input-map"
+							v-model="mapSearch"
+							placeholder="输入关键字搜索"
+						/>
+						<ul>
+							<li
+								v-for="(tip, index) in tips"
+								:key="index"
+								@click="selectAddr(tip.location)"
+							>
+								<p>{{ tip.name }}</p>
+								<p>{{ tip.district + tip.address }}</p>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</el-card>
 			<div slot="footer">
@@ -194,10 +198,6 @@ export default {
 }
 
 .search-con {
-  position: absolute;
-  right: 20px;
-  // top: 64px;
-  top: 134px;
   width: 260px;
   ul {
     width: 260px;

@@ -202,7 +202,7 @@ export default {
 	data() {
 		return {
 			uploadPath,
-			goods: { picUrl: '', gallery: [] },
+			goods: { brandId: '', picUrl: '', gallery: [] },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			multipleSpec: false,
@@ -223,10 +223,22 @@ export default {
 			}
 		}
 	},
+	created() {
+		this.init()
+	},
 
 	methods: {
+		init() {
+			if (this.$route.query.lastRouter === 'BrandCreditGoodsShow' || this.$route.query.lastRouter === 'list') {
+				this.goods.brandId = this.$route.query.brandId
+			}
+		},
 		handleCancel() {
-			this.$router.push({ name: 'creditGoodsList' })
+			if (this.$route.query.lastRouter === 'BrandCreditGoodsShow') {
+				this.$router.push({ name: 'BrandCreditGoodsShow', query: { id: this.$route.query.brandId } })
+			} else {
+				this.$router.push({ name: 'creditGoodsList' })
+			}
 		},
 		handlePublish() {
 			this.$refs.goods.validate((valid) => {
@@ -241,7 +253,11 @@ export default {
 							title: '成功',
 							message: '创建成功'
 						})
-						this.$router.push({ name: 'creditGoodsList' })
+						if (this.$route.query.lastRouter === 'BrandCreditGoodsShow') {
+							this.$router.push({ name: 'BrandCreditGoodsShow', query: { id: this.$route.query.brandId } })
+						} else {
+							this.$router.push({ name: 'creditGoodsList' })
+						}
 					})
 						.catch((response) => {
 							console.log(response)
@@ -279,7 +295,6 @@ export default {
 				} else {
 					url = file.response.data.url
 				}
-
 				if (this.goods.gallery[i] === url) {
 					this.goods.gallery.splice(i, 1)
 				}
@@ -309,10 +324,8 @@ export default {
 					index = i
 				}
 			}
-
 			this.specifications.splice(index + 1, 0, this.specForm)
 			this.specVisiable = false
-
 			this.specToProduct()
 		},
 		handleSpecificationDelete(row) {
@@ -329,10 +342,8 @@ export default {
 			var spec = this.specifications[0].specification
 			var values = []
 			values.push(0)
-
 			for (var i = 1; i < this.specifications.length; i++) {
 				const aspec = this.specifications[i].specification
-
 				if (aspec === spec) {
 					values.push(i)
 				} else {
@@ -343,7 +354,6 @@ export default {
 				}
 			}
 			specValues.push(values)
-
 			// 根据临时规格列表生产货品规格
 			// 算法基于 https://blog.csdn.net/tyhj_sf/article/details/53893125
 			var productsIndex = 0
@@ -363,7 +373,6 @@ export default {
 				}
 				products[productsIndex] = { id: productsIndex, specifications, price: 0.00, number: 0, url: '' }
 				productsIndex++
-
 				index++
 				combination[n - 1] = index
 				for (var j = n - 1; j >= 0; j--) {
@@ -382,7 +391,6 @@ export default {
 					}
 				}
 			} while (isContinue)
-
 			this.products = products
 		},
 		handleProductShow(row) {

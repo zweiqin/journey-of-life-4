@@ -405,10 +405,7 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.id == null) {
-				return
-			}
-
+			if (!this.$route.query.id) return
 			const goodsId = this.$route.query.id
 			detailGoods({ id: goodsId }).then((response) => {
 				this.goods = response.data.goods

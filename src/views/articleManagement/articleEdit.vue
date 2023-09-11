@@ -147,9 +147,7 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.id == null) {
-				return
-			}
+			if (!this.$route.query.id) return
 			const articleId = this.$route.query.id
 			detailArticle(articleId).then((response) => {
 				this.article = response.data

@@ -193,7 +193,7 @@ export default {
 		return {
 			uploadPath,
 			galleryFileList: [],
-			goods: { gallery: [] },
+			goods: { brandId: '', gallery: [] },
 			specVisiable: false,
 			specForm: { specification: '', value: '', picUrl: '' },
 			specifications: [ { specification: '规格', value: '标准', picUrl: '' } ],
@@ -226,26 +226,30 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.id == null) {
-				return
-			}
-
+			if (!this.$route.query.id) return
 			const goodsId = this.$route.query.id
 			detailGoods({ id: goodsId }).then((response) => {
 				this.goods = response.data.goods
 				this.specifications = response.data.specifications
 				this.products = response.data.products
-
 				this.galleryFileList = []
 				for (var i = 0; i < this.goods.gallery.length; i++) {
 					this.galleryFileList.push({
 						url: this.common.seamingImgUrl(this.goods.gallery[i])
 					})
 				}
+
+				if (this.$route.query.lastRouter === 'BrandGoodsListShow' || this.$route.query.lastRouter === 'list') {
+					this.goods.brandId = this.$route.query.brandId
+				}
 			})
 		},
 		handleCancel() {
-			this.$router.push({ name: 'creditGoodsList' })
+			if (this.$route.query.lastRouter === 'BrandCreditGoodsShow') {
+				this.$router.push({ name: 'BrandCreditGoodsShow', query: { id: this.$route.query.brandId } })
+			} else {
+				this.$router.push({ name: 'creditGoodsList' })
+			}
 		},
 		handleEdit() {
 			const finalGoods = {
@@ -259,7 +263,11 @@ export default {
 						title: '成功',
 						message: '修改成功'
 					})
-					this.$router.push({ name: 'creditGoodsList' })
+					if (this.$route.query.lastRouter === 'BrandCreditGoodsShow') {
+						this.$router.push({ name: 'BrandCreditGoodsShow', query: { id: this.$route.query.brandId } })
+					} else {
+						this.$router.push({ name: 'creditGoodsList' })
+					}
 				})
 				.catch((response) => {
 					MessageBox.alert('业务错误：' + response.data.errmsg, '警告', {
@@ -327,10 +335,8 @@ export default {
 					index = i
 				}
 			}
-
 			this.specifications.splice(index + 1, 0, this.specForm)
 			this.specVisiable = false
-
 			this.specToProduct()
 		},
 		handleSpecificationDelete(row) {
@@ -347,10 +353,8 @@ export default {
 			var spec = this.specifications[0].specification
 			var values = []
 			values.push(0)
-
 			for (var i = 1; i < this.specifications.length; i++) {
 				const aspec = this.specifications[i].specification
-
 				if (aspec === spec) {
 					values.push(i)
 				} else {
@@ -361,7 +365,6 @@ export default {
 				}
 			}
 			specValues.push(values)
-
 			// 根据临时规格列表生产货品规格
 			// 算法基于 https://blog.csdn.net/tyhj_sf/article/details/53893125
 			var productsIndex = 0
@@ -387,7 +390,6 @@ export default {
 					url: ''
 				}
 				productsIndex++
-
 				index++
 				combination[n - 1] = index
 				for (var j = n - 1; j >= 0; j--) {
@@ -406,7 +408,6 @@ export default {
 					}
 				}
 			} while (isContinue)
-
 			this.products = products
 		},
 		handleProductShow(row) {

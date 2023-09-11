@@ -87,10 +87,13 @@ export default {
 				name: undefined,
 				sort: 'add_time',
 				order: 'desc'
-			}
+			},
+			pageType: ''
 		}
 	},
 	created() {
+		if (!this.$route.query.pageType) return
+		this.pageType = this.$route.query.pageType
 		this.getRoles()
 		// this.getList()
 	},
@@ -98,9 +101,9 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员' || response.data.roles[0] === '分公司管理员' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
 						this.getList()
-					} else if (response.data.roles[0] === '会员商户' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
+					} else if (response.data.roles[0] === '会员商户') {
 						this.$router.push({ name: 'goodsList' })
 					}
 				})
@@ -127,7 +130,11 @@ export default {
 		},
 
 		chooseBrand(row) {
-			this.$router.push({ name: 'BrandGoodsListShow', query: { id: row.id } })
+			if (this.pageType === 'default') {
+				this.$router.push({ name: 'BrandGoodsListShow', query: { id: row.id } })
+			} else if (this.pageType === 'credit') {
+				this.$router.push({ name: 'BrandCreditGoodsShow', query: { id: row.id } })
+			}
 		}
 	}
 }

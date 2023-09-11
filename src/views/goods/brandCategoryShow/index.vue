@@ -265,9 +265,7 @@ export default {
 	},
 	methods: {
 		getList() {
-			if (this.$route.query.id == null) {
-				return
-			}
+			if (!this.$route.query.id) return
 			this.listQuery.brandId = this.$route.query.id
 			this.dataForm.brandId = this.$route.query.id
 			this.listLoading = true

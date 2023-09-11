@@ -1110,6 +1110,7 @@ export const asyncRouterMap = [
 			},
 			{
 				path: 'creditGoods',
+				alwaysShow: true,
 				component: () => import('@/views/children'),
 				meta: {
 					title: '积分商品',
@@ -1132,6 +1133,7 @@ export const asyncRouterMap = [
 						path: 'create',
 						component: () => import('@/views/goods/creditGoods/create'),
 						name: 'creditGoodsCreate',
+						hidden: true,
 						meta: {
 							perms: [ 'POST /admin/integralGoods/create' ],
 							title: '积分商品上架',
@@ -1147,6 +1149,18 @@ export const asyncRouterMap = [
 						meta: {
 							perms: ['GET /admin/integralGoods/detail', 'POST /admin/integralGoods/update'],
 							title: '积分商品编辑',
+							icon: '',
+							noCache: true
+						}
+					},
+					{
+						path: 'brandCreditGoodsShow',
+						component: () => import('@/views/goods/creditGoods/brandCreditGoodsShow'),
+						name: 'BrandCreditGoodsShow',
+						hidden: true,
+						meta: {
+							perms: ['GET /admin/integralGoods/list', 'POST /admin/integralGoods/delete'],
+							title: '积分商品列表',
 							icon: '',
 							noCache: true
 						}

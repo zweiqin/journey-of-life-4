@@ -269,9 +269,9 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员' || response.data.roles[0] === '分公司管理员' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
 						this.$router.push({ name: 'BrandCategory' })
-					} else if (response.data.roles[0] === '会员商户' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
+					} else if (response.data.roles[0] === '会员商户') {
 						this.getList()
 						this.getCatL1()
 					}

@@ -183,9 +183,7 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.id == null) {
-				return
-			}
+			if (!this.$route.query.id) return
 			readCoupon(this.$route.query.id).then((response) => {
 				this.coupon = response.data
 			})

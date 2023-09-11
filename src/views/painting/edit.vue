@@ -69,10 +69,7 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.id == null) {
-				return
-			}
-
+			if (!this.$route.query.id) return
 			this.paint_id = this.$route.query.id
 			listDetail(this.paint_id).then((response) => {
 				// console.log(response.data.paint_title)

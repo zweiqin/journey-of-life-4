@@ -65,6 +65,17 @@ export default {
 					}
 					return item
 				})
+			} else if (this.roles.includes('分公司管理员')) {
+				routers = XeUtils.mapTree(this.permission_routers, (item) => {
+					if (item._ROLES) {
+						if (item._ROLES.includes('BRANCH')) {
+							item.hidden = false
+						} else {
+							item.hidden = true
+						}
+					}
+					return item
+				})
 			}
 			return routers
 		}

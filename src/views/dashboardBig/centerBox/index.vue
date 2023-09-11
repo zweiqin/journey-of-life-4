@@ -98,16 +98,8 @@ export default {
 		}
 	},
 	created() {
-		// this.getRoles()
 	},
 	methods: {
-		// getRoles () {
-		//   getUserInfo(getToken())
-		//     .then(response => {
-		//       this.role = response.data.roles[0] !== '超级管理员'
-		//     })
-		//     .catch()
-		// }
 	}
 }
 </script>

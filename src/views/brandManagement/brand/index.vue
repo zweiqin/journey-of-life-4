@@ -503,10 +503,10 @@ export default {
 		getRoles() {
 			getUserInfo(getToken())
 				.then((response) => {
-					if (response.data.roles[0] === '超级管理员') {
+					if (response.data.roles[0] === '超级管理员' || response.data.roles[0] === '分公司管理员') {
 						this.getList()
 						this.init()
-					} else {
+					} else if (response.data.roles[0] === '会员商户') {
 						this.$router.push({ name: 'brandSetting' })
 					}
 				})

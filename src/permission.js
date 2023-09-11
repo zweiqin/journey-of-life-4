@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
 			if (hasPermission(store.getters.perms, to.meta.perms)) {
 				// console.log(store.getters.addRouters, to)
 				// 登录后的不同角色，跳转到首页的问题
-				if (to.path === '/homepage' && (store.getters.roles.includes('初级营销策划师') || store.getters.roles.includes('会员商户'))) {
+				if (to.path === '/homepage' && (store.getters.roles.includes('初级营销策划师') || store.getters.roles.includes('会员商户') || store.getters.roles.includes('分公司管理员'))) {
 					const routeMatch = XeUtils.findTree(store.getters.addRouters, (item) => !item.children && (!item._ROLES || item._ROLES.includes(store.getters.roles[0])))
 					if (routeMatch && Array.isArray(routeMatch.nodes)) {
 						next({ path: routeMatch.nodes.map((v) => v.path).join('/') })

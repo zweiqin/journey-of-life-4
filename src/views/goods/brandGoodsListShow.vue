@@ -240,9 +240,7 @@ export default {
 	},
 	methods: {
 		getList() {
-			if (this.$route.query.id == null) {
-				return
-			}
+			if (!this.$route.query.id) return
 			this.listQuery.brandId = this.$route.query.id
 			this.listLoading = true
 			listGoods(this.listQuery).then((response) => {
@@ -288,7 +286,7 @@ export default {
 				})
 		},
 		handleCancel() {
-			this.$router.push({ name: 'brandGoodsList' })
+			this.$router.push({ name: 'brandGoodsList', query: { pageType: 'default' } })
 		},
 
 		handleExamine(row) {

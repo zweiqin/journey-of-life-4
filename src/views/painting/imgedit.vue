@@ -70,10 +70,7 @@ export default {
 	},
 	methods: {
 		init() {
-			if (this.$route.query.img_id == null || this.$route.query.paint_id == null) {
-				return
-			}
-
+			if (!this.$route.query.img_id || !this.$route.query.paint_id) return
 			this.img_id = this.$route.query.img_id
 			this.img.paint_id = this.$route.query.paint_id
 			listDetailPicture(this.img_id).then((response) => {

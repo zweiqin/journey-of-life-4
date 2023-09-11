@@ -10,6 +10,12 @@
 			/>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
 			<el-button size="mini" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+			<el-button
+				size="mini" class="filter-item" type="primary" icon="el-icon-caret-left"
+				@click="handleCancel"
+			>
+				返回
+			</el-button>
 		</div>
 
 		<!-- 查询结果 -->
@@ -89,12 +95,10 @@
 
 <script>
 import { listGoods, deleteGoods } from '@/api/business/creditGoods'
-import { getUserInfo } from '@/api/login'
-import { getToken } from '@/utils/auth'
 import Pagination from '@/components/Pagination'
 
 export default {
-	name: 'CreditGoodsList',
+	name: 'BrandCreditGoodsShow',
 	components: { Pagination },
 	data() {
 		return {
@@ -105,7 +109,7 @@ export default {
 				page: 1,
 				limit: 20,
 				name: undefined,
-				brandId: this.$store.state.user.brandId,
+				brandId: undefined,
 				sort: 'add_time',
 				order: 'desc'
 			},
@@ -115,21 +119,12 @@ export default {
 		}
 	},
 	created() {
-		this.getRoles()
+		this.getList()
 	},
 	methods: {
-		getRoles() {
-			getUserInfo(getToken())
-				.then((response) => {
-					if (response.data.roles[0] === '超级管理员' || response.data.roles[0] === '分公司管理员' || response.data.roles[0] === '初级营销策划师' || response.data.roles[0] === '高级营销策划师') {
-						this.$router.push({ name: 'brandGoodsList', query: { pageType: 'credit' } })
-					} else if (response.data.roles[0] === '会员商户') {
-						this.getList()
-					}
-				})
-				.catch()
-		},
 		getList() {
+			if (!this.$route.query.id) return
+			this.listQuery.brandId = this.$route.query.id
 			this.listLoading = true
 			listGoods(this.listQuery).then((response) => {
 				this.list = response.data.items
@@ -147,30 +142,36 @@ export default {
 			this.getList()
 		},
 		handleCreate() {
-			this.$router.push({ name: 'creditGoodsCreate', query: { lastRouter: 'list', brandId: this.listQuery.brandId } })
+			this.$router.push({ name: 'creditGoodsCreate', query: { lastRouter: 'BrandCreditGoodsShow', brandId: this.listQuery.brandId } })
 		},
+
 		handleUpdate(row) {
-			this.$router.push({ name: 'creditGoodsEdit', query: { id: row.id, lastRouter: 'list', brandId: this.listQuery.brandId } })
+			this.$router.push({ name: 'creditGoodsEdit', query: { id: row.id, lastRouter: 'BrandCreditGoodsShow', brandId: this.listQuery.brandId } })
 		},
 		showDetail(detail) {
 			this.goodsDetail = detail
 			this.detailDialogVisible = true
 		},
 		handleDelete(row) {
-			deleteGoods(row).then((response) => {
+			deleteGoods(row).then((res) => {
 				this.$notify.success({
 					title: '成功',
 					message: '删除成功'
 				})
-				this.getList()
+				const index = this.list.indexOf(row)
+				this.list.splice(index, 1)
 			})
-				.catch((response) => {
+				.catch((err) => {
 					this.$notify.error({
 						title: '失败',
-						message: response.data.errmsg
+						message: err.data.errmsg
 					})
 				})
+		},
+		handleCancel() {
+			this.$router.push({ name: 'brandGoodsList', query: { pageType: 'default' } })
 		}
+
 	}
 }
 </script>
